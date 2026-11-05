@@ -172,6 +172,19 @@ export default function Navbar() {
               <Layers className="w-4 h-4" />
               <span className="hidden xl:inline">Vector Engine</span>
             </Link>
+
+            <Link
+              href="/queries/nearby-similar"
+              className={`p-2 rounded-md transition-colors flex items-center gap-1 text-xs font-medium ${
+                pathname.startsWith("/queries/nearby-similar")
+                  ? "bg-emerald-50 text-emerald-800 border border-emerald-200 font-bold"
+                  : "text-gray-600 hover:text-black hover:bg-gray-50"
+              }`}
+              title="Hybrid Query 1: Nearby Visually Similar Cases"
+            >
+              <Compass className="w-4 h-4" />
+              <span className="hidden xl:inline">Query 1</span>
+            </Link>
           </div>
 
           {/* Action Buttons */}

@@ -78,6 +78,13 @@ const NAV_ITEMS: NavItem[] = [
     badgeVariant: "emerald"
   },
   {
+    title: "Nearby Similar (Q1)",
+    href: "/queries/nearby-similar",
+    icon: Compass,
+    badge: "Hybrid 1",
+    badgeVariant: "emerald"
+  },
+  {
     title: "Outbreak Alerts",
     href: "/alerts",
     icon: ShieldAlert,
