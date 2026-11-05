@@ -2,6 +2,8 @@
 
 import React, { useState } from "react";
 import Navbar from "@/components/Navbar";
+import { PrecedentMatchCard } from "@/components/PrecedentMatchCard";
+import { PrecedentCase } from "@/lib/precedent-engine";
 import {
   Layers,
   Sparkles,
@@ -20,17 +22,31 @@ export default function SimilarityPage() {
   const [organ, setOrgan] = useState<"leaf" | "bark" | "trunk">("leaf");
   const [isLoading, setIsLoading] = useState(false);
   const [similarityResults, setSimilarityResults] = useState<any[] | null>(null);
+  const [precedents, setPrecedents] = useState<PrecedentCase[]>([]);
 
   const runSimilaritySearch = async () => {
     setIsLoading(true);
     try {
-      const res = await fetch("/api/similarity", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ organ, specimen_type: selectedPhoto })
-      });
-      const data = await res.json();
-      setSimilarityResults(data.results || []);
+      const [simRes, precRes] = await Promise.all([
+        fetch("/api/similarity", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ organ, specimen_type: selectedPhoto })
+        }),
+        fetch("/api/precedents/search", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ species_id: organ === "trunk" ? 2 : 1 })
+        })
+      ]);
+
+      const simData = await simRes.json();
+      const precData = await precRes.json();
+
+      setSimilarityResults(simData.results || []);
+      if (precData.precedents) {
+        setPrecedents(precData.precedents);
+      }
     } catch (e) {
       console.error(e);
     } finally {
@@ -167,65 +183,75 @@ export default function SimilarityPage() {
                 </div>
 
                 {/* Retrieved Case Cards */}
-                <div className="space-y-3">
-                  {(similarityResults || []).map((match, idx) => {
-                    const isTop1 = idx === 0;
-                    return (
-                      <div
-                        key={match.rank}
-                        className={`p-4 rounded-xl border transition-all ${
-                          isTop1
-                            ? "bg-emerald-50/40 border-emerald-300 shadow-xs"
-                            : "bg-white border-gray-200 hover:border-gray-300"
-                        }`}
-                      >
-                        <div className="flex items-start justify-between gap-3 mb-2">
-                          <div className="flex items-center gap-2.5">
-                            <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold font-mono ${
-                              isTop1 ? "bg-emerald-800 text-white" : "bg-gray-100 text-gray-700"
-                            }`}>
-                              #{match.rank}
-                            </span>
-                            <div>
-                              <h4 className="font-bold text-sm text-gray-900 leading-tight">
-                                {match.disease_name}
-                              </h4>
-                              <span className="text-[10px] font-mono text-gray-500 italic">
-                                {match.pathogen}
+                <div className="space-y-4">
+                  {precedents.length > 0 ? (
+                    precedents.slice(0, 3).map((prec) => (
+                      <PrecedentMatchCard
+                        key={prec.image_id}
+                        precedent={prec}
+                        queryImageUrl={selectedPhoto}
+                      />
+                    ))
+                  ) : (
+                    (similarityResults || []).map((match, idx) => {
+                      const isTop1 = idx === 0;
+                      return (
+                        <div
+                          key={match.rank}
+                          className={`p-4 rounded-xl border transition-all ${
+                            isTop1
+                              ? "bg-emerald-50/40 border-emerald-300 shadow-xs"
+                              : "bg-white border-gray-200 hover:border-gray-300"
+                          }`}
+                        >
+                          <div className="flex items-start justify-between gap-3 mb-2">
+                            <div className="flex items-center gap-2.5">
+                              <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold font-mono ${
+                                isTop1 ? "bg-emerald-800 text-white" : "bg-gray-100 text-gray-700"
+                              }`}>
+                                #{match.rank}
+                              </span>
+                              <div>
+                                <h4 className="font-bold text-sm text-gray-900 leading-tight">
+                                  {match.disease_name}
+                                </h4>
+                                <span className="text-[10px] font-mono text-gray-500 italic">
+                                  {match.pathogen}
+                                </span>
+                              </div>
+                            </div>
+
+                            <div className="text-right">
+                              <div className="text-base font-extrabold font-mono text-emerald-800">
+                                {(match.similarity_score * 100).toFixed(1)}%
+                              </div>
+                              <span className="text-[9px] font-mono text-gray-400 block">
+                                Cosine Dist: {match.cosine_distance}
                               </span>
                             </div>
                           </div>
 
-                          <div className="text-right">
-                            <div className="text-base font-extrabold font-mono text-emerald-800">
-                              {(match.similarity_score * 100).toFixed(1)}%
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-mono my-2.5">
+                            <div className="p-2 bg-white rounded border border-gray-200/80">
+                              <span className="text-gray-400 block text-[9px]">Matched Precedent Tree</span>
+                              <strong className="text-gray-900">{match.precedent_tree_tag}</strong>
                             </div>
-                            <span className="text-[9px] font-mono text-gray-400 block">
-                              Cosine Dist: {match.cosine_distance}
+                            <div className="p-2 bg-white rounded border border-gray-200/80">
+                              <span className="text-gray-400 block text-[9px]">Clinical Outcome</span>
+                              <span className="text-emerald-800 font-bold">{match.outcome_status} ({match.cure_rate} Cure)</span>
+                            </div>
+                          </div>
+
+                          <div className="text-xs text-gray-700 bg-gray-50/80 p-2.5 rounded-lg border border-gray-100 flex items-center justify-between">
+                            <span>
+                              <strong className="text-gray-900">Verified Protocol:</strong> {match.recommended_protocol}
                             </span>
+                            <span className="font-mono text-gray-500 text-[11px] font-semibold">{match.estimated_cost}</span>
                           </div>
                         </div>
-
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-mono my-2.5">
-                          <div className="p-2 bg-white rounded border border-gray-200/80">
-                            <span className="text-gray-400 block text-[9px]">Matched Precedent Tree</span>
-                            <strong className="text-gray-900">{match.precedent_tree_tag}</strong>
-                          </div>
-                          <div className="p-2 bg-white rounded border border-gray-200/80">
-                            <span className="text-gray-400 block text-[9px]">Clinical Outcome</span>
-                            <span className="text-emerald-800 font-bold">{match.outcome_status} ({match.cure_rate} Cure)</span>
-                          </div>
-                        </div>
-
-                        <div className="text-xs text-gray-700 bg-gray-50/80 p-2.5 rounded-lg border border-gray-100 flex items-center justify-between">
-                          <span>
-                            <strong className="text-gray-900">Verified Protocol:</strong> {match.recommended_protocol}
-                          </span>
-                          <span className="font-mono text-gray-500 text-[11px] font-semibold">{match.estimated_cost}</span>
-                        </div>
-                      </div>
-                    );
-                  })}
+                      );
+                    })
+                  )}
                 </div>
               </div>
 
