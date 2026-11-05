@@ -60,3 +60,4 @@ for (const ward of WARDS) {
 console.log("   ✓ Centroid spatial envelope checks verified.\n");
 
 console.log("All Municipal Wards & Geofence Boundary tests passed successfully! ✓");
+

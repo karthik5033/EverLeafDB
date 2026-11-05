@@ -82,3 +82,4 @@ ON CONFLICT (ward_id) DO UPDATE SET
   area_sq_km = EXCLUDED.area_sq_km;
 
 SELECT setval('wards_ward_id_seq', (SELECT MAX(ward_id) FROM wards));
+

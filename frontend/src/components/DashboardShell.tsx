@@ -42,6 +42,13 @@ const NAV_ITEMS: NavItem[] = [
     icon: Trees
   },
   {
+    title: "Tree Directory",
+    href: "/trees",
+    icon: Trees,
+    badge: "3NF",
+    badgeVariant: "emerald"
+  },
+  {
     title: "Spatial Map Explorer",
     href: "/map",
     icon: Compass,

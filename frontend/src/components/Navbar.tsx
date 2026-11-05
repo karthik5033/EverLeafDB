@@ -121,6 +121,19 @@ export default function Navbar() {
             </a>
 
             <Link
+              href="/trees"
+              className={`p-2 rounded-md transition-colors flex items-center gap-1 text-xs font-medium ${
+                pathname.startsWith("/trees")
+                  ? "bg-emerald-50 text-emerald-800 border border-emerald-200 font-bold"
+                  : "text-gray-600 hover:text-black hover:bg-gray-50"
+              }`}
+              title="3NF Urban Tree Registry"
+            >
+              <Trees className="w-4 h-4" />
+              <span className="hidden xl:inline">Tree Registry</span>
+            </Link>
+
+            <Link
               href="/map"
               className={`p-2 rounded-md transition-colors flex items-center gap-1 text-xs font-medium ${
                 pathname === "/map"
