@@ -65,3 +65,4 @@ for (const link of SUSCEPTIBILITY_SEED) {
 console.log("   ✓ Zero dangling foreign keys in M:N relationship matrix.\n");
 
 console.log("All Botanical Species & Disease Taxonomy tests passed successfully! ✓");
+

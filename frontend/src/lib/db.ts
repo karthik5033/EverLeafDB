@@ -185,30 +185,30 @@ export const WARDS: Ward[] = [
   {
     ward_id: "ward_05",
     ward_number: 5,
-    name: "Jayanagar Boulevard",
+    name: "Koramangala Canopy Corridor",
     zone: "South",
-    area_sq_km: 4.8,
+    area_sq_km: 4.6,
     tree_count: 16400,
     canopy_cover_percent: 42.1,
     assigned_inspector: "inspector_06",
-    centroid: [77.581, 12.930],
+    centroid: [77.621, 12.934],
     polygon: [
-      [77.570, 12.920],
-      [77.592, 12.921],
-      [77.591, 12.940],
-      [77.571, 12.939],
-      [77.570, 12.920]
+      [77.610, 12.925],
+      [77.632, 12.926],
+      [77.631, 12.943],
+      [77.612, 12.942],
+      [77.610, 12.925]
     ]
   },
   {
-    ward_id: "ward_14",
-    ward_number: 14,
-    name: "Malleswaram Canopy Sector",
+    ward_id: "ward_06",
+    ward_number: 6,
+    name: "Malleswaram Heritage Precinct",
     zone: "North",
-    area_sq_km: 3.5,
-    tree_count: 11250,
-    canopy_cover_percent: 39.4,
-    assigned_inspector: "inspector_14",
+    area_sq_km: 4.8,
+    tree_count: 15800,
+    canopy_cover_percent: 48.5,
+    assigned_inspector: "inspector_07",
     centroid: [77.571, 13.003],
     polygon: [
       [77.560, 12.993],
@@ -216,6 +216,78 @@ export const WARDS: Ward[] = [
       [77.581, 13.013],
       [77.561, 13.012],
       [77.560, 12.993]
+    ]
+  },
+  {
+    ward_id: "ward_07",
+    ward_number: 7,
+    name: "Jayanagar Green Belt",
+    zone: "South",
+    area_sq_km: 5.2,
+    tree_count: 19200,
+    canopy_cover_percent: 54.0,
+    assigned_inspector: "inspector_08",
+    centroid: [77.581, 12.925],
+    polygon: [
+      [77.570, 12.915],
+      [77.592, 12.916],
+      [77.590, 12.935],
+      [77.571, 12.934],
+      [77.570, 12.915]
+    ]
+  },
+  {
+    ward_id: "ward_08",
+    ward_number: 8,
+    name: "Whitefield Tech Corridor",
+    zone: "East",
+    area_sq_km: 7.5,
+    tree_count: 12100,
+    canopy_cover_percent: 29.5,
+    assigned_inspector: "inspector_09",
+    centroid: [77.745, 12.972],
+    polygon: [
+      [77.730, 12.960],
+      [77.760, 12.961],
+      [77.758, 12.985],
+      [77.732, 12.984],
+      [77.730, 12.960]
+    ]
+  },
+  {
+    ward_id: "ward_09",
+    ward_number: 9,
+    name: "Hebbal Lake Sanctuary",
+    zone: "North",
+    area_sq_km: 6.4,
+    tree_count: 21500,
+    canopy_cover_percent: 61.2,
+    assigned_inspector: "inspector_10",
+    centroid: [77.595, 13.042],
+    polygon: [
+      [77.580, 13.030],
+      [77.610, 13.031],
+      [77.608, 13.055],
+      [77.582, 13.054],
+      [77.580, 13.030]
+    ]
+  },
+  {
+    ward_id: "ward_14",
+    ward_number: 14,
+    name: "Ulsoor Lake Catchment",
+    zone: "Central",
+    area_sq_km: 3.5,
+    tree_count: 11250,
+    canopy_cover_percent: 39.4,
+    assigned_inspector: "inspector_14",
+    centroid: [77.625, 12.983],
+    polygon: [
+      [77.615, 12.975],
+      [77.635, 12.976],
+      [77.634, 12.991],
+      [77.616, 12.990],
+      [77.615, 12.975]
     ]
   }
 ];

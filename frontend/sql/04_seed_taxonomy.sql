@@ -182,3 +182,4 @@ ON CONFLICT (treatment_id) DO UPDATE SET
   typical_duration_days = EXCLUDED.typical_duration_days;
 
 SELECT setval('treatments_treatment_id_seq', (SELECT MAX(treatment_id) FROM treatments));
+

@@ -48,10 +48,12 @@ import {
   MoreVertical,
   Plus
 } from "lucide-react";
-import { TREES } from "@/lib/db";
+import { TREES, Ward } from "@/lib/db";
+import WardSelector from "@/components/WardSelector";
 
 export default function ShowcasePage() {
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [selectedWard, setSelectedWard] = useState<Ward | null>(null);
 
   return (
     <DashboardShell>
@@ -288,6 +290,70 @@ export default function ShowcasePage() {
                 ))}
               </TableBody>
             </Table>
+          </CardContent>
+        </Card>
+
+        {/* Section 4: Phase 7 Ward Selector & PostGIS Boundary Inspection */}
+        <Card>
+          <CardHeader>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div>
+                <CardTitle className="flex items-center gap-2">
+                  <Compass className="w-5 h-5 text-emerald-700" />
+                  <span>4. PostGIS Administrative Ward Geofence Layer</span>
+                </CardTitle>
+                <CardDescription>
+                  Spatial polygon boundary selector with SRID 4326 real-time canopy analytics
+                </CardDescription>
+              </div>
+              <Badge variant="outline" className="font-mono bg-emerald-50 text-emerald-800 border-emerald-200 w-fit">
+                PostGIS GiST
+              </Badge>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+              <div className="space-y-3">
+                <label className="text-sm font-semibold text-foreground">
+                  Select Administrative Ward
+                </label>
+                <WardSelector
+                  selectedWardId={selectedWard?.ward_id || "ward_03"}
+                  onSelectWard={(ward) => setSelectedWard(ward)}
+                />
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  Automatically extracts boundary polygon coordinates, validates point-in-polygon containment via PostGIS <code className="font-mono text-emerald-800">ST_Contains()</code>, and displays vector thumbnail.
+                </p>
+              </div>
+
+              {selectedWard && (
+                <div className="p-4 rounded-xl border border-emerald-200/80 bg-emerald-50/40 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-sm text-emerald-950">
+                      {selectedWard.name} Telemetry
+                    </span>
+                    <Badge variant="emerald">Active Geofence</Badge>
+                  </div>
+                  <div className="grid grid-cols-3 gap-2 text-center pt-2 border-t border-emerald-200/60 font-mono">
+                    <div className="p-2 bg-white rounded-lg border border-emerald-100">
+                      <div className="text-[10px] text-muted-foreground uppercase">Area</div>
+                      <div className="text-sm font-bold text-foreground">{selectedWard.area_sq_km} km²</div>
+                    </div>
+                    <div className="p-2 bg-white rounded-lg border border-emerald-100">
+                      <div className="text-[10px] text-muted-foreground uppercase">Canopy</div>
+                      <div className="text-sm font-bold text-emerald-800">{selectedWard.canopy_cover_percent}%</div>
+                    </div>
+                    <div className="p-2 bg-white rounded-lg border border-emerald-100">
+                      <div className="text-[10px] text-muted-foreground uppercase">Trees</div>
+                      <div className="text-sm font-bold text-foreground">{selectedWard.tree_count.toLocaleString()}</div>
+                    </div>
+                  </div>
+                  <div className="text-[11px] text-muted-foreground font-mono truncate">
+                    Centroid: [{selectedWard.centroid[0]}, {selectedWard.centroid[1]}] | Vertex Count: {selectedWard.polygon.length}
+                  </div>
+                </div>
+              )}
+            </div>
           </CardContent>
         </Card>
       </div>
