@@ -15,7 +15,8 @@ import {
   X,
   ArrowRight,
   ShieldAlert,
-  MapPin
+  MapPin,
+  Stethoscope
 } from "lucide-react";
 import { TREES, WARDS, DISEASES } from "@/lib/db";
 
@@ -144,6 +145,19 @@ export default function Navbar() {
             >
               <Compass className="w-4 h-4" />
               <span className="hidden xl:inline">Spatial Map</span>
+            </Link>
+
+            <Link
+              href="/inspections"
+              className={`p-2 rounded-md transition-colors flex items-center gap-1 text-xs font-medium ${
+                pathname.startsWith("/inspections")
+                  ? "bg-emerald-50 text-emerald-800 border border-emerald-200 font-bold"
+                  : "text-gray-600 hover:text-black hover:bg-gray-50"
+              }`}
+              title="Field Health Inspection Logging"
+            >
+              <Stethoscope className="w-4 h-4" />
+              <span className="hidden xl:inline">Inspections</span>
             </Link>
 
             <Link

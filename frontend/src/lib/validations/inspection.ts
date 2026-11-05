@@ -12,8 +12,8 @@ export const organBodyPartEnum = z.enum([
  * Validates field inspection creation payload
  */
 export const createInspectionSchema = z.object({
-  tree_id: z.string().uuid("Invalid tree UUID"),
-  inspector_id: z.string().uuid("Invalid inspector UUID").optional(),
+  tree_id: z.string().min(1, "Tree ID is required"),
+  inspector_id: z.string().min(1, "Invalid inspector identifier").optional(),
   condition_score: z
     .number({ message: "Condition score must be an integer between 1 and 5" })
     .int()
@@ -24,8 +24,15 @@ export const createInspectionSchema = z.object({
     .max(2000, "Field notes cannot exceed 2000 characters")
     .optional()
     .nullable(),
+  symptom_notes: z
+    .string()
+    .max(2000, "Symptom notes cannot exceed 2000 characters")
+    .optional()
+    .nullable(),
   body_part: organBodyPartEnum.default("leaf"),
-  image_url: z.string().url("Image URL must be valid").optional().nullable(),
+  organ: organBodyPartEnum.optional(),
+  image_url: z.string().optional().nullable(),
+  photo_url: z.string().optional().nullable(),
   image_embedding: z
     .array(z.number())
     .length(512, "Visual feature embedding must be exactly 512-dimensional float32 vector")

@@ -20,7 +20,8 @@ import {
   Bell,
   Sparkles,
   User,
-  ShieldCheck
+  ShieldCheck,
+  Stethoscope
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -53,6 +54,13 @@ const NAV_ITEMS: NavItem[] = [
     href: "/map",
     icon: Compass,
     badge: "PostGIS",
+    badgeVariant: "emerald"
+  },
+  {
+    title: "Field Inspections",
+    href: "/inspections",
+    icon: Stethoscope,
+    badge: "Phase 12",
     badgeVariant: "emerald"
   },
   {
