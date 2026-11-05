@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { Inspection, DISEASES, ALERTS, Alert } from "@/lib/db";
 import { createInspectionSchema, inspectionQuerySchema } from "@/lib/validations/inspection";
 import { recordAuditTrail, triggerUpdateLastInspected } from "@/lib/audit";
+import { evaluateRiskTrigger, SEVERE_PRECEDENTS } from "@/lib/risk-trigger";
 
 // Runtime inspections storage
 const INSPECTIONS: Inspection[] = [
@@ -60,42 +61,29 @@ export async function POST(request: NextRequest) {
     const inspectionId = `INSP-${Math.floor(1000 + Math.random() * 9000)}`;
     const score = Number(condition_score) || 3;
 
-    // Simulate CLIP ViT-B/32 512-d feature extraction & pgvector HNSW search
-    let matchedDisease = DISEASES[0].common_name;
-    let similarity = 0.892;
-    if (score >= 4) {
-      similarity = 0.42; // Low similarity to lethal disease
-      matchedDisease = "None / Benign Foliage Variation";
+    // Retrieve or synthesize 512-d feature vector based on severity score
+    const targetPrecedent = SEVERE_PRECEDENTS[0];
+    let queryEmbedding: number[];
+    if (score <= 2) {
+      queryEmbedding = targetPrecedent.reference_embedding.map((val) => val + (Math.random() - 0.5) * 0.01);
     } else if (score === 3) {
-      similarity = 0.74;
-      matchedDisease = DISEASES[3].common_name;
-    } else if (score === 2) {
-      similarity = 0.84;
-      matchedDisease = DISEASES[1].common_name;
+      queryEmbedding = targetPrecedent.reference_embedding.map((val) => val * 0.74 + (Math.random() - 0.5) * 0.1);
     } else {
-      similarity = 0.892;
-      matchedDisease = DISEASES[0].common_name;
+      queryEmbedding = new Array(512).fill(0).map((_, i) => Math.cos(i * 0.77));
     }
 
-    // PL/pgSQL Trigger: trg_fn_detect_severe_disease_alert()
-    // Evaluates: IF similarity >= 0.82 THEN INSERT INTO alerts ...
-    const triggerActivated = similarity >= 0.82;
-    let generatedAlert: Alert | null = null;
+    // Phase 14: Execute Autonomous Pathological Risk Trigger trg_fn_detect_severe_disease_alert()
+    const riskResult = evaluateRiskTrigger({
+      treeId: tree_id || "tree_1084",
+      imageEmbedding: queryEmbedding,
+      inspectorId: "inspector_04",
+      photoUrl: photo_url
+    });
 
-    if (triggerActivated) {
-      generatedAlert = {
-        alert_id: `ALT-${Math.floor(1000 + Math.random() * 9000)}`,
-        tree_id: tree_id || "tree_1084",
-        ward_id: "ward_03",
-        severity: "CRITICAL",
-        status: "PENDING",
-        detected_disease: matchedDisease,
-        cosine_similarity: similarity,
-        created_at: new Date().toISOString(),
-        assigned_inspector: "inspector_04"
-      };
-      ALERTS.unshift(generatedAlert);
-    }
+    const triggerActivated = riskResult.alertTriggered;
+    const similarity = riskResult.cosineSimilarity;
+    const matchedDisease = riskResult.matchedDisease || "None / Benign Foliage Variation";
+    const generatedAlert = riskResult.alert;
 
     const newInspection: Inspection = {
       inspection_id: inspectionId,
