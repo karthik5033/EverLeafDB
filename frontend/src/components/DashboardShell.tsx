@@ -101,6 +101,13 @@ const NAV_ITEMS: NavItem[] = [
     badgeVariant: "critical"
   },
   {
+    title: "Treatment ROI (Q4)",
+    href: "/analytics/treatment-efficacy",
+    icon: BarChart3,
+    badge: "Hybrid 4",
+    badgeVariant: "emerald"
+  },
+  {
     title: "Outbreak Alerts",
     href: "/alerts",
     icon: ShieldAlert,
