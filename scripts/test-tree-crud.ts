@@ -47,3 +47,4 @@ for (const tree of TREES) {
 console.log("   ✓ All tree records map to valid species entries.\n");
 
 console.log("All Tree Registry Core CRUD tests passed successfully! ✓");
+

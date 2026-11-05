@@ -129,3 +129,4 @@ export async function DELETE(
     sql_executed: `UPDATE trees SET health_status = 'removed' WHERE tree_id = '${id}';`
   });
 }
+
