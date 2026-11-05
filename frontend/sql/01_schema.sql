@@ -298,3 +298,4 @@ CREATE INDEX IF NOT EXISTS idx_inspection_images_vector_hnsw
 ON inspection_images 
 USING hnsw (image_embedding vector_cosine_ops) 
 WITH (m = 16, ef_construction = 64);
+

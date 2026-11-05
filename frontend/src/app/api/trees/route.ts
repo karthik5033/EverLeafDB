@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { TREES, WARDS, calculateDistanceMeters, pointInPolygon, Tree } from "@/lib/db";
+import { TREES, WARDS, Tree } from "@/lib/db";
+import { stDistanceMeters, stContains, verifyTreeWithinWard, pointToWkt, LngLat } from "@/lib/gis";
 import { createTreeSchema, treeQuerySchema } from "@/lib/validations/tree";
 
 // In-memory runtime state
-let currentTrees: Tree[] = [...TREES];
+const currentTrees: Tree[] = [...TREES];
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
@@ -33,12 +34,12 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  // 2. PostGIS ST_DWithin(location_geom, Point, radius) simulation
+  // 2. PostGIS ST_DWithin(location_geom, Point, radius) with geodesic distance
   if (nearLat !== null && nearLng !== null && radiusMeters !== null) {
     results = results
       .map((t) => ({
         ...t,
-        distance_meters: calculateDistanceMeters(nearLat, nearLng, t.latitude, t.longitude)
+        distance_meters: stDistanceMeters(nearLat, nearLng, t.latitude, t.longitude)
       }))
       .filter((t) => t.distance_meters <= radiusMeters)
       .sort((a, b) => a.distance_meters - b.distance_meters);
@@ -47,8 +48,12 @@ export async function GET(request: NextRequest) {
   return NextResponse.json({
     success: true,
     count: results.length,
+    crs: "EPSG:4326",
+    spatial_index: "idx_trees_location_gist",
     sql_executed: `SELECT tree_id, tag_number, species_common, health_status, ST_AsGeoJSON(location_geom) FROM trees WHERE 1=1 ${
-      nearLat && nearLng && radiusMeters ? `AND ST_DWithin(location_geom, ST_SetSRID(ST_Point(${nearLng}, ${nearLat}), 4326), ${radiusMeters})` : ""
+      nearLat && nearLng && radiusMeters
+        ? `AND ST_DWithin(location_geom::geography, ST_SetSRID(ST_Point(${nearLng}, ${nearLat}), 4326)::geography, ${radiusMeters}) ORDER BY location_geom <-> ST_SetSRID(ST_Point(${nearLng}, ${nearLat}), 4326)`
+        : ""
     };`,
     trees: results
   });
@@ -57,7 +62,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { species_common, species_scientific, latitude, longitude, height_m, dbh_cm, condition_score } = body;
+    const { species_common, species_scientific, latitude, longitude, height_m, dbh_cm, condition_score, ward_id } = body;
 
     if (!latitude || !longitude) {
       return NextResponse.json(
@@ -66,13 +71,26 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // PostGIS ST_Contains check: find which municipal ward polygon contains this point
-    const point: [number, number] = [longitude, latitude];
-    let detectedWard = WARDS.find((w) => pointInPolygon(point, w.polygon));
+    const point: LngLat = [longitude, latitude];
 
-    if (!detectedWard) {
-      // Fallback to nearest ward
-      detectedWard = WARDS[0];
+    // Check designated ward or auto-detect
+    let targetWard = ward_id ? WARDS.find((w) => w.ward_id === ward_id) : undefined;
+    if (!targetWard) {
+      targetWard = WARDS.find((w) => stContains(w.polygon, point)) || WARDS[0];
+    }
+
+    // Enforce Spatial Constraint: chk_tree_within_ward
+    const spatialCheck = verifyTreeWithinWard(point, targetWard.polygon, targetWard.name);
+    if (!spatialCheck.isValid) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: spatialCheck.error,
+          constraint: "chk_tree_within_ward",
+          sqlstate: "23514" // Check violation
+        },
+        { status: 422 }
+      );
     }
 
     const newId = `tree_${Date.now().toString().slice(-4)}`;
@@ -85,8 +103,8 @@ export async function POST(request: NextRequest) {
       species_id: 1,
       species_common: species_common || "Neem Tree",
       species_scientific: species_scientific || "Azadirachta indica",
-      ward_id: detectedWard.ward_id,
-      ward_name: detectedWard.name,
+      ward_id: targetWard.ward_id,
+      ward_name: targetWard.name,
       latitude,
       longitude,
       height_m: height_m || 10.0,
@@ -103,8 +121,9 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         success: true,
-        message: "Tree successfully registered with PostGIS ST_Point geometry.",
-        sql_executed: `INSERT INTO trees (tree_id, tag_number, ward_id, location_geom, condition_score) VALUES ('${newId}', '${newTag}', '${detectedWard.ward_id}', ST_SetSRID(ST_Point(${longitude}, ${latitude}), 4326), ${score});`,
+        message: "Tree successfully registered with PostGIS ST_Point geometry and validated against ward boundary.",
+        wkt: pointToWkt(longitude, latitude),
+        sql_executed: `INSERT INTO trees (tree_id, tag_number, ward_id, location_geom, condition_score) VALUES ('${newId}', '${newTag}', '${targetWard.ward_id}', ST_SetSRID(ST_Point(${longitude}, ${latitude}), 4326), ${score});`,
         tree: newTree
       },
       { status: 201 }
@@ -116,4 +135,3 @@ export async function POST(request: NextRequest) {
     );
   }
 }
-

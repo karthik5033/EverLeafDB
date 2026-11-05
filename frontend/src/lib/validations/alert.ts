@@ -53,3 +53,4 @@ export const alertQuerySchema = z.object({
 export type CreateAlertInput = z.infer<typeof createAlertSchema>;
 export type UpdateAlertStatusInput = z.infer<typeof updateAlertStatusSchema>;
 export type AlertQueryParams = z.infer<typeof alertQuerySchema>;
+

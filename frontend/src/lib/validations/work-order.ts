@@ -58,3 +58,4 @@ export const workOrderQuerySchema = z.object({
 export type CreateWorkOrderInput = z.infer<typeof createWorkOrderSchema>;
 export type UpdateWorkOrderInput = z.infer<typeof updateWorkOrderSchema>;
 export type WorkOrderQueryParams = z.infer<typeof workOrderQuerySchema>;
+
