@@ -86,3 +86,4 @@ console.assert(perOpMs < 0.1, "Vector operations exceed latency budget");
 console.log("   ✓ High-throughput vector distance computation verified.\n");
 
 console.log("All pgvector 512-d High-Dimensional Index tests passed successfully! ✓");
+

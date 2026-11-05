@@ -36,12 +36,35 @@ export interface Disease {
   disease_id: number;
   common_name: string;
   pathogen_name: string;
-  category: "Fungal" | "Bacterial" | "Viral" | "Pest/Insect";
+  category: "Fungal" | "Bacterial" | "Viral" | "Pest/Insect" | "Nutrient" | string;
   severity: "LOW" | "MODERATE" | "HIGH" | "CRITICAL";
   lethal: boolean;
   standard_treatment: string;
   estimated_cost_usd: number;
   typical_cure_rate: number;
+}
+
+export interface SpeciesSeed {
+  species_id: number;
+  scientific_name: string;
+  common_name: string;
+  typical_lifespan_years: number;
+  growth_rate: "SLOW" | "MODERATE" | "FAST";
+  foliage_type: string;
+}
+
+export interface TreatmentSeed {
+  treatment_id: number;
+  name: string;
+  treatment_type: "chemical" | "biological" | "pruning" | "soil_amendment";
+  standard_cost: number;
+  typical_duration_days: number;
+}
+
+export interface SusceptibilitySeed {
+  species_id: number;
+  disease_id: number;
+  vulnerability_index: "LOW" | "MODERATE" | "HIGH";
 }
 
 export interface Inspection {
@@ -239,10 +262,10 @@ export const DISEASES: Disease[] = [
     common_name: "Powdery Mildew Necrosis",
     pathogen_name: "Erysiphe alphitoides",
     category: "Fungal",
-    severity: "MODERATE",
+    severity: "LOW",
     lethal: false,
     standard_treatment: "Sulfur/Potassium Bicarbonate Foliar Spray",
-    estimated_cost_usd: 65,
+    estimated_cost_usd: 45,
     typical_cure_rate: 96.8
   },
   {
@@ -252,10 +275,246 @@ export const DISEASES: Disease[] = [
     category: "Fungal",
     severity: "MODERATE",
     lethal: false,
-    standard_treatment: "Chlorothalonil Systemic Application",
-    estimated_cost_usd: 90,
+    standard_treatment: "Copper Hydroxide Micronized Spray + Airflow Thinning",
+    estimated_cost_usd: 75,
     typical_cure_rate: 94.2
+  },
+  {
+    disease_id: 6,
+    common_name: "Sooty Mold Infestation",
+    pathogen_name: "Capnodium citri",
+    category: "Fungal",
+    severity: "LOW",
+    lethal: false,
+    standard_treatment: "Horticultural Mineral Oil + Bio-Inoculant",
+    estimated_cost_usd: 55,
+    typical_cure_rate: 98.0
+  },
+  {
+    disease_id: 7,
+    common_name: "Fusarium Vascular Wilt",
+    pathogen_name: "Fusarium oxysporum",
+    category: "Fungal",
+    severity: "HIGH",
+    lethal: true,
+    standard_treatment: "Trichoderma harzianum Root Bio-Barrier Drench",
+    estimated_cost_usd: 95,
+    typical_cure_rate: 76.5
+  },
+  {
+    disease_id: 8,
+    common_name: "Cercospora Leaf Spot",
+    pathogen_name: "Cercospora microsora",
+    category: "Fungal",
+    severity: "LOW",
+    lethal: false,
+    standard_treatment: "Potassium Bicarbonate Foliar Spray",
+    estimated_cost_usd: 45,
+    typical_cure_rate: 95.0
+  },
+  {
+    disease_id: 9,
+    common_name: "Puccinia Foliar Rust",
+    pathogen_name: "Puccinia spp.",
+    category: "Fungal",
+    severity: "MODERATE",
+    lethal: false,
+    standard_treatment: "Bacillus subtilis Bio-Fungicide Canopy Fogging",
+    estimated_cost_usd: 65,
+    typical_cure_rate: 92.4
+  },
+  {
+    disease_id: 10,
+    common_name: "Root-Knot Nematode Galls",
+    pathogen_name: "Meloidogyne incognita",
+    category: "Pest/Insect",
+    severity: "HIGH",
+    lethal: false,
+    standard_treatment: "Beneficial Entomopathogenic Nematode Soil Application",
+    estimated_cost_usd: 130,
+    typical_cure_rate: 85.0
+  },
+  {
+    disease_id: 11,
+    common_name: "Armillaria Honey Fungus Rot",
+    pathogen_name: "Armillaria mellea",
+    category: "Fungal",
+    severity: "CRITICAL",
+    lethal: true,
+    standard_treatment: "Root Flare Excavation & Soil Bio-Inoculation",
+    estimated_cost_usd: 210,
+    typical_cure_rate: 71.0
+  },
+  {
+    disease_id: 12,
+    common_name: "Phytophthora Collar Rot",
+    pathogen_name: "Phytophthora cactorum",
+    category: "Fungal",
+    severity: "CRITICAL",
+    lethal: true,
+    standard_treatment: "Macro-Infusion Systemic Fungicide Injection",
+    estimated_cost_usd: 290,
+    typical_cure_rate: 79.5
+  },
+  {
+    disease_id: 13,
+    common_name: "Crown Gall",
+    pathogen_name: "Agrobacterium tumefaciens",
+    category: "Bacterial",
+    severity: "MODERATE",
+    lethal: false,
+    standard_treatment: "Selective Scaffold Debridement & Heat Cauterization",
+    estimated_cost_usd: 150,
+    typical_cure_rate: 87.0
+  },
+  {
+    disease_id: 14,
+    common_name: "Bacterial Leaf Scorch",
+    pathogen_name: "Xylella fastidiosa",
+    category: "Bacterial",
+    severity: "HIGH",
+    lethal: true,
+    standard_treatment: "Oxytetracycline Micro-Injection",
+    estimated_cost_usd: 140,
+    typical_cure_rate: 81.2
+  },
+  {
+    disease_id: 15,
+    common_name: "Verticillium Vascular Wilt",
+    pathogen_name: "Verticillium dahliae",
+    category: "Fungal",
+    severity: "HIGH",
+    lethal: true,
+    standard_treatment: "Soil Solarization & Trichoderma Inoculation",
+    estimated_cost_usd: 110,
+    typical_cure_rate: 78.4
+  },
+  {
+    disease_id: 16,
+    common_name: "Longhorn Stem Borer Beetle",
+    pathogen_name: "Batocera rufomaculata",
+    category: "Pest/Insect",
+    severity: "HIGH",
+    lethal: true,
+    standard_treatment: "Emamectin Benzoate Trunk Micro-Injection",
+    estimated_cost_usd: 220,
+    typical_cure_rate: 83.5
+  },
+  {
+    disease_id: 17,
+    common_name: "Aphid & Scale Colony Outbreak",
+    pathogen_name: "Aphis gossypii",
+    category: "Pest/Insect",
+    severity: "MODERATE",
+    lethal: false,
+    standard_treatment: "Horticultural Mineral Oil Canopy Fogging",
+    estimated_cost_usd: 60,
+    typical_cure_rate: 96.0
+  },
+  {
+    disease_id: 18,
+    common_name: "Whitefly Foliage Chlorosis",
+    pathogen_name: "Bemisia tabaci",
+    category: "Pest/Insect",
+    severity: "MODERATE",
+    lethal: false,
+    standard_treatment: "Beauveria bassiana Bio-Spray",
+    estimated_cost_usd: 55,
+    typical_cure_rate: 93.0
+  },
+  {
+    disease_id: 19,
+    common_name: "Dothiorella Stem Canker",
+    pathogen_name: "Dothiorella gregaria",
+    category: "Fungal",
+    severity: "HIGH",
+    lethal: false,
+    standard_treatment: "Bark Debridement & Copper Barrier Sealant",
+    estimated_cost_usd: 135,
+    typical_cure_rate: 86.8
+  },
+  {
+    disease_id: 20,
+    common_name: "Iron Chlorosis Deficiency",
+    pathogen_name: "Physiological Nutrient Deficiency",
+    category: "Nutrient",
+    severity: "LOW",
+    lethal: false,
+    standard_treatment: "Soil Aeration & Iron Chelate (Fe-EDDHA) Treatment",
+    estimated_cost_usd: 85,
+    typical_cure_rate: 97.5
   }
+];
+
+export const SPECIES_SEED: SpeciesSeed[] = [
+  { species_id: 1, scientific_name: "Azadirachta indica", common_name: "Neem Tree", typical_lifespan_years: 200, growth_rate: "FAST", foliage_type: "Semi-evergreen" },
+  { species_id: 2, scientific_name: "Ficus benghalensis", common_name: "Heritage Banyan", typical_lifespan_years: 350, growth_rate: "SLOW", foliage_type: "Evergreen" },
+  { species_id: 3, scientific_name: "Ficus religiosa", common_name: "Sacred Peepal", typical_lifespan_years: 300, growth_rate: "MODERATE", foliage_type: "Deciduous" },
+  { species_id: 4, scientific_name: "Jacaranda mimosifolia", common_name: "Blue Jacaranda", typical_lifespan_years: 80, growth_rate: "FAST", foliage_type: "Semi-evergreen" },
+  { species_id: 5, scientific_name: "Delonix regia", common_name: "Royal Gulmohar", typical_lifespan_years: 60, growth_rate: "FAST", foliage_type: "Deciduous" },
+  { species_id: 6, scientific_name: "Tectona grandis", common_name: "Teak Tree", typical_lifespan_years: 120, growth_rate: "MODERATE", foliage_type: "Deciduous" },
+  { species_id: 7, scientific_name: "Samanea saman", common_name: "Rain Tree", typical_lifespan_years: 100, growth_rate: "FAST", foliage_type: "Semi-evergreen" },
+  { species_id: 8, scientific_name: "Mangifera indica", common_name: "Mango Tree", typical_lifespan_years: 150, growth_rate: "MODERATE", foliage_type: "Evergreen" },
+  { species_id: 9, scientific_name: "Peltophorum pterocarpum", common_name: "Yellow Copperpod", typical_lifespan_years: 80, growth_rate: "FAST", foliage_type: "Deciduous" },
+  { species_id: 10, scientific_name: "Madhuca longifolia", common_name: "Mahua Tree", typical_lifespan_years: 100, growth_rate: "SLOW", foliage_type: "Deciduous" },
+  { species_id: 11, scientific_name: "Saraca asoca", common_name: "Sita Ashoka", typical_lifespan_years: 70, growth_rate: "SLOW", foliage_type: "Evergreen" },
+  { species_id: 12, scientific_name: "Grevillea robusta", common_name: "Silver Oak", typical_lifespan_years: 65, growth_rate: "FAST", foliage_type: "Evergreen" },
+  { species_id: 13, scientific_name: "Tabebuia rosea", common_name: "Pink Trumpet Tree", typical_lifespan_years: 75, growth_rate: "FAST", foliage_type: "Deciduous" },
+  { species_id: 14, scientific_name: "Tamarindus indica", common_name: "Tamarind Tree", typical_lifespan_years: 250, growth_rate: "SLOW", foliage_type: "Evergreen" },
+  { species_id: 15, scientific_name: "Syzygium cumini", common_name: "Jamun (Black Plum)", typical_lifespan_years: 100, growth_rate: "MODERATE", foliage_type: "Evergreen" },
+  { species_id: 16, scientific_name: "Erythrina variegata", common_name: "Indian Coral Tree", typical_lifespan_years: 50, growth_rate: "FAST", foliage_type: "Deciduous" },
+  { species_id: 17, scientific_name: "Millettia pinnata", common_name: "Pongamia (Karanja)", typical_lifespan_years: 90, growth_rate: "FAST", foliage_type: "Semi-evergreen" },
+  { species_id: 18, scientific_name: "Lagerstroemia speciosa", common_name: "Pride of India", typical_lifespan_years: 60, growth_rate: "MODERATE", foliage_type: "Deciduous" },
+  { species_id: 19, scientific_name: "Terminalia catappa", common_name: "Indian Almond", typical_lifespan_years: 70, growth_rate: "FAST", foliage_type: "Deciduous" },
+  { species_id: 20, scientific_name: "Neolamarckia cadamba", common_name: "Kadamba Tree", typical_lifespan_years: 50, growth_rate: "FAST", foliage_type: "Evergreen" },
+  { species_id: 21, scientific_name: "Cassia fistula", common_name: "Golden Shower", typical_lifespan_years: 60, growth_rate: "MODERATE", foliage_type: "Deciduous" },
+  { species_id: 22, scientific_name: "Couroupita guianensis", common_name: "Cannonball Tree", typical_lifespan_years: 90, growth_rate: "MODERATE", foliage_type: "Evergreen" },
+  { species_id: 23, scientific_name: "Bombax ceiba", common_name: "Red Silk Cotton", typical_lifespan_years: 100, growth_rate: "FAST", foliage_type: "Deciduous" },
+  { species_id: 24, scientific_name: "Terminalia arjuna", common_name: "Arjuna Tree", typical_lifespan_years: 150, growth_rate: "MODERATE", foliage_type: "Semi-evergreen" },
+  { species_id: 25, scientific_name: "Butea monosperma", common_name: "Flame of the Forest", typical_lifespan_years: 80, growth_rate: "SLOW", foliage_type: "Deciduous" }
+];
+
+export const TREATMENTS_SEED: TreatmentSeed[] = [
+  { treatment_id: 1, name: "Propiconazole Root Drench + Crown Weight Reduction", treatment_type: "chemical", standard_cost: 180.0, typical_duration_days: 30 },
+  { treatment_id: 2, name: "Oxytetracycline Trunk Micro-Injection + Bark Debridement", treatment_type: "chemical", standard_cost: 120.0, typical_duration_days: 21 },
+  { treatment_id: 3, name: "Emamectin Benzoate Trunk Micro-Injection", treatment_type: "chemical", standard_cost: 240.0, typical_duration_days: 14 },
+  { treatment_id: 4, name: "Potassium Bicarbonate Eco-Fungicide Foliar Spray", treatment_type: "biological", standard_cost: 45.0, typical_duration_days: 10 },
+  { treatment_id: 5, name: "Copper Hydroxide Micronized Spray + Canopy Airflow Thinning", treatment_type: "chemical", standard_cost: 75.0, typical_duration_days: 14 },
+  { treatment_id: 6, name: "Horticultural Mineral Oil + Beauveria bassiana Bio-Inoculant", treatment_type: "biological", standard_cost: 55.0, typical_duration_days: 12 },
+  { treatment_id: 7, name: "Trichoderma harzianum Antagonist Root Bio-Barrier Drench", treatment_type: "biological", standard_cost: 95.0, typical_duration_days: 45 },
+  { treatment_id: 8, name: "Selective Lateral Scaffold Debridement & Sanitized Pruning", treatment_type: "pruning", standard_cost: 150.0, typical_duration_days: 7 },
+  { treatment_id: 9, name: "Soil Aeration & Slow-Release Iron Chelate (Fe-EDDHA) Treatment", treatment_type: "soil_amendment", standard_cost: 85.0, typical_duration_days: 60 },
+  { treatment_id: 10, name: "Macro-Infusion Systemic Fungicide Injection", treatment_type: "chemical", standard_cost: 290.0, typical_duration_days: 28 },
+  { treatment_id: 11, name: "Bacillus subtilis Bio-Fungicide Canopy Fogging", treatment_type: "biological", standard_cost: 65.0, typical_duration_days: 14 },
+  { treatment_id: 12, name: "Hazardous Deadwood Removal & End-Weight Relieving Cuts", treatment_type: "pruning", standard_cost: 210.0, typical_duration_days: 5 },
+  { treatment_id: 13, name: "Deep Root Hydraulic Micro-Nutrient Compost Tea Injection", treatment_type: "soil_amendment", standard_cost: 115.0, typical_duration_days: 30 },
+  { treatment_id: 14, name: "Nemasys Beneficial Entomopathogenic Nematode Soil Application", treatment_type: "biological", standard_cost: 130.0, typical_duration_days: 21 },
+  { treatment_id: 15, name: "Root Flare Excavation & Girdling Root Surgical Amputation", treatment_type: "pruning", standard_cost: 175.0, typical_duration_days: 14 }
+];
+
+export const SUSCEPTIBILITY_SEED: SusceptibilitySeed[] = [
+  { species_id: 2, disease_id: 1, vulnerability_index: "HIGH" },
+  { species_id: 2, disease_id: 2, vulnerability_index: "MODERATE" },
+  { species_id: 2, disease_id: 11, vulnerability_index: "HIGH" },
+  { species_id: 3, disease_id: 1, vulnerability_index: "HIGH" },
+  { species_id: 3, disease_id: 4, vulnerability_index: "LOW" },
+  { species_id: 3, disease_id: 13, vulnerability_index: "MODERATE" },
+  { species_id: 5, disease_id: 1, vulnerability_index: "HIGH" },
+  { species_id: 5, disease_id: 11, vulnerability_index: "HIGH" },
+  { species_id: 5, disease_id: 16, vulnerability_index: "HIGH" },
+  { species_id: 4, disease_id: 5, vulnerability_index: "HIGH" },
+  { species_id: 4, disease_id: 7, vulnerability_index: "MODERATE" },
+  { species_id: 4, disease_id: 18, vulnerability_index: "HIGH" },
+  { species_id: 6, disease_id: 9, vulnerability_index: "HIGH" },
+  { species_id: 6, disease_id: 16, vulnerability_index: "HIGH" },
+  { species_id: 7, disease_id: 1, vulnerability_index: "HIGH" },
+  { species_id: 7, disease_id: 2, vulnerability_index: "HIGH" },
+  { species_id: 8, disease_id: 5, vulnerability_index: "HIGH" },
+  { species_id: 8, disease_id: 4, vulnerability_index: "HIGH" },
+  { species_id: 9, disease_id: 1, vulnerability_index: "HIGH" },
+  { species_id: 1, disease_id: 4, vulnerability_index: "LOW" },
+  { species_id: 1, disease_id: 8, vulnerability_index: "LOW" },
+  { species_id: 1, disease_id: 10, vulnerability_index: "LOW" }
 ];
 
 // -------------------------------------------------------------

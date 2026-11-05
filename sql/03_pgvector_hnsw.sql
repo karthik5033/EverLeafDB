@@ -192,3 +192,4 @@ $$ LANGUAGE plpgsql STABLE;
 -- WHERE ST_DWithin(t.location_geom::geography, ST_SetSRID(ST_Point(77.5946, 12.9716), 4326)::geography, 1000)
 -- ORDER BY img.image_embedding <=> $1
 -- LIMIT 5;
+

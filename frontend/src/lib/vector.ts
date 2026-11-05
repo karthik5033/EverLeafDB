@@ -137,3 +137,4 @@ export function rankCandidatesByVector<T extends { embedding: Vector512 }>(
     .sort((a, b) => a.cosine_distance - b.cosine_distance)
     .slice(0, topK);
 }
+

@@ -163,3 +163,4 @@ BEGIN
     LIMIT p_top_k;
 END;
 $$ LANGUAGE plpgsql STABLE;
+
