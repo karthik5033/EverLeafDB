@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Inspection, DISEASES, ALERTS, Alert } from "@/lib/db";
 import { createInspectionSchema, inspectionQuerySchema } from "@/lib/validations/inspection";
+import { recordAuditTrail, triggerUpdateLastInspected } from "@/lib/audit";
 
 // Runtime inspections storage
 const INSPECTIONS: Inspection[] = [
@@ -112,6 +113,29 @@ export async function POST(request: NextRequest) {
 
     INSPECTIONS.unshift(newInspection);
 
+    // Phase 13 Trigger 1: Synchronize trees.last_inspected_at via trg_fn_update_last_inspected()
+    const triggerSyncResult = triggerUpdateLastInspected(
+      newInspection.tree_id,
+      newInspection.inspected_at,
+      score,
+      newInspection.inspector_id
+    );
+
+    // Phase 13 Trigger 2: Capture inspection insertion into audit_log via trg_fn_audit_trail()
+    const inspectionAudit = recordAuditTrail({
+      user_id: newInspection.inspector_id,
+      action: "INSERT",
+      table_name: "inspections",
+      record_id: newInspection.inspection_id,
+      new_values: {
+        inspection_id: newInspection.inspection_id,
+        tree_id: newInspection.tree_id,
+        condition_score: score,
+        organ: newInspection.organ,
+        symptom_notes: newInspection.symptom_notes
+      }
+    });
+
     return NextResponse.json(
       {
         success: true,
@@ -124,6 +148,20 @@ export async function POST(request: NextRequest) {
           threshold: 0.82,
           action: triggerActivated ? "INSERT INTO alerts (severity='CRITICAL')" : "NO_ACTION"
         },
+        triggers_executed: [
+          {
+            name: "trg_fn_update_last_inspected()",
+            target_tree: newInspection.tree_id,
+            new_last_inspected_at: newInspection.inspected_at,
+            status_updated: triggerSyncResult.tree?.health_status
+          },
+          {
+            name: "trg_fn_audit_trail()",
+            table_name: "inspections",
+            log_id: inspectionAudit.log_id,
+            action: "INSERT"
+          }
+        ],
         sql_executed: `INSERT INTO inspections (inspection_id, tree_id, condition_score, organ, notes) VALUES ('${inspectionId}', '${newInspection.tree_id}', ${score}, '${newInspection.organ}', '${newInspection.symptom_notes}');`,
         inspection: newInspection,
         alert: generatedAlert

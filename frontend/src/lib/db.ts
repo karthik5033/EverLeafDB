@@ -12,7 +12,20 @@ export interface Tree {
   longitude: number;
   height_m: number;
   dbh_cm: number;
-  health_status: "HEALTHY" | "MONITOR" | "DISEASED" | "CRITICAL" | "DEAD";
+  health_status:
+    | "HEALTHY"
+    | "MONITOR"
+    | "DISEASED"
+    | "CRITICAL"
+    | "DEAD"
+    | "UNDER_TREATMENT"
+    | "healthy"
+    | "monitor"
+    | "diseased"
+    | "critical"
+    | "under_treatment"
+    | "dead"
+    | "removed";
   condition_score: number; // 1-5
   planted_at: string;
   last_inspected_at: string;
