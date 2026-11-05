@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { ALERTS, WORK_ORDERS, WorkOrder } from "@/lib/db";
+import { alertQuerySchema, updateAlertStatusSchema } from "@/lib/validations/alert";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);

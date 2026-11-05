@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { TREES, WARDS, calculateDistanceMeters, pointInPolygon, Tree } from "@/lib/db";
+import { createTreeSchema, treeQuerySchema } from "@/lib/validations/tree";
 
 // In-memory runtime state
 let currentTrees: Tree[] = [...TREES];

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Inspection, DISEASES, ALERTS, Alert } from "@/lib/db";
+import { createInspectionSchema, inspectionQuerySchema } from "@/lib/validations/inspection";
 
 // Runtime inspections storage
 const INSPECTIONS: Inspection[] = [

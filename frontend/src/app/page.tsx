@@ -1848,29 +1848,33 @@ export default function Home() {
                 <div
                   key={tier.name}
                   onClick={() => setActiveTier(idx)}
-                  className={`p-5 rounded-xl border relative min-w-[200px] cursor-pointer transition-all duration-200 select-none flex flex-col justify-between ${
+                  className={`p-4 md:p-5 rounded-xl border relative min-w-[200px] cursor-pointer transition-all duration-200 select-none flex flex-col justify-between ${
                     isSelected
                       ? "border-emerald-800 bg-emerald-50/40 shadow-sm ring-1 ring-emerald-800/20 scale-[1.01]"
                       : "border-gray-200 bg-white hover:border-emerald-300 hover:bg-gray-50/60 opacity-80 hover:opacity-100"
                   }`}
                 >
-                  {tier.recommended && (
-                    <div className="absolute top-0 right-4 -translate-y-1/2 bg-emerald-100 text-emerald-900 border border-emerald-300 text-[10px] font-bold px-2.5 py-0.5 rounded-full shadow-xs">
-                      Recommended
-                    </div>
-                  )}
                   <div>
-                    <h3 className="font-bold text-base text-gray-950 flex items-center justify-between">
-                      <span>{tier.name}</span>
-                      {isSelected ? (
-                        <span className="relative flex h-2 w-2">
-                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                          <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-700"></span>
-                        </span>
-                      ) : (
-                        <span className="w-2 h-2 rounded-full bg-gray-300"></span>
-                      )}
-                    </h3>
+                    <div className="flex items-center justify-between mb-1">
+                      <h3 className="font-bold text-base text-gray-950 flex items-center gap-1.5">
+                        <span>{tier.name}</span>
+                      </h3>
+                      <div className="flex items-center gap-2">
+                        {tier.recommended && (
+                          <span className="bg-emerald-100 text-emerald-900 border border-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded-full shadow-xs">
+                            Recommended
+                          </span>
+                        )}
+                        {isSelected ? (
+                          <span className="relative flex h-2 w-2">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-700"></span>
+                          </span>
+                        ) : (
+                          <span className="w-2 h-2 rounded-full bg-gray-300"></span>
+                        )}
+                      </div>
+                    </div>
                     <p className="text-gray-500 text-xs mt-0.5">{tier.tagline}</p>
                   </div>
                   <div className="text-sm font-extrabold text-gray-950 mt-3 pt-2 border-t border-gray-100 flex items-center justify-between">
