@@ -22,7 +22,8 @@ import {
   User,
   ShieldCheck,
   Stethoscope,
-  Building2
+  Building2,
+  Flame
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -91,6 +92,13 @@ const NAV_ITEMS: NavItem[] = [
     icon: Building2,
     badge: "Hybrid 2",
     badgeVariant: "emerald"
+  },
+  {
+    title: "Contagion Clusters (Q3)",
+    href: "/queries/contagion-clusters",
+    icon: Flame,
+    badge: "Hybrid 3",
+    badgeVariant: "critical"
   },
   {
     title: "Outbreak Alerts",
