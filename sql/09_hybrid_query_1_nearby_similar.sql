@@ -85,3 +85,4 @@ $$ LANGUAGE sql STABLE;
 -- SELECT * FROM fn_query1_nearby_visually_similar(
 --     12.9716, 77.5946, 1, '[...512-d float array...]'::vector, 500.0, 5
 -- );
+

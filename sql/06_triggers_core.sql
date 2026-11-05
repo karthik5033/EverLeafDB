@@ -144,3 +144,4 @@ FROM (
     WHERE NOT (old_val ? key) OR old_val -> key <> value
 ) diffs;
 $$ LANGUAGE sql IMMUTABLE;
+

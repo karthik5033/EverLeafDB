@@ -89,3 +89,4 @@ GROUP BY
     rec.outcome_status,
     rec.duration_days,
     rec.actual_cost;
+

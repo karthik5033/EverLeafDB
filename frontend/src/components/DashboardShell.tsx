@@ -23,7 +23,8 @@ import {
   ShieldCheck,
   Stethoscope,
   Building2,
-  Flame
+  Flame,
+  Clock
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -105,6 +106,13 @@ const NAV_ITEMS: NavItem[] = [
     href: "/analytics/treatment-efficacy",
     icon: BarChart3,
     badge: "Hybrid 4",
+    badgeVariant: "emerald"
+  },
+  {
+    title: "Canopy Health (Q5/6)",
+    href: "/analytics/canopy-health",
+    icon: Clock,
+    badge: "Hybrid 5/6",
     badgeVariant: "emerald"
   },
   {

@@ -713,6 +713,78 @@ export const TREES: Tree[] = [
     planted_at: "1945-02-18",
     last_inspected_at: "2026-11-04T20:10:00Z",
     active_alerts_count: 1
+  },
+  {
+    tree_id: "tree_5011",
+    tag_number: "TREE-5011",
+    species_id: 1,
+    species_common: "Neem Tree",
+    species_scientific: "Azadirachta indica",
+    ward_id: "ward_03",
+    ward_name: "Cubbon Park Heritage",
+    latitude: 12.9730,
+    longitude: 77.5960,
+    height_m: 13.5,
+    dbh_cm: 58.0,
+    health_status: "MONITOR",
+    condition_score: 3,
+    planted_at: "1995-07-22",
+    last_inspected_at: "2025-11-10T10:00:00Z", // ~360 days overdue
+    active_alerts_count: 0
+  },
+  {
+    tree_id: "tree_5012",
+    tag_number: "TREE-5012",
+    species_id: 3,
+    species_common: "Sacred Peepal",
+    species_scientific: "Ficus religiosa",
+    ward_id: "ward_02",
+    ward_name: "Lalbagh Botanical Zone",
+    latitude: 12.9520,
+    longitude: 77.5860,
+    height_m: 21.0,
+    dbh_cm: 140.0,
+    health_status: "DISEASED",
+    condition_score: 2,
+    planted_at: "1960-03-10",
+    last_inspected_at: "2025-08-15T09:00:00Z", // ~447 days overdue
+    active_alerts_count: 0
+  },
+  {
+    tree_id: "tree_5013",
+    tag_number: "TREE-5013",
+    species_id: 4,
+    species_common: "Royal Gulmohar",
+    species_scientific: "Delonix regia",
+    ward_id: "ward_14",
+    ward_name: "Malleswaram Canopy Sector",
+    latitude: 13.0040,
+    longitude: 77.5720,
+    height_m: 11.2,
+    dbh_cm: 45.0,
+    health_status: "MONITOR",
+    condition_score: 3,
+    planted_at: "2005-09-14",
+    last_inspected_at: "2026-03-20T14:00:00Z", // ~230 days overdue
+    active_alerts_count: 0
+  },
+  {
+    tree_id: "tree_5014",
+    tag_number: "TREE-5014",
+    species_id: 2,
+    species_common: "Heritage Banyan",
+    species_scientific: "Ficus benghalensis",
+    ward_id: "ward_03",
+    ward_name: "Cubbon Park Heritage",
+    latitude: 12.9710,
+    longitude: 77.5940,
+    height_m: 24.5,
+    dbh_cm: 195.0,
+    health_status: "HEALTHY",
+    condition_score: 4,
+    planted_at: "1938-11-05",
+    last_inspected_at: "2026-04-12T11:30:00Z", // ~207 days overdue
+    active_alerts_count: 0
   }
 ];
 

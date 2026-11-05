@@ -106,3 +106,4 @@ GROUP BY
     dis.disease_id,
     dis.name,
     trt.name;
+

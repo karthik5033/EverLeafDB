@@ -112,3 +112,4 @@ SELECT
 FROM alerts a
 JOIN trees t ON t.tree_id = a.tree_id
 WHERE a.severity = 'CRITICAL' AND a.status = 'PENDING';
+

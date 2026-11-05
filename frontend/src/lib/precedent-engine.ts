@@ -186,3 +186,4 @@ export function searchPrecedents(
 
   return scoredCases.slice(0, limit);
 }
+
