@@ -21,7 +21,8 @@ import {
   Sparkles,
   User,
   ShieldCheck,
-  Stethoscope
+  Stethoscope,
+  Building2
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -82,6 +83,13 @@ const NAV_ITEMS: NavItem[] = [
     href: "/queries/nearby-similar",
     icon: Compass,
     badge: "Hybrid 1",
+    badgeVariant: "emerald"
+  },
+  {
+    title: "Ward Disease Search (Q2)",
+    href: "/queries/ward-disease-search",
+    icon: Building2,
+    badge: "Hybrid 2",
     badgeVariant: "emerald"
   },
   {
