@@ -75,3 +75,4 @@ console.assert(Math.abs(textNorm - 1.0) < 0.001, "Text embedding must be unit no
 console.log("   ✓ Cross-modal text embedding verified.\n");
 
 console.log("All Multimodal Vision Pipeline & Embedding Worker tests passed successfully! ✓");
+
