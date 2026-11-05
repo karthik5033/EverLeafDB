@@ -227,3 +227,4 @@ $$ LANGUAGE plpgsql STABLE;
 -- FROM trees 
 -- ORDER BY location_geom <-> ST_SetSRID(ST_Point(77.5946, 12.9716), 4326)
 -- LIMIT 10;
+

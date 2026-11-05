@@ -201,3 +201,4 @@ BEGIN
     GROUP BY w.ward_id, w.name, w.area_sq_km, w.boundary_geom;
 END;
 $$ LANGUAGE plpgsql STABLE;
+

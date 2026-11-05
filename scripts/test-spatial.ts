@@ -82,3 +82,4 @@ console.assert(invalidCheck.isValid === false && invalidCheck.error !== undefine
 console.log("   ✓ chk_tree_within_ward trigger constraint verified.\n");
 
 console.log("All PostGIS Spatial Infrastructure tests passed successfully! ✓");
+
