@@ -1,68 +1,96 @@
 import { NextRequest, NextResponse } from "next/server";
-import { ALERTS, WORK_ORDERS, WorkOrder } from "@/lib/db";
-import { alertQuerySchema, updateAlertStatusSchema } from "@/lib/validations/alert";
+import {
+  getSupervisorTriageQueue,
+  executeSupervisorTriageAction,
+  SupervisorTriageActionParams
+} from "@/lib/triage-engine";
 
 export async function GET(request: NextRequest) {
-  const { searchParams } = new URL(request.url);
-  const status = searchParams.get("status");
-
-  let results = [...ALERTS];
-  if (status) {
-    results = results.filter((a) => a.status === status);
-  }
-
-  return NextResponse.json({
-    success: true,
-    count: results.length,
-    sql_executed: `SELECT * FROM alerts ${status ? `WHERE status = '${status}'` : ""} ORDER BY created_at DESC;`,
-    alerts: results
-  });
-}
-
-// Supervisor Clinical Triage & Stored Procedure Dispatch
-// Calls: sp_confirm_diagnosis_and_dispatch_order()
-export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    const { alert_id, assigned_crew, protocol, priority } = body;
+    const { searchParams } = new URL(request.url);
+    const status = searchParams.get("status") || undefined;
+    const severity = searchParams.get("severity") || undefined;
+    const wardId = searchParams.get("ward_id") || undefined;
 
-    const alert = ALERTS.find((a) => a.alert_id === alert_id);
-    if (!alert) {
-      return NextResponse.json({ success: false, error: "Alert ID not found." }, { status: 404 });
-    }
+    const data = getSupervisorTriageQueue({
+      status,
+      severity,
+      ward_id: wardId
+    });
 
-    // Atomic transaction state transition
-    alert.status = "ACTIONED";
-
-    const newOrder: WorkOrder = {
-      order_id: `WO-${Math.floor(1000 + Math.random() * 9000)}`,
-      tree_id: alert.tree_id,
-      alert_id: alert.alert_id,
-      priority: priority || "EMERGENCY",
-      status: "DISPATCHED",
-      protocol: protocol || "Propiconazole Root Drench + Canopy Weight Reduction",
-      assigned_crew: assigned_crew || "North Emergency Unit A",
-      dispatched_at: new Date().toISOString(),
-      sla_hours: 48,
-      cost_estimate_usd: 180
-    };
-
-    WORK_ORDERS.unshift(newOrder);
+    const sqlExecuted = `
+SELECT * FROM vw_supervisor_triage_queue
+WHERE 1=1
+  ${status && status !== 'ALL' ? `AND alert_status = '${status}'` : ''}
+  ${severity && severity !== 'ALL' ? `AND severity = '${severity}'` : ''}
+  ${wardId && wardId !== 'ALL' ? `AND ward_id = '${wardId}'` : ''}
+ORDER BY
+  CASE severity WHEN 'CRITICAL' THEN 1 WHEN 'HIGH' THEN 2 WHEN 'WARNING' THEN 3 ELSE 4 END ASC,
+  alert_created_at DESC;
+    `.trim();
 
     return NextResponse.json({
       success: true,
-      message: "Atomic stored procedure executed: Diagnosis confirmed & work order dispatched.",
-      acid_transaction: {
-        procedure: "sp_confirm_diagnosis_and_dispatch_order()",
-        locks: "SELECT FOR UPDATE ON alerts (Pessimistic Row Lock)",
-        isolation_level: "REPEATABLE READ",
-        commit_status: "SUCCESS"
-      },
-      sql_executed: `CALL sp_confirm_diagnosis_and_dispatch_order('${alert_id}', 'inspector_04', 1, 1, '${newOrder.assigned_crew}', '${newOrder.priority}', CURRENT_DATE + 2);`,
-      work_order: newOrder
+      count: data.alerts.length,
+      kpis: data.kpis,
+      sql_executed: sqlExecuted,
+      alerts: data.alerts
     });
   } catch (error) {
-    return NextResponse.json({ success: false, error: "Triage execution failed" }, { status: 500 });
+    return NextResponse.json(
+      { success: false, error: "Failed to retrieve supervisor triage queue" },
+      { status: 500 }
+    );
   }
 }
 
+// Supervisor Clinical Triage & Stored Procedure Dispatch
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const {
+      alert_id,
+      action = "CONFIRM_AND_DISPATCH",
+      confirmed_disease_id,
+      confidence_source,
+      treatment_id,
+      protocol,
+      assigned_crew,
+      priority,
+      supervisor_remarks,
+      supervisor_id
+    } = body;
+
+    if (!alert_id) {
+      return NextResponse.json(
+        { success: false, error: "Missing required parameter: alert_id" },
+        { status: 400 }
+      );
+    }
+
+    const actionParams: SupervisorTriageActionParams = {
+      alert_id,
+      action,
+      confirmed_disease_id: confirmed_disease_id ? Number(confirmed_disease_id) : undefined,
+      confidence_source,
+      treatment_id: treatment_id ? Number(treatment_id) : undefined,
+      protocol,
+      assigned_crew,
+      priority,
+      supervisor_remarks,
+      supervisor_id
+    };
+
+    const result = executeSupervisorTriageAction(actionParams);
+
+    return NextResponse.json({
+      ...result,
+      sql_executed: `CALL sp_confirm_diagnosis_and_dispatch_order('${alert_id}', '${supervisor_id || "supervisor_01"}', ${confirmed_disease_id || 1}, ${treatment_id || 1}, '${assigned_crew || "Central Unit"}', '${priority || "EMERGENCY"}', CURRENT_DATE + 2);`
+    });
+  } catch (error: any) {
+    return NextResponse.json(
+      { success: false, error: error.message || "Triage execution failed" },
+      { status: 500 }
+    );
+  }
+}

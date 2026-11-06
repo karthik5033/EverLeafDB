@@ -98,7 +98,7 @@ export interface Alert {
   alert_id: string;
   tree_id: string;
   ward_id: string;
-  severity: "CRITICAL" | "WARNING" | "INFO";
+  severity: "CRITICAL" | "HIGH" | "WARNING" | "MODERATE" | "LOW" | "INFO";
   status: "PENDING" | "ACTIONED" | "DISMISSED";
   detected_disease: string;
   cosine_similarity: number;
@@ -110,7 +110,7 @@ export interface WorkOrder {
   order_id: string;
   tree_id: string;
   alert_id?: string;
-  priority: "EMERGENCY" | "HIGH" | "STANDARD";
+  priority: "EMERGENCY" | "HIGH" | "STANDARD" | "MEDIUM" | "LOW";
   status: "DISPATCHED" | "IN_PROGRESS" | "COMPLETED";
   protocol: string;
   assigned_crew: string;

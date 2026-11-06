@@ -116,10 +116,10 @@ const NAV_ITEMS: NavItem[] = [
     badgeVariant: "emerald"
   },
   {
-    title: "Outbreak Alerts",
+    title: "Supervisor Triage",
     href: "/alerts",
     icon: ShieldAlert,
-    badge: "2 Critical",
+    badge: "Phase 21",
     badgeVariant: "critical"
   },
   {
