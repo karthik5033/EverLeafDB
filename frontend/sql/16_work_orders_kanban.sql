@@ -163,3 +163,4 @@ $$ LANGUAGE plpgsql;
 
 COMMENT ON FUNCTION fn_transition_work_order_status IS
 'Safely transitions work order status, sets closed_at timestamp, and records audit trail.';
+
