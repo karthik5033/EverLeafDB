@@ -1,194 +1,430 @@
 "use client";
 
-import React, { useState } from "react";
-import Navbar from "@/components/Navbar";
+import React, { useState, useEffect } from "react";
 import {
-  User,
   ShieldCheck,
-  Key,
+  User,
   Lock,
-  ArrowRight,
+  Key,
   CheckCircle2,
-  Trees,
+  XCircle,
+  AlertTriangle,
+  Layers,
+  Building2,
+  TreeDeciduous,
+  ArrowRight,
+  RefreshCw,
   Terminal,
-  Sparkles
+  Sparkles,
+  Info
 } from "lucide-react";
-import Link from "next/link";
-
-interface AccountProfile {
-  id: string;
-  role: "FIELD_INSPECTOR" | "MUNICIPAL_SUPERVISOR" | "CHIEF_FORESTER";
-  name: string;
-  title: string;
-  wardScope: string;
-  jwtClaim: Record<string, string>;
-}
-
-const PROFILES: AccountProfile[] = [
-  {
-    id: "inspector_04",
-    role: "FIELD_INSPECTOR",
-    name: "Vikram Mehta",
-    title: "Field Inspector (Ward 03 Cubbon Park)",
-    wardScope: "Ward 03 Only (RLS Isolated)",
-    jwtClaim: {
-      sub: "inspector_04",
-      role: "FIELD_INSPECTOR",
-      ward_id: "ward_03",
-      tenant_isolation: "STRICT_RLS"
-    }
-  },
-  {
-    id: "supervisor_rajesh",
-    role: "MUNICIPAL_SUPERVISOR",
-    name: "Dr. Rajesh Kumar",
-    title: "Municipal Triage Supervisor",
-    wardScope: "All 198 Metropolitan Wards",
-    jwtClaim: {
-      sub: "supervisor_rajesh",
-      role: "MUNICIPAL_SUPERVISOR",
-      ward_id: "*",
-      can_dispatch_orders: "TRUE"
-    }
-  },
-  {
-    id: "dr_ramanathan",
-    role: "CHIEF_FORESTER",
-    name: "Dr. S. Ramanathan",
-    title: "Chief Municipal Forester",
-    wardScope: "State Forestry Board Authority",
-    jwtClaim: {
-      sub: "dr_ramanathan",
-      role: "CHIEF_FORESTER",
-      governance: "STATE_WIDE",
-      audit_access: "FULL"
-    }
-  }
-];
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from "@/components/ui/select";
+import {
+  SystemUser,
+  SessionContext,
+  RlsAuthorizationDecision,
+  SYSTEM_USERS
+} from "@/lib/auth-rbac";
+import { WARDS } from "@/lib/db";
 
 export default function LoginPage() {
-  const [selectedProfile, setSelectedProfile] = useState<AccountProfile>(PROFILES[0]);
-  const [sessionActive, setSessionActive] = useState(false);
+  const [activeSession, setActiveSession] = useState<SessionContext | null>(null);
+  const [allUsers, setAllUsers] = useState<SystemUser[]>(SYSTEM_USERS);
+  const [loading, setLoading] = useState(true);
+  const [switching, setSwitching] = useState(false);
 
-  const handleSignIn = () => {
-    setSessionActive(true);
+  // RLS Sandbox Tester State
+  const [testAction, setTestAction] = useState<"INSERT" | "SELECT" | "UPDATE">("INSERT");
+  const [testResource, setTestResource] = useState<"trees" | "inspections" | "work_orders">("trees");
+  const [testWard, setTestWard] = useState("ward_03");
+  const [rlsDecision, setRlsDecision] = useState<RlsAuthorizationDecision | null>(null);
+  const [evaluating, setEvaluating] = useState(false);
+
+  const fetchSession = async () => {
+    try {
+      setLoading(true);
+      const res = await fetch("/api/auth/session");
+      const data = await res.json();
+      if (data.success) {
+        setActiveSession(data.session);
+        setAllUsers(data.all_users);
+      }
+    } catch (err) {
+      console.error("Failed to fetch session:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchSession();
+  }, []);
+
+  const handleSwitchUser = async (userId: string) => {
+    try {
+      setSwitching(true);
+      const res = await fetch("/api/auth/session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ user_id: userId })
+      });
+      const data = await res.json();
+      if (data.success) {
+        setActiveSession(data.session);
+        // Automatically evaluate RLS for the new active user
+        handleEvaluateRls(data.session.user.user_id);
+      }
+    } catch (err) {
+      console.error("Failed to switch session:", err);
+    } finally {
+      setSwitching(false);
+    }
+  };
+
+  const handleEvaluateRls = async (userId?: string) => {
+    try {
+      setEvaluating(true);
+      const effectiveUserId = userId || activeSession?.user.user_id;
+      const res = await fetch("/api/auth/rls-test", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: testAction,
+          resource: testResource,
+          target_ward: testWard,
+          user_id: effectiveUserId
+        })
+      });
+      const data = await res.json();
+      if (data.success) {
+        setRlsDecision(data.decision);
+      }
+    } catch (err) {
+      console.error("Failed to evaluate RLS:", err);
+    } finally {
+      setEvaluating(false);
+    }
+  };
+
+  // Run initial RLS evaluation on session load
+  useEffect(() => {
+    if (activeSession) {
+      handleEvaluateRls();
+    }
+  }, [activeSession?.user.user_id, testAction, testResource, testWard]);
+
+  const getRoleBadge = (role: string) => {
+    switch (role) {
+      case "admin":
+        return <Badge className="bg-purple-600 text-white text-[10px] uppercase font-mono px-2">ADMIN</Badge>;
+      case "supervisor":
+        return <Badge className="bg-emerald-600 text-white text-[10px] uppercase font-mono px-2">SUPERVISOR</Badge>;
+      case "field_inspector":
+        return <Badge className="bg-blue-600 text-white text-[10px] uppercase font-mono px-2">INSPECTOR</Badge>;
+      default:
+        return <Badge variant="secondary" className="text-[10px] uppercase font-mono px-2">CITIZEN</Badge>;
+    }
   };
 
   return (
-    <div className="min-h-screen bg-[#fafafa] flex flex-col font-sans">
-      <Navbar />
-
-      <main className="flex-1 max-w-[1200px] w-full mx-auto p-4 md:p-8 flex flex-col items-center justify-center">
-        <div className="max-w-2xl w-full bg-white p-6 md:p-8 rounded-2xl border border-gray-200/90 shadow-sm space-y-6">
-          {/* Header */}
-          <div className="text-center space-y-2">
-            <div className="w-10 h-10 bg-black text-white rounded-full flex items-center justify-center mx-auto mb-3">
-              <Trees className="w-5 h-5" />
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-border/40 pb-5">
+        <div>
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400">
+              <ShieldCheck className="h-6 w-6" />
             </div>
-            <h1 className="text-2xl font-extrabold tracking-tight text-gray-950">
-              Inspector Fleet &amp; Municipal Auth Portal
-            </h1>
-            <p className="text-xs text-gray-500 max-w-md mx-auto">
-              Simulates PostgreSQL Row-Level Security (RLS) tenant isolation. Every query automatically restricts records based on cryptographic JWT session claims.
-            </p>
-          </div>
-
-          {/* Profile Quick Selectors */}
-          <div className="space-y-3">
-            <label className="text-xs font-semibold text-gray-700 block">Select Demo Inspector / Officer Role:</label>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-              {PROFILES.map((prof) => {
-                const isSelected = selectedProfile.id === prof.id;
-                return (
-                  <div
-                    key={prof.id}
-                    onClick={() => {
-                      setSelectedProfile(prof);
-                      setSessionActive(false);
-                    }}
-                    className={`p-3.5 rounded-xl border text-left cursor-pointer transition-all ${
-                      isSelected
-                        ? "bg-emerald-50/70 border-emerald-300 ring-2 ring-emerald-300/40 shadow-xs"
-                        : "bg-white border-gray-200 hover:border-gray-300 opacity-80 hover:opacity-100"
-                    }`}
-                  >
-                    <div className="flex items-center justify-between mb-1">
-                      <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-gray-100 font-bold text-gray-700">
-                        {prof.role === "FIELD_INSPECTOR" ? "INSPECTOR" : prof.role === "MUNICIPAL_SUPERVISOR" ? "SUPERVISOR" : "CHIEF"}
-                      </span>
-                      {isSelected && <span className="w-2 h-2 rounded-full bg-emerald-600"></span>}
-                    </div>
-                    <div className="font-bold text-xs text-gray-950 mt-1">{prof.name}</div>
-                    <div className="text-[10px] text-gray-500 mt-0.5">{prof.wardScope}</div>
-                  </div>
-                );
-              })}
+            <div>
+              <h1 className="text-2xl font-bold tracking-tight text-foreground">
+                Municipal Identity, RBAC & Row-Level Security (RLS)
+              </h1>
+              <p className="text-sm text-muted-foreground">
+                Phase 26: Role-based access control and tenant isolation sandbox simulating PostgreSQL RLS policies across 4 municipal authorization tiers.
+              </p>
             </div>
-          </div>
-
-          {/* Active Session & RLS Token Preview */}
-          <div className="p-4 bg-gray-50 border border-gray-200/90 rounded-xl space-y-3 font-mono text-xs">
-            <div className="flex items-center justify-between text-gray-500 text-[10px]">
-              <span className="flex items-center gap-1.5 font-bold text-gray-800">
-                <Lock className="w-3.5 h-3.5 text-emerald-700" />
-                Simulated JWT Session Token
-              </span>
-              <span className="text-emerald-800 font-bold">HMAC-SHA256</span>
-            </div>
-
-            <pre className="p-3 bg-white border border-gray-200 rounded-lg text-[10px] text-gray-800 leading-relaxed overflow-x-auto">
-              {JSON.stringify(selectedProfile.jwtClaim, null, 2)}
-            </pre>
-
-            <div className="text-[10px] text-gray-500 leading-relaxed">
-              <strong className="text-gray-900">Enforced Database Policy:</strong>
-              <div className="mt-1 p-2 bg-emerald-50 text-emerald-950 rounded border border-emerald-200/80">
-                CREATE POLICY tree_ward_isolation_policy ON trees FOR ALL TO inspector_role USING (ward_id = current_setting(&apos;jwt.claims.ward_id&apos;));
-              </div>
-            </div>
-          </div>
-
-          {/* Action Button */}
-          <div>
-            {!sessionActive ? (
-              <button
-                onClick={handleSignIn}
-                className="w-full py-2.5 bg-[#111111] hover:bg-black text-white text-xs font-semibold rounded-lg shadow-sm flex items-center justify-center gap-2 transition-all"
-              >
-                Sign In as {selectedProfile.name} <ArrowRight className="w-4 h-4" />
-              </button>
-            ) : (
-              <div className="space-y-3 animate-in fade-in">
-                <div className="p-3 bg-emerald-50 border border-emerald-300 rounded-lg flex items-center justify-between text-xs text-emerald-950">
-                  <div className="flex items-center gap-2 font-medium">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-700" />
-                    Session Active: Authenticated as {selectedProfile.id}
-                  </div>
-                  <span className="font-mono text-[10px] bg-emerald-100 text-emerald-900 px-2 py-0.5 rounded font-bold">
-                    RLS Isolated
-                  </span>
-                </div>
-
-                <div className="grid grid-cols-2 gap-3">
-                  <Link
-                    href="/map"
-                    className="p-2.5 bg-white border border-gray-200 hover:border-emerald-300 rounded-lg text-center text-xs font-semibold text-gray-900 hover:bg-gray-50 transition-colors flex items-center justify-center gap-2"
-                  >
-                    Open Spatial Map
-                  </Link>
-                  <Link
-                    href="/console"
-                    className="p-2.5 bg-black text-white hover:bg-gray-800 rounded-lg text-center text-xs font-semibold transition-colors flex items-center justify-center gap-2 shadow-sm"
-                  >
-                    Open SQL Console <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
-                  </Link>
-                </div>
-              </div>
-            )}
           </div>
         </div>
-      </main>
+
+        {/* Status Pill */}
+        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-300">
+            <Lock className="h-3.5 w-3.5 text-emerald-400" />
+            <span className="font-mono text-emerald-400">ALTER TABLE ... ENABLE RLS</span>
+            <span className="text-slate-500">|</span>
+            <span>Tenant Ward Isolation</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Active Session Identity Card */}
+      {activeSession && (
+        <Card className="border-emerald-500/40 bg-gradient-to-r from-emerald-500/5 via-card to-card shadow-sm">
+          <CardHeader className="pb-3">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-full bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-500 font-bold text-lg">
+                  {activeSession.user.name.charAt(0)}
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <CardTitle className="text-lg font-bold text-foreground">
+                      {activeSession.user.name}
+                    </CardTitle>
+                    {getRoleBadge(activeSession.user.role)}
+                  </div>
+                  <CardDescription className="text-xs">
+                    {activeSession.user.title} • {activeSession.user.email}
+                  </CardDescription>
+                </div>
+              </div>
+
+              <div className="text-right font-mono text-xs bg-background/80 p-2.5 rounded-lg border border-border/40">
+                <span className="text-muted-foreground block text-[10px]">AUTHORIZED JURISDICTION:</span>
+                <span className="font-bold text-emerald-500">
+                  {activeSession.user.assigned_ward_name}
+                </span>
+              </div>
+            </div>
+          </CardHeader>
+
+          <CardContent className="pt-0">
+            <div className="bg-slate-950 p-3 rounded-lg border border-slate-800 font-mono text-[11px] text-slate-300 space-y-1">
+              <div className="text-muted-foreground text-[10px]">POSTGRESQL SESSION CONTEXT INJECTION (SET LOCAL):</div>
+              <div className="text-emerald-400">{activeSession.sql_session_context.set_user_id}</div>
+              <div className="text-emerald-400">{activeSession.sql_session_context.set_user_role}</div>
+              <div className="text-emerald-400">{activeSession.sql_session_context.set_user_ward}</div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Role Switcher Persona Cards */}
+      <div className="space-y-3">
+        <div className="flex items-center justify-between">
+          <h3 className="text-sm font-semibold text-foreground flex items-center gap-2">
+            <User className="h-4 w-4 text-emerald-500" />
+            Switch Active User Persona (Test 4 RBAC Tiers)
+          </h3>
+          <span className="text-xs text-muted-foreground">Select user to test permissions</span>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+          {allUsers.map((user) => {
+            const isSelected = activeSession?.user.user_id === user.user_id;
+
+            return (
+              <div
+                key={user.user_id}
+                onClick={() => handleSwitchUser(user.user_id)}
+                className={`p-3.5 rounded-xl border cursor-pointer transition-all flex flex-col justify-between ${
+                  isSelected
+                    ? "bg-emerald-500/10 border-emerald-500 shadow-sm ring-1 ring-emerald-500/30"
+                    : "bg-card/70 hover:bg-card border-border/50 hover:border-border"
+                }`}
+              >
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    {getRoleBadge(user.role)}
+                    {isSelected && (
+                      <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+                    )}
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-bold text-foreground leading-snug">
+                      {user.name}
+                    </h4>
+                    <p className="text-[11px] text-muted-foreground line-clamp-1 mt-0.5">
+                      {user.title}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="mt-3 pt-2 border-t border-border/30 text-[10px] font-mono text-muted-foreground">
+                  <span className="text-foreground font-semibold block">Scope:</span>
+                  <span className="truncate block">{user.assigned_ward_name}</span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Interactive RLS Tenant Isolation Sandbox */}
+      <Card className="border-border/60 shadow-sm">
+        <CardHeader className="bg-muted/30 border-b border-border/40 py-3.5">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Terminal className="h-4 w-4 text-emerald-500" />
+              <CardTitle className="text-base font-semibold">
+                Interactive PostgreSQL Row-Level Security (RLS) Sandbox
+              </CardTitle>
+            </div>
+            <Badge variant="outline" className="text-xs font-mono bg-background">
+              Simulating PostGIS Multi-Tenant Ward Isolation
+            </Badge>
+          </div>
+          <CardDescription className="text-xs">
+            Test whether the active user persona is granted or denied permission to perform operations in specific municipal wards.
+          </CardDescription>
+        </CardHeader>
+
+        <CardContent className="p-5 space-y-5">
+          {/* Controls Bar */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {/* Action */}
+            <div className="space-y-1.5">
+              <label className="text-xs font-semibold text-foreground">
+                Database Operation (Action)
+              </label>
+              <Select
+                value={testAction}
+                onValueChange={(val: any) => setTestAction(val)}
+              >
+                <SelectTrigger className="text-xs bg-background">
+                  <SelectValue placeholder="Select Action" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="INSERT" className="text-xs">
+                    INSERT (Register New Tree / Submit Inspection)
+                  </SelectItem>
+                  <SelectItem value="SELECT" className="text-xs">
+                    SELECT (Query Canopy Records)
+                  </SelectItem>
+                  <SelectItem value="UPDATE" className="text-xs">
+                    UPDATE (Modify Condition / Triage)
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Resource */}
+            <div className="space-y-1.5">
+              <label className="text-xs font-semibold text-foreground">
+                Target Relational Table
+              </label>
+              <Select
+                value={testResource}
+                onValueChange={(val: any) => setTestResource(val)}
+              >
+                <SelectTrigger className="text-xs bg-background">
+                  <SelectValue placeholder="Select Table" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="trees" className="text-xs">
+                    trees (Urban Forest Registry)
+                  </SelectItem>
+                  <SelectItem value="inspections" className="text-xs">
+                    inspections (Clinical Transects)
+                  </SelectItem>
+                  <SelectItem value="work_orders" className="text-xs">
+                    work_orders (Crew Task Allocations)
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Target Ward */}
+            <div className="space-y-1.5">
+              <label className="text-xs font-semibold text-foreground">
+                Target Municipal Ward
+              </label>
+              <Select
+                value={testWard}
+                onValueChange={(val) => setTestWard(val)}
+              >
+                <SelectTrigger className="text-xs bg-background">
+                  <SelectValue placeholder="Select Ward" />
+                </SelectTrigger>
+                <SelectContent>
+                  {WARDS.map((w) => (
+                    <SelectItem key={w.ward_id} value={w.ward_id} className="text-xs">
+                      {w.name} ({w.ward_id})
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          {/* Evaluation Result Panel */}
+          {rlsDecision && (
+            <div
+              className={`p-4 rounded-xl border ${
+                rlsDecision.is_authorized
+                  ? "bg-emerald-500/10 border-emerald-500/40 text-emerald-950 dark:text-emerald-100"
+                  : "bg-red-500/10 border-red-500/40 text-red-950 dark:text-red-100"
+              }`}
+            >
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
+                <div className="flex items-center gap-2.5">
+                  {rlsDecision.is_authorized ? (
+                    <CheckCircle2 className="h-6 w-6 text-emerald-500 shrink-0" />
+                  ) : (
+                    <XCircle className="h-6 w-6 text-red-500 shrink-0" />
+                  )}
+                  <div>
+                    <h4 className="text-sm font-bold tracking-tight">
+                      {rlsDecision.is_authorized
+                        ? "RLS POLICY PERMITTED: ACCESS GRANTED"
+                        : "RLS SECURITY VIOLATION: ACCESS DENIED"}
+                    </h4>
+                    <p className="text-xs opacity-90 mt-0.5">
+                      {rlsDecision.reason}
+                    </p>
+                  </div>
+                </div>
+
+                <Badge
+                  className={`text-xs font-mono uppercase ${
+                    rlsDecision.is_authorized
+                      ? "bg-emerald-600 text-white"
+                      : "bg-red-600 text-white"
+                  }`}
+                >
+                  {rlsDecision.is_authorized ? "AUTHORIZED" : "ISOLATION DENIED"}
+                </Badge>
+              </div>
+
+              <div className="mt-3.5 pt-3 border-t border-current/20 grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-mono">
+                <div>
+                  <span className="opacity-70">Enforced Policy: </span>
+                  <span className="font-semibold">{rlsDecision.policy_enforced}</span>
+                </div>
+                <div>
+                  <span className="opacity-70">Evaluated Scope: </span>
+                  <span>
+                    Role: {rlsDecision.user_role} | User Ward: {rlsDecision.user_ward || "NONE (CITY-WIDE)"} | Target Ward: {rlsDecision.target_ward}
+                  </span>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Executed SQL Statement */}
+          {rlsDecision && (
+            <div className="space-y-1.5">
+              <span className="text-xs font-semibold text-muted-foreground flex items-center gap-1.5">
+                <Terminal className="h-3.5 w-3.5 text-emerald-500" />
+                PostgreSQL SQL Session Injection Statement:
+              </span>
+              <pre className="bg-slate-950 p-3 rounded-lg border border-slate-800 text-[11px] font-mono text-emerald-400 overflow-x-auto">
+                {rlsDecision.sql_session_stmt}
+                {"\n"}-- Attempting {testAction} ON {testResource} WHERE ward_id = '{testWard}';
+              </pre>
+            </div>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 }
-

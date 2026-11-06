@@ -34,3 +34,4 @@ SELECT * FROM mv_ward_health_summary ORDER BY health_index_pct ASC;
     );
   }
 }
+

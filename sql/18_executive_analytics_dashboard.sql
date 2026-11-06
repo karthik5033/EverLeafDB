@@ -162,3 +162,4 @@ $$ LANGUAGE plpgsql STABLE;
 
 COMMENT ON FUNCTION fn_generate_executive_csv_export IS
 'Generates formatted municipal summary rows for automated PDF/CSV report exports.';
+
