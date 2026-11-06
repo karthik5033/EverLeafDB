@@ -207,3 +207,4 @@ $$ LANGUAGE plpgsql STABLE;
 
 COMMENT ON FUNCTION fn_benchmark_mv_vs_live_query IS
 'Measures performance improvement of materialized view vs unindexed live relational aggregation.';
+

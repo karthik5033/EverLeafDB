@@ -230,3 +230,4 @@ export function benchmarkMaterializedViewVsLive(iterations: number = 30): WardHe
     meets_5ms_target: avgMvMs < 5.0
   };
 }
+

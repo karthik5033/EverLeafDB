@@ -54,3 +54,4 @@ ORDER BY health_index_pct ASC;
     );
   }
 }
+
