@@ -77,3 +77,4 @@ CALL sp_confirm_diagnosis_and_dispatch_order(
     );
   }
 }
+

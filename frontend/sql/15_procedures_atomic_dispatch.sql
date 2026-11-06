@@ -194,3 +194,4 @@ $$;
 
 COMMENT ON PROCEDURE sp_confirm_diagnosis_and_dispatch_order IS
 'Atomically confirms clinical diagnosis, creates treatment record, dispatches crew work order, and marks alert ACTIONED with pessimistic locking.';
+

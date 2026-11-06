@@ -111,10 +111,11 @@ export interface WorkOrder {
   tree_id: string;
   alert_id?: string;
   priority: "EMERGENCY" | "HIGH" | "STANDARD" | "MEDIUM" | "LOW";
-  status: "DISPATCHED" | "IN_PROGRESS" | "COMPLETED";
+  status: "PENDING" | "DISPATCHED" | "IN_PROGRESS" | "COMPLETED" | "CANCELLED";
   protocol: string;
   assigned_crew: string;
   dispatched_at: string;
+  closed_at?: string | null;
   sla_hours: number;
   cost_estimate_usd: number;
 }
@@ -833,24 +834,74 @@ export const WORK_ORDERS: WorkOrder[] = [
     tree_id: "tree_1084",
     alert_id: "ALT-1049",
     priority: "EMERGENCY",
-    status: "DISPATCHED",
-    protocol: "Propiconazole Root Drench + Canopy Trimming",
-    assigned_crew: "North Emergency Crew A",
+    status: "PENDING",
+    protocol: "Propiconazole Root Drench + Crown Weight Reduction",
+    assigned_crew: "North Rapid Response Team",
     dispatched_at: "2026-11-04T19:00:00Z",
-    sla_hours: 48,
+    sla_hours: 24,
     cost_estimate_usd: 180
   },
   {
     order_id: "WO-4188",
     tree_id: "tree_3042",
     alert_id: "ALT-1041",
-    priority: "STANDARD",
+    priority: "HIGH",
     status: "IN_PROGRESS",
-    protocol: "Oxytetracycline Micro-Injection",
+    protocol: "Oxytetracycline Trunk Micro-Injection + Bark Debridement",
     assigned_crew: "East Maintenance Unit 2",
     dispatched_at: "2026-11-03T08:30:00Z",
-    sla_hours: 72,
+    sla_hours: 48,
     cost_estimate_usd: 120
+  },
+  {
+    order_id: "WO-4175",
+    tree_id: "tree_4190",
+    alert_id: "ALT-1050",
+    priority: "EMERGENCY",
+    status: "IN_PROGRESS",
+    protocol: "Macro-Infusion Systemic Fungicide Injection",
+    assigned_crew: "Central Arbor Emergency Unit 1",
+    dispatched_at: "2026-11-04T21:15:00Z",
+    sla_hours: 24,
+    cost_estimate_usd: 290
+  },
+  {
+    order_id: "WO-4150",
+    tree_id: "tree_2091",
+    alert_id: "ALT-1052",
+    priority: "STANDARD",
+    status: "COMPLETED",
+    protocol: "Copper Hydroxide Micronized Spray + Canopy Airflow Thinning",
+    assigned_crew: "South Biosecurity Sanitation Squad",
+    dispatched_at: "2026-11-02T10:00:00Z",
+    closed_at: "2026-11-04T16:00:00Z",
+    sla_hours: 72,
+    cost_estimate_usd: 75
+  },
+  {
+    order_id: "WO-4132",
+    tree_id: "tree_5012",
+    alert_id: "ALT-1055",
+    priority: "HIGH",
+    status: "COMPLETED",
+    protocol: "Selective Deadwood Pruning & Sterilization",
+    assigned_crew: "East Foliar Mist Contractors",
+    dispatched_at: "2026-11-01T09:00:00Z",
+    closed_at: "2026-11-03T11:45:00Z",
+    sla_hours: 48,
+    cost_estimate_usd: 95
+  },
+  {
+    order_id: "WO-4110",
+    tree_id: "tree_1085",
+    priority: "LOW",
+    status: "CANCELLED",
+    protocol: "Preventative Soil Compost Amendment",
+    assigned_crew: "Central Arbor Emergency Unit 1",
+    dispatched_at: "2026-10-30T14:00:00Z",
+    closed_at: "2026-11-02T14:20:00Z",
+    sla_hours: 120,
+    cost_estimate_usd: 45
   }
 ];
 

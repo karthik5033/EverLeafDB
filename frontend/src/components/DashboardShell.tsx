@@ -123,11 +123,11 @@ const NAV_ITEMS: NavItem[] = [
     badgeVariant: "critical"
   },
   {
-    title: "Work Orders Triage",
+    title: "Crew Dispatch Kanban",
     href: "/work-orders",
     icon: Wrench,
-    badge: "Active",
-    badgeVariant: "secondary"
+    badge: "Phase 23",
+    badgeVariant: "emerald"
   },
   {
     title: "Design System (Phase 2)",

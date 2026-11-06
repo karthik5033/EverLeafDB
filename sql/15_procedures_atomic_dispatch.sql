@@ -251,3 +251,4 @@ BEGIN
         v_rollback_passed;
 END;
 $$ LANGUAGE plpgsql;
+
