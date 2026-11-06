@@ -224,3 +224,4 @@ $$ LANGUAGE plpgsql STABLE;
 
 COMMENT ON FUNCTION fn_get_triage_precedent_comparison IS
 'Compares a suspicious alert specimen against the top matching clinical precedent for supervisor evaluation.';
+
