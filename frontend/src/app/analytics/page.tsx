@@ -112,7 +112,7 @@ export default function ExecutiveAnalyticsDashboard() {
 
   return (
     <DashboardShell>
-      <div className="p-6 md:p-8 max-w-7xl mx-auto space-y-6">
+      <div className="p-6 md:p-8 max-w-7xl mx-auto space-y-6 pb-28">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-5">
           <div>

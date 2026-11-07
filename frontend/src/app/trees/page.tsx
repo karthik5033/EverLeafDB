@@ -48,7 +48,7 @@ export default function TreesDirectoryPage() {
 
   return (
     <DashboardShell>
-      <div className="p-6 md:p-8 max-w-7xl mx-auto space-y-6">
+      <div className="p-6 md:p-8 max-w-7xl mx-auto space-y-6 pb-28">
         {/* Page Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-slate-200">
           <div>
@@ -73,54 +73,54 @@ export default function TreesDirectoryPage() {
         </div>
 
         {/* Vital KPI Metric Cards */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <Card className="p-4 bg-white border border-slate-200 shadow-xs rounded-xl">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
+          <Card className="p-5 bg-white border border-slate-200 shadow-xs rounded-xl">
             <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
               Cataloged Specimens
             </div>
-            <div className="text-2xl font-bold text-slate-900 mt-1">
+            <div className="text-2xl font-bold text-slate-900 mt-1.5">
               {trees.length.toLocaleString()}
             </div>
-            <div className="text-[11px] text-slate-500 font-mono mt-1 flex items-center gap-1">
+            <div className="text-[11px] text-slate-500 font-mono mt-1.5 flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
               <span>3NF Relational Records</span>
             </div>
           </Card>
 
-          <Card className="p-4 bg-white border border-slate-200 shadow-xs rounded-xl">
+          <Card className="p-5 bg-white border border-slate-200 shadow-xs rounded-xl">
             <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
               Optimal Health
             </div>
-            <div className="text-2xl font-bold text-emerald-700 mt-1">
+            <div className="text-2xl font-bold text-emerald-700 mt-1.5">
               {totalHealthy}
             </div>
-            <div className="text-[11px] text-emerald-800 font-mono mt-1 flex items-center gap-1">
+            <div className="text-[11px] text-emerald-800 font-mono mt-1.5 flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
               <span>Condition Score 5/5</span>
             </div>
           </Card>
 
-          <Card className="p-4 bg-white border border-slate-200 shadow-xs rounded-xl">
+          <Card className="p-5 bg-white border border-slate-200 shadow-xs rounded-xl">
             <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
               Under Monitoring
             </div>
-            <div className="text-2xl font-bold text-amber-700 mt-1">
+            <div className="text-2xl font-bold text-amber-700 mt-1.5">
               {totalMonitor}
             </div>
-            <div className="text-[11px] text-amber-800 font-mono mt-1 flex items-center gap-1">
+            <div className="text-[11px] text-amber-800 font-mono mt-1.5 flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
               <span>Follow-up Scheduled</span>
             </div>
           </Card>
 
-          <Card className="p-4 bg-white border border-slate-200 shadow-xs rounded-xl">
+          <Card className="p-5 bg-white border border-slate-200 shadow-xs rounded-xl">
             <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
               Critical Hazards
             </div>
-            <div className="text-2xl font-bold text-red-700 mt-1">
+            <div className="text-2xl font-bold text-red-700 mt-1.5">
               {totalCritical}
             </div>
-            <div className="text-[11px] text-red-800 font-mono mt-1 flex items-center gap-1">
+            <div className="text-[11px] text-red-800 font-mono mt-1.5 flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-red-500"></span>
               <span>Active Alerts Raised</span>
             </div>
