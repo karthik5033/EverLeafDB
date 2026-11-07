@@ -145,6 +145,13 @@ const NAV_ITEMS: NavItem[] = [
     badgeVariant: "emerald"
   },
   {
+    title: "System Audit & PITR",
+    href: "/admin/audit",
+    icon: ShieldCheck,
+    badge: "Phase 28",
+    badgeVariant: "emerald"
+  },
+  {
     title: "Design System (Phase 2)",
     href: "/showcase",
     icon: Sparkles,

@@ -905,6 +905,48 @@ export const WORK_ORDERS: WorkOrder[] = [
   }
 ];
 
+export const INSPECTIONS: Inspection[] = [
+  {
+    inspection_id: "INSP-9821",
+    tree_id: "tree_1084",
+    inspector_id: "inspector_04",
+    condition_score: 1,
+    organ: "leaf",
+    photo_url: "/specimen_leaf.jpg",
+    symptom_notes: "Severe lower foliage necrosis and canopy chlorosis. Possible mycelium at base.",
+    inspected_at: "2026-11-04T18:24:00Z",
+    matched_disease: "Ganoderma Root & Butt Rot",
+    cosine_similarity: 0.892,
+    escalation_triggered: true
+  },
+  {
+    inspection_id: "INSP-9815",
+    tree_id: "tree_3042",
+    inspector_id: "inspector_05",
+    condition_score: 2,
+    organ: "trunk",
+    photo_url: "/specimen_trunk.jpg",
+    symptom_notes: "Dark exuding sap from trunk bark cracks with foul odor.",
+    inspected_at: "2026-11-02T16:20:00Z",
+    matched_disease: "Bacterial Wetwood Canker",
+    cosine_similarity: 0.841,
+    escalation_triggered: false
+  },
+  {
+    inspection_id: "INSP-9801",
+    tree_id: "tree_2019",
+    inspector_id: "inspector_02",
+    condition_score: 3,
+    organ: "leaf",
+    photo_url: "/specimen_leaf.jpg",
+    symptom_notes: "Mild chlorosis in crown canopy leaves. Monitor next quarter.",
+    inspected_at: "2026-10-28T11:15:00Z",
+    matched_disease: "Powdery Mildew",
+    cosine_similarity: 0.765,
+    escalation_triggered: false
+  }
+];
+
 // -------------------------------------------------------------
 // Spatial & Vector Utility Math
 // -------------------------------------------------------------
