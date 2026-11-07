@@ -372,3 +372,4 @@ export default function CitizenReportTrackPage() {
     </Suspense>
   );
 }
+

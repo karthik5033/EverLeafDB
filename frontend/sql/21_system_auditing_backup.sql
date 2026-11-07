@@ -107,3 +107,4 @@ $$ LANGUAGE plpgsql;
 
 COMMENT ON FUNCTION fn_verify_backup_integrity_checksum IS
 'Verifies row count parity between snapshot manifests and active tables to guarantee backup fidelity.';
+

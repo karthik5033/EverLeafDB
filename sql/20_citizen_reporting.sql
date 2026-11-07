@@ -133,3 +133,4 @@ ORDER BY
 
 COMMENT ON VIEW vw_citizen_reports_triage IS
 'Consolidated triage view for municipal tree supervisors to review incoming public hazard reports.';
+

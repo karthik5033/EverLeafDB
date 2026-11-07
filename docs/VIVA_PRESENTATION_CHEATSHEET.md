@@ -113,3 +113,4 @@
 ### Q5: How is multi-tenant ward isolation enforced for field inspectors?
 **Answer:**  
 *"We implement PostgreSQL **Row-Level Security (RLS)** on the `trees`, `inspections`, and `work_orders` tables using `ALTER TABLE ... ENABLE ROW LEVEL SECURITY`. Application session context variables `app.current_user_id` and `app.current_user_role` are set per request. Field inspectors are dynamically restricted via security policies (`USING (ward_id = current_setting('app.current_user_ward')::INT)`) so that unauthorized ward data is filtered directly at the database engine level."*
+

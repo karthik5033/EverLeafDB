@@ -148,3 +148,4 @@ psql -h localhost -U municipal_admin -d everleafdb -c "SELECT pg_wal_replay_resu
 
 ## 5. Automated Integrity Drill & Verification
 EverLeafDB performs automated restoration drills weekly in a detached container (`everleafdb-recovery-drill`) to verify that the generated `.dump` archive can be fully unpacked and passes the `fn_verify_backup_integrity_checksum()` parity assertions without discrepancy.
+

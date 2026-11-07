@@ -30,3 +30,7 @@ Thumbs.db
 backups/*.dump
 backups/*.tar
 backups/*.gz
+
+# Dynamic uploads
+public/uploads/
+backups/

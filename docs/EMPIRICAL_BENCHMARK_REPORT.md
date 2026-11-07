@@ -125,3 +125,4 @@ At **$\tau^* = 0.82$**, the $F_1$-score peaks at **0.932**, capturing **94.6%** 
 1. Multi-modal databases eliminate the dual-system synchronisation problem between image stores and GIS tables.
 2. PostgreSQL's cost-based query optimizer natively plans hybrid GiST + HNSW bitmap index scans with negligible overhead.
 3. Automated database triggers eliminate manual triage delays for life-threatening arboricultural contagions.
+
