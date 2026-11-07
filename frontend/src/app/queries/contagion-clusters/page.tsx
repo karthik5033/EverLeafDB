@@ -71,7 +71,7 @@ export default function ContagionClustersPage() {
           <div>
             <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-red-50 border border-red-200 text-xs font-mono text-red-800 mb-2">
               <Flame className="w-3.5 h-3.5 text-red-600 animate-pulse" />
-              <span>Phase 18: Hybrid Query 3 (Contagion Cluster Detection)</span>
+              <span>Hybrid Query 3 • Contagion Cluster Detection</span>
             </div>
             <h1 className="text-2xl md:text-3xl font-extrabold text-foreground tracking-tight">
               Contagion Risk Clusters &amp; Hazard Heat Zones

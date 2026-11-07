@@ -64,9 +64,9 @@ export default function WardDiseaseSearchPage() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 border border-emerald-200 text-xs font-mono text-emerald-800 mb-2">
-              <Building2 className="w-3.5 h-3.5" />
-              <span>Phase 17: Hybrid Query 2 (Ward + Vector + Efficacy)</span>
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-slate-100 border border-slate-200 text-xs font-mono text-slate-700 mb-2">
+              <Building2 className="w-3.5 h-3.5 text-slate-500" />
+              <span>Hybrid Query 2 • Ward Outbreaks &amp; Curative Precedents</span>
             </div>
             <h1 className="text-2xl md:text-3xl font-extrabold text-foreground tracking-tight">
               Ward-Level Curated Disease &amp; Treatment Search

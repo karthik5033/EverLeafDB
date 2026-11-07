@@ -49,6 +49,7 @@ import {
 } from "@/components/ui/dialog";
 import { TriageAlertItem, TriageActionResult } from "@/lib/triage-engine";
 import { DISEASES, TREATMENTS_SEED } from "@/lib/db";
+import { DashboardShell } from "@/components/DashboardShell";
 
 export default function SupervisorTriagePage() {
   const [alerts, setAlerts] = useState<TriageAlertItem[]>([]);
@@ -175,111 +176,112 @@ export default function SupervisorTriagePage() {
   };
 
   return (
-    <div className="space-y-6">
-      {/* Page Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-border/40 pb-5">
-        <div>
-          <div className="flex items-center gap-3">
-            <div className="p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400">
-              <ShieldAlert className="h-6 w-6" />
+    <DashboardShell>
+      <div className="p-6 md:p-8 max-w-7xl mx-auto space-y-6">
+        {/* Page Header */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-5">
+          <div>
+            <div className="flex items-center gap-3">
+              <div className="p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800">
+                <ShieldAlert className="h-6 w-6" />
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold tracking-tight text-slate-900">
+                  Supervisor Clinical Triage &amp; Outbreak Response
+                </h1>
+                <p className="text-sm text-slate-500">
+                  Real-time decision workspace for municipal tree supervisors to review automated risk alerts, perform visual case comparison, and confirm clinical diagnoses.
+                </p>
+              </div>
             </div>
-            <div>
-              <h1 className="text-2xl font-bold tracking-tight text-foreground">
-                Supervisor Clinical Triage & Outbreak Response
-              </h1>
-              <p className="text-sm text-muted-foreground">
-                Phase 21: Real-time decision workspace for municipal tree supervisors to review automated risk alerts, perform visual case comparison, and confirm clinical diagnoses.
-              </p>
+          </div>
+
+          {/* ACID Transaction Protocol Pill */}
+          <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-100 border border-slate-200 text-xs text-slate-700">
+              <Lock className="h-3.5 w-3.5 text-emerald-700" />
+              <span className="font-mono text-emerald-800 font-semibold">SELECT FOR UPDATE</span>
+              <span className="text-slate-400">|</span>
+              <span>ACID Repeatable Read</span>
             </div>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={fetchTriageQueue}
+              disabled={loading}
+              className="gap-1.5 border-slate-200 text-slate-700 hover:bg-slate-50"
+            >
+              <RefreshCw className={`h-3.5 w-3.5 ${loading ? "animate-spin" : ""}`} />
+              Refresh
+            </Button>
           </div>
         </div>
 
-        {/* ACID Transaction Protocol Pill */}
-        <div className="flex items-center gap-2">
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-300">
-            <Lock className="h-3.5 w-3.5 text-emerald-400" />
-            <span className="font-mono text-emerald-400">SELECT FOR UPDATE</span>
-            <span className="text-slate-500">|</span>
-            <span>ACID Repeatable Read</span>
-          </div>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={fetchTriageQueue}
-            disabled={loading}
-            className="gap-1.5"
-          >
-            <RefreshCw className={`h-3.5 w-3.5 ${loading ? "animate-spin" : ""}`} />
-            Refresh
-          </Button>
+        {/* KPI Stat Cards */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <Card className="bg-white border-slate-200 shadow-xs">
+            <CardHeader className="pb-2">
+              <CardDescription className="text-xs font-medium uppercase tracking-wider text-slate-500 flex items-center justify-between">
+                Pending Triage Queue
+                <Clock className="h-4 w-4 text-amber-500" />
+              </CardDescription>
+              <CardTitle className="text-2xl font-bold text-amber-700">
+                {kpis.pending_count} Cases
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-xs text-slate-500">Awaiting clinical confirmation</p>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-white border-slate-200 shadow-xs">
+            <CardHeader className="pb-2">
+              <CardDescription className="text-xs font-medium uppercase tracking-wider text-slate-500 flex items-center justify-between">
+                Critical Risk Alerts
+                <AlertTriangle className="h-4 w-4 text-red-500" />
+              </CardDescription>
+              <CardTitle className="text-2xl font-bold text-red-700">
+                {kpis.critical_count} Urgent
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-xs text-slate-500">High biosecurity hazard tier</p>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-white border-slate-200 shadow-xs">
+            <CardHeader className="pb-2">
+              <CardDescription className="text-xs font-medium uppercase tracking-wider text-slate-500 flex items-center justify-between">
+                Actioned / Dispatched
+                <CheckCircle2 className="h-4 w-4 text-emerald-600" />
+              </CardDescription>
+              <CardTitle className="text-2xl font-bold text-emerald-700">
+                {kpis.actioned_count} Orders
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-xs text-slate-500">Treatment staged to crews</p>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-white border-slate-200 shadow-xs">
+            <CardHeader className="pb-2">
+              <CardDescription className="text-xs font-medium uppercase tracking-wider text-slate-500 flex items-center justify-between">
+                Mean Vector Similarity
+                <Sparkles className="h-4 w-4 text-blue-600" />
+              </CardDescription>
+              <CardTitle className="text-2xl font-bold text-slate-900">
+                {kpis.avg_similarity}%
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-xs text-slate-500">Cosine similarity vs reference</p>
+            </CardContent>
+          </Card>
         </div>
-      </div>
 
-      {/* KPI Stat Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <Card className="bg-card/50 backdrop-blur border-border/40">
-          <CardHeader className="pb-2">
-            <CardDescription className="text-xs font-medium uppercase tracking-wider text-muted-foreground flex items-center justify-between">
-              Pending Triage Queue
-              <Clock className="h-4 w-4 text-amber-500" />
-            </CardDescription>
-            <CardTitle className="text-2xl font-bold text-amber-500">
-              {kpis.pending_count} Cases
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-xs text-muted-foreground">Awaiting clinical confirmation</p>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-card/50 backdrop-blur border-border/40">
-          <CardHeader className="pb-2">
-            <CardDescription className="text-xs font-medium uppercase tracking-wider text-muted-foreground flex items-center justify-between">
-              Critical Risk Alerts
-              <AlertTriangle className="h-4 w-4 text-red-500" />
-            </CardDescription>
-            <CardTitle className="text-2xl font-bold text-red-500">
-              {kpis.critical_count} Urgent
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-xs text-muted-foreground">High biosecurity hazard tier</p>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-card/50 backdrop-blur border-border/40">
-          <CardHeader className="pb-2">
-            <CardDescription className="text-xs font-medium uppercase tracking-wider text-muted-foreground flex items-center justify-between">
-              Actioned / Dispatched
-              <CheckCircle2 className="h-4 w-4 text-emerald-500" />
-            </CardDescription>
-            <CardTitle className="text-2xl font-bold text-emerald-500">
-              {kpis.actioned_count} Orders
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-xs text-muted-foreground">Treatment staged to crews</p>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-card/50 backdrop-blur border-border/40">
-          <CardHeader className="pb-2">
-            <CardDescription className="text-xs font-medium uppercase tracking-wider text-muted-foreground flex items-center justify-between">
-              Mean Vector Similarity
-              <Sparkles className="h-4 w-4 text-cyan-500" />
-            </CardDescription>
-            <CardTitle className="text-2xl font-bold text-foreground">
-              {kpis.avg_similarity}%
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-xs text-muted-foreground">Cosine similarity vs reference</p>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Filter Tabs */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-muted/40 p-2.5 rounded-xl border border-border/40">
+        {/* Filter Tabs */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-white p-2.5 rounded-xl border border-slate-200 shadow-xs">
         <Tabs value={statusFilter} onValueChange={setStatusFilter} className="w-auto">
           <TabsList className="bg-background/80">
             <TabsTrigger value="PENDING" className="gap-1.5 text-xs">
@@ -889,7 +891,7 @@ export default function SupervisorTriagePage() {
           <DialogFooter>
             <Button
               size="sm"
-              className="text-xs bg-emerald-600 hover:bg-emerald-700 text-white"
+              className="text-xs bg-slate-950 hover:bg-slate-800 text-white"
               onClick={() => setReceiptModalOpen(false)}
             >
               Close Receipt
@@ -897,6 +899,7 @@ export default function SupervisorTriagePage() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </div>
+      </div>
+    </DashboardShell>
   );
 }

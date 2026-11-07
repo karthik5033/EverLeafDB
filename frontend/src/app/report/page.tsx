@@ -38,6 +38,7 @@ import {
   CitizenReport,
   assignWardBySpatialLocation
 } from "@/lib/citizen-reporting";
+import { DashboardShell } from "@/components/DashboardShell";
 
 const HAZARD_CATEGORIES: { id: CitizenHazardCategory; label: string; desc: string }[] = [
   { id: "FALLING_BRANCH", label: "Falling / Hanging Bough", desc: "Heavy broken branch dangling precariously over road or pathway." },
@@ -241,26 +242,27 @@ export default function CitizenReportingPage() {
   };
 
   return (
-    <div className="container max-w-6xl mx-auto py-8 px-4 sm:px-6 space-y-8">
-      {/* Top Banner Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-200">
-        <div>
-          <div className="flex items-center gap-2 mb-2">
-            <Badge variant="outline" className="text-emerald-700 bg-emerald-50 border-emerald-300 font-mono text-xs">
-              MUNICIPAL CIVIC INTERFACE • PHASE 27
-            </Badge>
-            <Badge variant="outline" className="text-slate-600 bg-slate-50 border-slate-300 font-mono text-xs">
-              PostGIS ST_Contains Auto-Ward
-            </Badge>
+    <DashboardShell>
+      <div className="p-6 md:p-8 max-w-7xl mx-auto space-y-6">
+        {/* Top Banner Header */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-200">
+          <div>
+            <div className="flex items-center gap-2 mb-2">
+              <Badge variant="outline" className="text-emerald-800 bg-emerald-50 border-emerald-200 font-mono text-xs">
+                MUNICIPAL CIVIC INTERFACE
+              </Badge>
+              <Badge variant="outline" className="text-slate-600 bg-slate-50 border-slate-200 font-mono text-xs">
+                PostGIS ST_Contains Auto-Ward
+              </Badge>
+            </div>
+            <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-slate-900">
+              Citizen Tree Hazard Reporting
+            </h1>
+            <p className="text-sm text-slate-500 mt-1 max-w-2xl">
+              Community reporting channel for fallen boughs, diseased heritage trees, and powerline hazards. 
+              All reports are automatically spatially routed to the designated municipal ward.
+            </p>
           </div>
-          <h1 className="text-3xl font-bold tracking-tight text-slate-900">
-            Citizen Tree Hazard Reporting
-          </h1>
-          <p className="text-sm text-slate-600 mt-1 max-w-2xl">
-            Community reporting channel for fallen boughs, diseased heritage trees, and powerline hazards. 
-            All reports are automatically spatially routed to the designated municipal ward.
-          </p>
-        </div>
 
         <div className="flex items-center gap-2">
           <Link href="/report/track">
@@ -866,7 +868,8 @@ export default function CitizenReportingPage() {
           )}
         </div>
       )}
-    </div>
+      </div>
+    </DashboardShell>
   );
 }
 

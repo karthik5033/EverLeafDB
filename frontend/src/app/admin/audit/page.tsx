@@ -41,6 +41,7 @@ import {
   DialogHeader,
   DialogTitle
 } from "@/components/ui/dialog";
+import { DashboardShell } from "@/components/DashboardShell";
 
 interface AuditEntry {
   log_id: number;
@@ -167,54 +168,55 @@ export default function AdminAuditPage() {
   };
 
   return (
-    <div className="container max-w-7xl mx-auto py-8 px-4 sm:px-6 space-y-8">
-      {/* Top Banner Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-200">
-        <div>
-          <div className="flex items-center gap-2 mb-2">
-            <Badge variant="outline" className="text-emerald-700 bg-emerald-50 border-emerald-300 font-mono text-xs">
-              MUNICIPAL GOVERNANCE • PHASE 28
-            </Badge>
-            <Badge variant="outline" className="text-slate-600 bg-slate-50 border-slate-300 font-mono text-xs">
-              PostgreSQL Triggers & WAL PITR
-            </Badge>
+    <DashboardShell>
+      <div className="p-6 md:p-8 max-w-7xl mx-auto space-y-6">
+        {/* Top Banner Header */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-200">
+          <div>
+            <div className="flex items-center gap-2 mb-2">
+              <Badge variant="outline" className="text-emerald-800 bg-emerald-50 border-emerald-200 font-mono text-xs">
+                MUNICIPAL GOVERNANCE &amp; AUDIT
+              </Badge>
+              <Badge variant="outline" className="text-slate-600 bg-slate-50 border-slate-200 font-mono text-xs">
+                PostgreSQL Triggers &amp; WAL PITR
+              </Badge>
+            </div>
+            <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-slate-900">
+              System Auditing, Compliance &amp; Backup Verification
+            </h1>
+            <p className="text-sm text-slate-500 mt-1 max-w-2xl">
+              Surveillance of all relational mutations, field inspection changes, and automated Point-in-Time Recovery (PITR) backup snapshots.
+            </p>
           </div>
-          <h1 className="text-3xl font-bold tracking-tight text-slate-900">
-            System Auditing, Compliance & Backup Verification
-          </h1>
-          <p className="text-sm text-slate-600 mt-1 max-w-2xl">
-            Surveillance of all relational mutations, field inspection changes, and automated Point-in-Time Recovery (PITR) backup snapshots.
-          </p>
-        </div>
 
-        <div className="flex flex-wrap items-center gap-2">
-          <Button
-            variant="outline"
-            onClick={handleResetDemoData}
-            disabled={isResettingDemo}
-            className="border-amber-300 text-amber-800 hover:bg-amber-50 gap-1.5 text-xs"
-          >
-            <RefreshCw className={`w-3.5 h-3.5 ${isResettingDemo ? "animate-spin" : ""}`} />
-            Reset Demo Data (Viva)
-          </Button>
-          <Button
-            variant="outline"
-            onClick={fetchLogs}
-            disabled={isLoading}
-            className="border-slate-300 text-slate-700 gap-1.5 text-xs"
-          >
-            <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? "animate-spin" : ""}`} />
-            Refresh Trail
-          </Button>
-          <Button
-            onClick={handleTriggerBackup}
-            className="bg-emerald-600 hover:bg-emerald-700 text-white gap-2 text-xs font-medium shadow-sm"
-          >
-            <Archive className="w-4 h-4" />
-            Trigger Backup Snapshot (pg_dump)
-          </Button>
+          <div className="flex flex-wrap items-center gap-2">
+            <Button
+              variant="outline"
+              onClick={handleResetDemoData}
+              disabled={isResettingDemo}
+              className="border-amber-300 text-amber-800 hover:bg-amber-50 gap-1.5 text-xs"
+            >
+              <RefreshCw className={`w-3.5 h-3.5 ${isResettingDemo ? "animate-spin" : ""}`} />
+              Reset Demo Data (Viva)
+            </Button>
+            <Button
+              variant="outline"
+              onClick={fetchLogs}
+              disabled={isLoading}
+              className="border-slate-200 text-slate-700 hover:bg-slate-50 gap-1.5 text-xs"
+            >
+              <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? "animate-spin" : ""}`} />
+              Refresh Trail
+            </Button>
+            <Button
+              onClick={handleTriggerBackup}
+              className="bg-slate-950 hover:bg-slate-800 text-white gap-2 text-xs font-medium shadow-xs"
+            >
+              <Archive className="w-4 h-4" />
+              Trigger Backup Snapshot (pg_dump)
+            </Button>
+          </div>
         </div>
-      </div>
 
       {/* KPI Stats Row */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -530,7 +532,7 @@ export default function AdminAuditPage() {
               <div className="flex justify-end pt-2">
                 <Button
                   onClick={() => setIsBackupDialogOpen(false)}
-                  className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs"
+                  className="bg-slate-950 hover:bg-slate-800 text-white text-xs"
                 >
                   Close & Acknowledge
                 </Button>
@@ -539,6 +541,7 @@ export default function AdminAuditPage() {
           ) : null}
         </DialogContent>
       </Dialog>
-    </div>
+      </div>
+    </DashboardShell>
   );
 }

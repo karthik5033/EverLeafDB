@@ -21,6 +21,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { CitizenReport } from "@/lib/citizen-reporting";
+import { DashboardShell } from "@/components/DashboardShell";
 
 const SAMPLE_TRACKING_CODES = [
   "CR-2025-7841",
@@ -117,7 +118,8 @@ function ReportTrackerContent() {
   const currentStep = report ? getStepIndex(report.status) : -1;
 
   return (
-    <div className="container max-w-4xl mx-auto py-8 px-4 sm:px-6 space-y-8">
+    <DashboardShell>
+      <div className="p-6 md:p-8 max-w-5xl mx-auto space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-200">
         <div>
@@ -361,7 +363,8 @@ function ReportTrackerContent() {
           </div>
         </div>
       )}
-    </div>
+      </div>
+    </DashboardShell>
   );
 }
 

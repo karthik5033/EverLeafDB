@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import Navbar from "@/components/Navbar";
+import { DashboardShell } from "@/components/DashboardShell";
 import { PrecedentMatchCard } from "@/components/PrecedentMatchCard";
 import { PrecedentCase } from "@/lib/precedent-engine";
 import {
@@ -60,10 +60,8 @@ export default function SimilarityPage() {
   }, [selectedPhoto, organ]);
 
   return (
-    <div className="min-h-screen bg-[#fafafa] flex flex-col font-sans">
-      <Navbar />
-
-      <main className="flex-1 max-w-[1400px] w-full mx-auto p-4 md:p-6 flex flex-col gap-5">
+    <DashboardShell>
+      <div className="p-4 md:p-6 max-w-[1400px] w-full mx-auto flex flex-col gap-5">
         {/* Header Bar */}
         <div className="bg-white p-5 rounded-2xl border border-gray-200/90 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
@@ -263,8 +261,8 @@ export default function SimilarityPage() {
             </div>
           </div>
         </div>
-      </main>
-    </div>
+      </div>
+    </DashboardShell>
   );
 }
 

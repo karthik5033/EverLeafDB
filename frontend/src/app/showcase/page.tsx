@@ -62,9 +62,9 @@ export default function ShowcasePage() {
         <div className="bg-card p-6 rounded-2xl border border-border shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2 mb-1.5">
-              <Badge variant="emerald" className="font-mono text-[10px]">Phase 2 Deliverable</Badge>
+              <Badge variant="outline" className="font-mono text-[10px] bg-slate-100 text-slate-700 border-slate-200">Municipal Design System</Badge>
               <h1 className="text-2xl font-extrabold tracking-tight text-foreground">
-                shadcn/ui Forestry Design System
+                Municipal Forestry Design System
               </h1>
             </div>
             <p className="text-xs text-muted-foreground max-w-2xl">
@@ -293,7 +293,7 @@ export default function ShowcasePage() {
           </CardContent>
         </Card>
 
-        {/* Section 4: Phase 7 Ward Selector & PostGIS Boundary Inspection */}
+        {/* Section 4: Ward Selector & PostGIS Boundary Inspection */}
         <Card>
           <CardHeader>
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">

@@ -38,6 +38,7 @@ import {
   SpeciesBiodiversityBar
 } from "@/lib/executive-analytics";
 import { WardHealthSummaryRecord } from "@/lib/materialized-views";
+import { DashboardShell } from "@/components/DashboardShell";
 
 export default function ExecutiveAnalyticsDashboard() {
   const [kpis, setKpis] = useState<ExecutiveCityKpis | null>(null);
@@ -110,113 +111,114 @@ export default function ExecutiveAnalyticsDashboard() {
   });
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-border/40 pb-5">
-        <div>
-          <div className="flex items-center gap-3">
-            <div className="p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400">
-              <BarChart3 className="h-6 w-6" />
+    <DashboardShell>
+      <div className="p-6 md:p-8 max-w-7xl mx-auto space-y-6">
+        {/* Header */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-5">
+          <div>
+            <div className="flex items-center gap-3">
+              <div className="p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800">
+                <BarChart3 className="h-6 w-6" />
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold tracking-tight text-slate-900">
+                  Municipal Executive Analytics &amp; Canopy Intelligence
+                </h1>
+                <p className="text-sm text-slate-500">
+                  City-wide forest health indices, species biodiversity distributions, and ward comparative analytics powered by sub-millisecond Materialized Views.
+                </p>
+              </div>
             </div>
-            <div>
-              <h1 className="text-2xl font-bold tracking-tight text-foreground">
-                Municipal Executive Analytics & Canopy Intelligence
-              </h1>
-              <p className="text-sm text-muted-foreground">
-                Phase 25: City-wide forest health indices, species biodiversity distributions, and ward comparative analytics powered by sub-millisecond Materialized Views.
-              </p>
-            </div>
+          </div>
+
+          {/* Action Controls */}
+          <div className="flex items-center gap-2.5">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleRefreshViews}
+              disabled={refreshing || loading}
+              className="gap-1.5 text-xs border-slate-200 text-slate-700 hover:bg-slate-50"
+            >
+              <RefreshCw className={`h-3.5 w-3.5 ${refreshing ? "animate-spin" : ""}`} />
+              Refresh Materialized View
+            </Button>
+
+            <Button
+              size="sm"
+              onClick={handleDownloadCsv}
+              className="gap-1.5 text-xs bg-slate-950 hover:bg-slate-800 text-white font-medium"
+            >
+              <Download className="h-3.5 w-3.5" />
+              Export Municipal CSV
+            </Button>
           </div>
         </div>
 
-        {/* Action Controls */}
-        <div className="flex items-center gap-2.5">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleRefreshViews}
-            disabled={refreshing || loading}
-            className="gap-1.5 text-xs"
-          >
-            <RefreshCw className={`h-3.5 w-3.5 ${refreshing ? "animate-spin" : ""}`} />
-            Refresh Materialized View
-          </Button>
+        {/* 4 Hero KPI Cards */}
+        {kpis && (
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <Card className="bg-white border-slate-200 shadow-xs">
+              <CardHeader className="pb-2">
+                <CardDescription className="text-xs font-medium uppercase tracking-wider text-slate-500 flex items-center justify-between">
+                  Managed Canopy Trees
+                  <Trees className="h-4 w-4 text-emerald-600" />
+                </CardDescription>
+                <CardTitle className="text-2xl font-bold text-slate-900">
+                  {kpis.total_managed_trees.toLocaleString()} Trees
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-xs text-slate-500">Across {kpis.total_covered_wards} municipal wards</p>
+              </CardContent>
+            </Card>
 
-          <Button
-            size="sm"
-            onClick={handleDownloadCsv}
-            className="gap-1.5 text-xs bg-emerald-600 hover:bg-emerald-700 text-white font-medium"
-          >
-            <Download className="h-3.5 w-3.5" />
-            Export Municipal CSV
-          </Button>
-        </div>
-      </div>
+            <Card className="bg-white border-slate-200 shadow-xs">
+              <CardHeader className="pb-2">
+                <CardDescription className="text-xs font-medium uppercase tracking-wider text-slate-500 flex items-center justify-between">
+                  Forest Health Index
+                  <Activity className="h-4 w-4 text-emerald-600" />
+                </CardDescription>
+                <CardTitle className="text-2xl font-bold text-emerald-700">
+                  {kpis.forest_health_index_pct}%
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-xs text-slate-500">Avg condition: {kpis.city_avg_condition_score} / 5.0</p>
+              </CardContent>
+            </Card>
 
-      {/* 4 Hero KPI Cards */}
-      {kpis && (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <Card className="bg-card/50 backdrop-blur border-border/40">
-            <CardHeader className="pb-2">
-              <CardDescription className="text-xs font-medium uppercase tracking-wider text-muted-foreground flex items-center justify-between">
-                Managed Canopy Trees
-                <Trees className="h-4 w-4 text-emerald-500" />
-              </CardDescription>
-              <CardTitle className="text-2xl font-bold text-foreground">
-                {kpis.total_managed_trees.toLocaleString()} Trees
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-xs text-muted-foreground">Across {kpis.total_covered_wards} municipal wards</p>
-            </CardContent>
-          </Card>
+            <Card className="bg-white border-slate-200 shadow-xs">
+              <CardHeader className="pb-2">
+                <CardDescription className="text-xs font-medium uppercase tracking-wider text-slate-500 flex items-center justify-between">
+                  Active Contagion Alerts
+                  <ShieldAlert className="h-4 w-4 text-red-600" />
+                </CardDescription>
+                <CardTitle className="text-2xl font-bold text-red-700">
+                  {kpis.active_contagion_alerts} Outbreaks
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-xs text-slate-500">Flagged by HNSW vector trigger</p>
+              </CardContent>
+            </Card>
 
-          <Card className="bg-card/50 backdrop-blur border-border/40">
-            <CardHeader className="pb-2">
-              <CardDescription className="text-xs font-medium uppercase tracking-wider text-muted-foreground flex items-center justify-between">
-                Forest Health Index
-                <Activity className="h-4 w-4 text-emerald-500" />
-              </CardDescription>
-              <CardTitle className="text-2xl font-bold text-emerald-500">
-                {kpis.forest_health_index_pct}%
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-xs text-muted-foreground">Avg condition: {kpis.city_avg_condition_score} / 5.0</p>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-card/50 backdrop-blur border-border/40">
-            <CardHeader className="pb-2">
-              <CardDescription className="text-xs font-medium uppercase tracking-wider text-muted-foreground flex items-center justify-between">
-                Active Contagion Alerts
-                <ShieldAlert className="h-4 w-4 text-red-500" />
-              </CardDescription>
-              <CardTitle className="text-2xl font-bold text-red-500">
-                {kpis.active_contagion_alerts} Outbreaks
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-xs text-muted-foreground">Flagged by HNSW vector trigger</p>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-card/50 backdrop-blur border-border/40">
-            <CardHeader className="pb-2">
-              <CardDescription className="text-xs font-medium uppercase tracking-wider text-muted-foreground flex items-center justify-between">
-                Overdue Inspections
-                <Clock className="h-4 w-4 text-amber-500" />
-              </CardDescription>
-              <CardTitle className="text-2xl font-bold text-amber-500">
-                {kpis.overdue_inspections_count} Due
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-xs text-muted-foreground">&gt; 180 days since last transect</p>
-            </CardContent>
-          </Card>
-        </div>
-      )}
+            <Card className="bg-white border-slate-200 shadow-xs">
+              <CardHeader className="pb-2">
+                <CardDescription className="text-xs font-medium uppercase tracking-wider text-slate-500 flex items-center justify-between">
+                  Overdue Inspections
+                  <Clock className="h-4 w-4 text-amber-500" />
+                </CardDescription>
+                <CardTitle className="text-2xl font-bold text-amber-700">
+                  {kpis.overdue_inspections_count} Due
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-xs text-slate-500">&gt; 180 days since last transect</p>
+              </CardContent>
+            </Card>
+          </div>
+        )}
 
       {/* Visualizations Grid: Health Distribution Donut & Species Biodiversity Bars */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -372,18 +374,18 @@ export default function ExecutiveAnalyticsDashboard() {
         </Card>
       </div>
 
-      {/* Ward-by-Ward Comparison Table (Phase 24 Materialized View) */}
-      <Card className="border-border/60 shadow-sm">
-        <CardHeader className="border-b border-border/30 py-3.5">
+      {/* Ward-by-Ward Comparison Table (Materialized View) */}
+      <Card className="border-slate-200 shadow-xs bg-white">
+        <CardHeader className="border-b border-slate-200 py-3.5">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
-              <CardTitle className="text-base font-semibold flex items-center gap-2">
-                <Building2 className="h-4 w-4 text-emerald-500" />
+              <CardTitle className="text-base font-semibold text-slate-900 flex items-center gap-2">
+                <Building2 className="h-4 w-4 text-emerald-600" />
                 Municipal Ward Comparative Health Matrix
               </CardTitle>
-              <CardDescription className="text-xs">
+              <CardDescription className="text-xs text-slate-500">
                 Precomputed performance metrics from PostgreSQL Materialized View{" "}
-                <code className="text-emerald-500 font-mono">mv_ward_health_summary</code> (<span className="text-emerald-400 font-semibold">&lt; 1ms load time</span>)
+                <code className="text-emerald-800 font-mono font-medium">mv_ward_health_summary</code> (<span className="text-emerald-700 font-semibold">&lt; 1ms load time</span>)
               </CardDescription>
             </div>
 
@@ -502,7 +504,8 @@ export default function ExecutiveAnalyticsDashboard() {
           </div>
         </CardContent>
       </Card>
-    </div>
+      </div>
+    </DashboardShell>
   );
 }
 

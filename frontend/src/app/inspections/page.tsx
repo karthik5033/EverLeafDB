@@ -49,20 +49,20 @@ export default function InspectionsDirectoryPage() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 border border-emerald-200 text-xs font-mono text-emerald-800 mb-2">
-              <Stethoscope className="w-3.5 h-3.5" />
-              <span>Phase 12: Field Inspection Records</span>
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-slate-100 border border-slate-200 text-xs font-mono text-slate-700 mb-2">
+              <Stethoscope className="w-3.5 h-3.5 text-slate-500" />
+              <span>Field Pathology • 3NF Ingestion</span>
             </div>
-            <h1 className="text-2xl md:text-3xl font-extrabold text-foreground tracking-tight">
+            <h1 className="text-2xl md:text-3xl font-bold text-slate-900 tracking-tight">
               Field Health Inspections Log
             </h1>
-            <p className="text-sm text-muted-foreground mt-1">
+            <p className="text-xs md:text-sm text-slate-500 mt-1 max-w-2xl">
               Photographic symptom inventory, CLIP vectorization logs, and automated risk alert trigger history.
             </p>
           </div>
 
           <Link href="/inspections/new">
-            <Button className="bg-emerald-800 hover:bg-emerald-700 text-white font-bold h-10 shadow-xs">
+            <Button className="bg-slate-950 hover:bg-slate-800 text-white font-medium h-9 text-xs shadow-xs px-4">
               <Plus className="w-4 h-4 mr-1.5" />
               Log Field Inspection
             </Button>

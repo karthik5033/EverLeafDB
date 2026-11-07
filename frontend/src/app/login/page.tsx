@@ -35,6 +35,7 @@ import {
   SYSTEM_USERS
 } from "@/lib/auth-rbac";
 import { WARDS } from "@/lib/db";
+import { DashboardShell } from "@/components/DashboardShell";
 
 export default function LoginPage() {
   const [activeSession, setActiveSession] = useState<SessionContext | null>(null);
@@ -136,35 +137,36 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-border/40 pb-5">
-        <div>
-          <div className="flex items-center gap-3">
-            <div className="p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400">
-              <ShieldCheck className="h-6 w-6" />
-            </div>
-            <div>
-              <h1 className="text-2xl font-bold tracking-tight text-foreground">
-                Municipal Identity, RBAC & Row-Level Security (RLS)
-              </h1>
-              <p className="text-sm text-muted-foreground">
-                Phase 26: Role-based access control and tenant isolation sandbox simulating PostgreSQL RLS policies across 4 municipal authorization tiers.
-              </p>
+    <DashboardShell>
+      <div className="p-6 md:p-8 max-w-7xl mx-auto space-y-6">
+        {/* Header */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-5">
+          <div>
+            <div className="flex items-center gap-3">
+              <div className="p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800">
+                <ShieldCheck className="h-6 w-6" />
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold tracking-tight text-slate-900">
+                  Municipal Identity, RBAC &amp; Row-Level Security (RLS)
+                </h1>
+                <p className="text-sm text-slate-500">
+                  Role-based access control and tenant isolation sandbox simulating PostgreSQL RLS policies across 4 municipal authorization tiers.
+                </p>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Status Pill */}
-        <div className="flex items-center gap-2">
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-300">
-            <Lock className="h-3.5 w-3.5 text-emerald-400" />
-            <span className="font-mono text-emerald-400">ALTER TABLE ... ENABLE RLS</span>
-            <span className="text-slate-500">|</span>
-            <span>Tenant Ward Isolation</span>
+          {/* Status Pill */}
+          <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-100 border border-slate-200 text-xs text-slate-700">
+              <Lock className="h-3.5 w-3.5 text-emerald-700" />
+              <span className="font-mono text-emerald-800 font-semibold">ALTER TABLE ... ENABLE RLS</span>
+              <span className="text-slate-400">|</span>
+              <span>Tenant Ward Isolation</span>
+            </div>
           </div>
         </div>
-      </div>
 
       {/* Active Session Identity Card */}
       {activeSession && (
@@ -425,6 +427,7 @@ export default function LoginPage() {
           )}
         </CardContent>
       </Card>
-    </div>
+      </div>
+    </DashboardShell>
   );
 }

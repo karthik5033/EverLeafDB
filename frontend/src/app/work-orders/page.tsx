@@ -51,6 +51,7 @@ import {
   KanbanColumnId,
   MUNICIPAL_CREWS
 } from "@/lib/work-order-engine";
+import { DashboardShell } from "@/components/DashboardShell";
 
 export default function WorkOrdersKanbanPage() {
   const [boardData, setBoardData] = useState<KanbanBoardData | null>(null);
@@ -212,107 +213,108 @@ export default function WorkOrdersKanbanPage() {
   ];
 
   return (
-    <div className="space-y-6">
-      {/* Page Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-border/40 pb-5">
-        <div>
-          <div className="flex items-center gap-3">
-            <div className="p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400">
-              <Wrench className="h-6 w-6" />
+    <DashboardShell>
+      <div className="p-6 md:p-8 max-w-7xl mx-auto space-y-6">
+        {/* Page Header */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-5">
+          <div>
+            <div className="flex items-center gap-3">
+              <div className="p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800">
+                <Wrench className="h-6 w-6" />
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold tracking-tight text-slate-900">
+                  Municipal Field Crew Dispatch &amp; Task Kanban
+                </h1>
+                <p className="text-sm text-slate-500">
+                  Task orchestration for municipal tree response teams, contractors, and field crews across Bangalore wards.
+                </p>
+              </div>
             </div>
-            <div>
-              <h1 className="text-2xl font-bold tracking-tight text-foreground">
-                Municipal Field Crew Dispatch & Task Kanban
-              </h1>
-              <p className="text-sm text-muted-foreground">
-                Phase 23: Task orchestration for municipal tree response teams, contractors, and field crews across Bangalore wards.
-              </p>
-            </div>
+          </div>
+
+          {/* Live Controls */}
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={fetchBoardData}
+              disabled={loading}
+              className="gap-1.5 border-slate-200 text-slate-700 hover:bg-slate-50"
+            >
+              <RefreshCw className={`h-3.5 w-3.5 ${loading ? "animate-spin" : ""}`} />
+              Refresh Board
+            </Button>
           </div>
         </div>
 
-        {/* Live Controls */}
-        <div className="flex items-center gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={fetchBoardData}
-            disabled={loading}
-            className="gap-1.5"
-          >
-            <RefreshCw className={`h-3.5 w-3.5 ${loading ? "animate-spin" : ""}`} />
-            Refresh Board
-          </Button>
-        </div>
-      </div>
+        {/* KPI Metrics Cards */}
+        {boardData && (
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <Card className="bg-white border-slate-200 shadow-xs">
+              <CardHeader className="pb-2">
+                <CardDescription className="text-xs font-medium uppercase tracking-wider text-slate-500 flex items-center justify-between">
+                  Total Managed Orders
+                  <Layers className="h-4 w-4 text-emerald-600" />
+                </CardDescription>
+                <CardTitle className="text-2xl font-bold text-slate-900">
+                  {boardData.kpis.total_orders} Orders
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-xs text-slate-500">Across all municipal crews</p>
+              </CardContent>
+            </Card>
 
-      {/* KPI Metrics Cards */}
-      {boardData && (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <Card className="bg-card/50 backdrop-blur border-border/40">
-            <CardHeader className="pb-2">
-              <CardDescription className="text-xs font-medium uppercase tracking-wider text-muted-foreground flex items-center justify-between">
-                Total Managed Orders
-                <Layers className="h-4 w-4 text-emerald-500" />
-              </CardDescription>
-              <CardTitle className="text-2xl font-bold text-foreground">
-                {boardData.kpis.total_orders} Orders
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-xs text-muted-foreground">Across all municipal crews</p>
-            </CardContent>
-          </Card>
+            <Card className="bg-white border-slate-200 shadow-xs">
+              <CardHeader className="pb-2">
+                <CardDescription className="text-xs font-medium uppercase tracking-wider text-slate-500 flex items-center justify-between">
+                  Active In-Progress
+                  <Play className="h-4 w-4 text-blue-600" />
+                </CardDescription>
+                <CardTitle className="text-2xl font-bold text-blue-700">
+                  {boardData.kpis.in_progress_count} On-Site
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-xs text-slate-500">Under active treatment</p>
+              </CardContent>
+            </Card>
 
-          <Card className="bg-card/50 backdrop-blur border-border/40">
-            <CardHeader className="pb-2">
-              <CardDescription className="text-xs font-medium uppercase tracking-wider text-muted-foreground flex items-center justify-between">
-                Active In-Progress
-                <Play className="h-4 w-4 text-blue-500" />
-              </CardDescription>
-              <CardTitle className="text-2xl font-bold text-blue-500">
-                {boardData.kpis.in_progress_count} On-Site
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-xs text-muted-foreground">Under active treatment</p>
-            </CardContent>
-          </Card>
+            <Card className="bg-white border-slate-200 shadow-xs">
+              <CardHeader className="pb-2">
+                <CardDescription className="text-xs font-medium uppercase tracking-wider text-slate-500 flex items-center justify-between">
+                  Emergency SLA Queue
+                  <Flame className="h-4 w-4 text-red-600" />
+                </CardDescription>
+                <CardTitle className="text-2xl font-bold text-red-700">
+                  {boardData.kpis.emergency_sla_count} Critical
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-xs text-slate-500">24-hour turnaround mandate</p>
+              </CardContent>
+            </Card>
 
-          <Card className="bg-card/50 backdrop-blur border-border/40">
-            <CardHeader className="pb-2">
-              <CardDescription className="text-xs font-medium uppercase tracking-wider text-muted-foreground flex items-center justify-between">
-                Emergency SLA Queue
-                <Flame className="h-4 w-4 text-red-500" />
-              </CardDescription>
-              <CardTitle className="text-2xl font-bold text-red-500">
-                {boardData.kpis.emergency_sla_count} Critical
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-xs text-muted-foreground">24-hour turnaround mandate</p>
-            </CardContent>
-          </Card>
+            <Card className="bg-white border-slate-200 shadow-xs">
+              <CardHeader className="pb-2">
+                <CardDescription className="text-xs font-medium uppercase tracking-wider text-slate-500 flex items-center justify-between">
+                  Completed Remediations
+                  <CheckCircle2 className="h-4 w-4 text-emerald-600" />
+                </CardDescription>
+                <CardTitle className="text-2xl font-bold text-emerald-700">
+                  {boardData.kpis.completed_count} Cured
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-xs text-slate-500">Total: ${boardData.kpis.total_cost_allocated} USD</p>
+              </CardContent>
+            </Card>
+          </div>
+        )}
 
-          <Card className="bg-card/50 backdrop-blur border-border/40">
-            <CardHeader className="pb-2">
-              <CardDescription className="text-xs font-medium uppercase tracking-wider text-muted-foreground flex items-center justify-between">
-                Completed Remediations
-                <CheckCircle2 className="h-4 w-4 text-emerald-500" />
-              </CardDescription>
-              <CardTitle className="text-2xl font-bold text-emerald-500">
-                {boardData.kpis.completed_count} Cured
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-xs text-muted-foreground">Total: ${boardData.kpis.total_cost_allocated} USD</p>
-            </CardContent>
-          </Card>
-        </div>
-      )}
-
-      {/* Filter and Search Bar */}
-      <div className="flex flex-col md:flex-row items-center justify-between gap-3 bg-muted/40 p-3 rounded-xl border border-border/40">
+        {/* Filter and Search Bar */}
+        <div className="flex flex-col md:flex-row items-center justify-between gap-3 bg-white p-3 rounded-xl border border-slate-200 shadow-xs">
         <div className="flex flex-wrap items-center gap-2.5 w-full md:w-auto">
           {/* Crew Filter */}
           <div className="flex items-center gap-1.5 text-xs">
@@ -682,7 +684,7 @@ export default function WorkOrdersKanbanPage() {
 
                 <Button
                   size="sm"
-                  className="text-xs bg-emerald-600 hover:bg-emerald-700 text-white"
+                  className="text-xs bg-slate-950 hover:bg-slate-800 text-white"
                   onClick={() => setModalOpen(false)}
                 >
                   Close Details
@@ -692,7 +694,8 @@ export default function WorkOrdersKanbanPage() {
           )}
         </DialogContent>
       </Dialog>
-    </div>
+      </div>
+    </DashboardShell>
   );
 }
 

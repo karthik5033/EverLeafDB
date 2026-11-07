@@ -182,9 +182,9 @@ function InspectionForm() {
 
         {/* Header Title */}
         <div>
-          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 border border-emerald-200 text-xs font-mono text-emerald-800 mb-2">
-            <Stethoscope className="w-3.5 h-3.5" />
-            <span>Phase 12: Field Ingestion &amp; CLIP Pipeline</span>
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-slate-100 border border-slate-200 text-xs font-mono text-slate-700 mb-2">
+            <Stethoscope className="w-3.5 h-3.5 text-slate-500" />
+            <span>Field Pathology • CLIP Vectorization</span>
           </div>
           <h1 className="text-2xl md:text-3xl font-extrabold text-foreground tracking-tight">
             Log Field Health Inspection
