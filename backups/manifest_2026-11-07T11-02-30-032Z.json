@@ -1,0 +1,24 @@
+{
+  "backup_id": "bkp-mw6antzl-937o",
+  "database": "everleafdb",
+  "generated_at": "2026-11-07T11:02:30.033Z",
+  "pg_version": "PostgreSQL 16.3 (Debian 16.3-1.pgdg120+1) with PostGIS 3.4.2 & pgvector 0.5.1",
+  "backup_format": "CUSTOM_COMPRESSED_TAR (pg_dump -Fc)",
+  "compression": "gzip-level-9",
+  "sha256_checksum": "943371e0cbf2a9f0463f94b65f9bfaa9c2d774f1ac8f7cb1f93d3ad6b2d38fc6",
+  "archive_filename": "everleafdb_base_2026-11-07T11-02-30-032Z.dump",
+  "size_bytes": 10999,
+  "compressed_size_bytes": 2420,
+  "compression_ratio_pct": 78,
+  "table_metrics": {
+    "trees": 10,
+    "inspections": 3,
+    "work_orders": 4,
+    "citizen_reports": 4,
+    "audit_log": 3
+  },
+  "wal_checkpoint": {
+    "lsn": "0/1A4D8F0",
+    "timeline": 1
+  }
+}

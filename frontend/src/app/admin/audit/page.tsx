@@ -91,6 +91,28 @@ export default function AdminAuditPage() {
     fetchLogs();
   }, [selectedTable, selectedAction]);
 
+  const [isResettingDemo, setIsResettingDemo] = useState(false);
+
+  const handleResetDemoData = async () => {
+    if (!confirm("Are you sure you want to reset all demo state to certified Course Viva baseline?")) {
+      return;
+    }
+    setIsResettingDemo(true);
+    try {
+      const res = await fetch("/api/admin/demo-reset", { method: "POST" });
+      const data = await res.json();
+      if (data.success) {
+        alert(data.message);
+        await fetchLogs();
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Failed to reset demo data.");
+    } finally {
+      setIsResettingDemo(false);
+    }
+  };
+
   const handleTriggerBackup = async () => {
     setIsBackingUp(true);
     setBackupResult(null);
@@ -165,7 +187,16 @@ export default function AdminAuditPage() {
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2">
+          <Button
+            variant="outline"
+            onClick={handleResetDemoData}
+            disabled={isResettingDemo}
+            className="border-amber-300 text-amber-800 hover:bg-amber-50 gap-1.5 text-xs"
+          >
+            <RefreshCw className={`w-3.5 h-3.5 ${isResettingDemo ? "animate-spin" : ""}`} />
+            Reset Demo Data (Viva)
+          </Button>
           <Button
             variant="outline"
             onClick={fetchLogs}

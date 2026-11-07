@@ -5,7 +5,7 @@
  * - 4-column Kanban task board (PENDING, IN_PROGRESS, COMPLETED, CANCELLED)
  * - Real-time status transitions with auto-timestamping (closed_at)
  * - Contractor/crew and municipal ward filtering
- * - Strict role compliance (zero 'arborist' occurrences)
+ * - Strict role compliance (zero prohibited role occurrences)
  */
 
 import { WORK_ORDERS, TREES, DISEASES, WorkOrder } from "./db";
