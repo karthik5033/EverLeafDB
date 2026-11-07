@@ -24,7 +24,8 @@ import {
   Stethoscope,
   Building2,
   Flame,
-  Clock
+  Clock,
+  Megaphone
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -134,6 +135,13 @@ const NAV_ITEMS: NavItem[] = [
     href: "/work-orders",
     icon: Wrench,
     badge: "Phase 23",
+    badgeVariant: "emerald"
+  },
+  {
+    title: "Citizen Reports",
+    href: "/report",
+    icon: Megaphone,
+    badge: "Phase 27",
     badgeVariant: "emerald"
   },
   {

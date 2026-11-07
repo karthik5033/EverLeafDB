@@ -256,3 +256,4 @@ $$ LANGUAGE plpgsql IMMUTABLE;
 
 COMMENT ON FUNCTION fn_test_rls_ward_authorization IS
 'Evaluates simulated RLS authorization decisions against municipal ward tenant boundaries.';
+

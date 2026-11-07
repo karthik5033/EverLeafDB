@@ -315,3 +315,4 @@ SET LOCAL app.current_user_ward = '${user.assigned_ward_id || ""}';
     sql_session_stmt: sqlStmt
   };
 }
+

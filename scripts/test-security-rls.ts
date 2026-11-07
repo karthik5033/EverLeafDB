@@ -170,3 +170,4 @@ console.log("===================================================================
 if (passedAssertions !== totalAssertions) {
   process.exit(1);
 }
+
