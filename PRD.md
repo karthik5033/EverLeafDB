@@ -19,12 +19,12 @@ Municipal governments, botanical gardens, and university campuses oversee tens o
 
 ### 1.2 The Core Problem
 1. **Data Fragmentation:** Crucial lifecycle information (planting date, GPS location, crown measurements, disease history, work orders) is siloed across hand-written field notebooks, spreadsheet files, and disconnected chat groups.
-2. **Subjective & Inconsistent Diagnosis:** Disease identification relies almost entirely on the individual field arborist's memory. Novice inspectors frequently misdiagnose early-stage fungal cankers, root rots, or beetle borers.
+2. **Subjective & Inconsistent Diagnosis:** Disease identification relies almost entirely on the individual field inspector's memory. Novice inspectors frequently misdiagnose early-stage fungal cankers, root rots, or beetle borers.
 3. **Reactive Rather than Preventive Care:** Trees are typically flagged for maintenance only after catastrophic limb failure, severe dieback, or public citizen complaints occur.
 4. **Zero Visual Searchability:** Municipalities capture thousands of smartphone inspection photos, but these photos are dumped into unindexed file systems with zero ability to search: *"Show me all oak trees within this ward displaying similar leaf scorch patterns."*
 
 ### 1.3 Solution Overview: EverLeafDB
-**EverLeafDB** solves this by unifying **Relational Tree Lifecycle Management**, **PostGIS Geospatial Coordinates**, and **pgvector High-Dimensional Image Embeddings** inside a single ACID-compliant database. It does not replace arborists with a black-box machine learning classifier. Instead, it operates on a **Case-Based Retrieval** paradigm: an arborist uploads a photo of an ailing branch and the database instantly returns the top 5 most similar past cases of that exact tree species in the same locality, complete with confirmed diagnoses and historical treatment outcomes.
+**EverLeafDB** solves this by unifying **Relational Tree Lifecycle Management**, **PostGIS Geospatial Coordinates**, and **pgvector High-Dimensional Image Embeddings** inside a single ACID-compliant database. It does not replace field inspectors with a black-box machine learning classifier. Instead, it operates on a **Case-Based Retrieval** paradigm: an inspector uploads a photo of an ailing branch and the database instantly returns the top 5 most similar past cases of that exact tree species in the same locality, complete with confirmed diagnoses and historical treatment outcomes.
 
 ---
 
@@ -42,12 +42,12 @@ Municipal governments, botanical gardens, and university campuses oversee tens o
 | Persona | Primary Needs & Responsibilities | Core Interactions with EverLeafDB |
 | :--- | :--- | :--- |
 | **Municipal Admin** | Manages system integrity, municipal ward boundaries, user credentials, audit trails, and master botanical species taxonomies. | DDL operations, user creation, ward boundary imports, system-wide configuration, audit log inspection. |
-| **Supervisor / Certified Arborist** | Validates diagnoses, reviews automated system alerts, selects treatment protocols, assigns work orders to crews, reviews ward-level mortality metrics. | Alert triage, Stored Procedure dispatch (`sp_confirm_diagnosis_and_dispatch_order`), analytical queries, materialized view refreshes. |
+| **Municipal Tree Supervisor** | Validates diagnoses, reviews automated system alerts, selects treatment protocols, assigns work orders to crews, reviews ward-level mortality metrics. | Alert triage, Stored Procedure dispatch (`sp_confirm_diagnosis_and_dispatch_order`), analytical queries, materialized view refreshes. |
 | **Field Inspector** | Conducts field visits, updates tree dimensions (girth, height), records health scores, uploads photos of bark/leaves, queries visual precedents. | Tree registration, inspection logging, photo upload, real-time spatial + vector similarity queries. Constrained by Row-Level Security (RLS) to assigned ward. |
 | **Citizen Reporter (Optional)** | Reports fallen branches, sidewalk root damage, or diseased community trees via public portal. | Read-only access to self-submitted hazard tickets; anonymous submissions generate pending inspection requests. |
 
 ### Permissions Matrix
-| Action / Entity | Municipal Admin | Arborist Supervisor | Field Inspector | Citizen Reporter |
+| Action / Entity | Municipal Admin | Municipal Tree Supervisor | Field Inspector | Citizen Reporter |
 | :--- | :---: | :---: | :---: | :---: |
 | Create / Edit Species & Diseases | **CRUD** | Read-Only | Read-Only | None |
 | Create / Modify Wards (GIS) | **CRUD** | Read-Only | Read-Only | None |

@@ -43,7 +43,7 @@
 
 ## Executive Summary & Motivation
 
-Urban municipalities and university campuses oversee tens of thousands of trees providing critical environmental and ecological value. Traditional management relies on fragmented paper registers, ad-hoc spreadsheets, and disconnected smartphone photos. When pathological symptoms appear (e.g., fungal shelf rot, chlorosis, bark beetle infestations), field arborists are forced to diagnose diseases from individual memory without access to historical case contexts.
+Urban municipalities and university campuses oversee tens of thousands of trees providing critical environmental and ecological value. Traditional management relies on fragmented paper registers, ad-hoc spreadsheets, and disconnected smartphone photos. When pathological symptoms appear (e.g., fungal shelf rot, chlorosis, bark beetle infestations), field inspectors are forced to diagnose diseases from individual memory without access to historical case contexts.
 
 ```
 +-------------------------------------------------------------------------------+
@@ -80,7 +80,7 @@ EverLeafDB leverages a tri-engine architecture in a unified PostgreSQL instance:
 flowchart TD
     subgraph ClientLayer["Client & Ingestion Layer"]
         FI["Field Inspector (Mobile / Tablet)"]
-        AB["Supervisor / Certified Arborist"]
+        AB["Municipal Tree Supervisor"]
         ADM["Municipal Admin"]
         CR["Citizen Reporter"]
     end
@@ -152,7 +152,7 @@ sequenceDiagram
     participant App as API Server
     participant Model as CLIP Model Server
     participant DB as EverLeafDB (Postgres + PostGIS + pgvector)
-    actor Supervisor as Arborist Supervisor
+    actor Supervisor as Municipal Tree Supervisor
 
     Inspector->>App: POST /api/inspections (tree_id, notes, image_file, GPS)
     App->>DB: Verify Inspector Ward RLS & Tree Coordinates
@@ -225,7 +225,7 @@ flowchart LR
     CR[Citizen] -->|Tree Hazard Report| SYS((EverLeafDB System))
     FI[Field Inspector] -->|Inspections, Photos, Girth, Height| SYS
     SYS -->|Historical Cases, Treatment Efficacy| FI
-    SUP[Supervisor / Arborist] -->|Diagnosis Approval, Work Orders| SYS
+    SUP[Municipal Tree Supervisor] -->|Diagnosis Approval, Work Orders| SYS
     SYS -->|Risk Alerts, Ward Health Analytics| SUP
     ADM[System Admin] -->|User Roles, Taxonomy Management| SYS
     SYS -->|Audit Logs, System Diagnostics| ADM
@@ -401,7 +401,7 @@ erDiagram
         date start_date
         date end_date
         varchar outcome_status "SUCCESSFUL, PARTIAL, FAILED, ONGOING"
-        text arborist_remarks
+        text inspector_remarks
     }
 
     WORK_ORDER {
@@ -891,7 +891,7 @@ BEGIN
         treatment_id,
         start_date,
         outcome_status,
-        arborist_remarks
+        inspector_remarks
     ) VALUES (
         v_diagnosis_id,
         p_treatment_id,
@@ -988,7 +988,7 @@ ORDER BY t.tree_id, insp.inspected_at DESC NULLS LAST;
 EverLeafDB implements zero-trust isolation:
 1. **Roles:**
    - `admin`: Superuser role, manages taxonomy, users, and audit logs.
-   - `supervisor`: Certified arborist, reviews alerts, dispatches work orders.
+   - `supervisor`: Municipal Tree Supervisor, reviews alerts, dispatches work orders.
    - `field_inspector`: Creates inspections and uploads images; constrained by Row-Level Security.
    - `citizen_reporter`: Can submit problem reports and view only their own records.
 
@@ -1122,27 +1122,27 @@ EverLeafDB/
 docker run -d \
   --name everleafdb \
   -e POSTGRES_DB=everleafdb \
-  -e POSTGRES_USER=arborist \
+  -e POSTGRES_USER=everleaf_admin \
   -e POSTGRES_PASSWORD=leafsecret \
   -p 5432:5432 \
   pgvector/pgvector:pg16
 
 # 2. Connect and install PostGIS inside container
-docker exec -it everleafdb psql -U arborist -d everleafdb -c "CREATE EXTENSION postgis; CREATE EXTENSION vector;"
+docker exec -it everleafdb psql -U everleaf_admin -d everleafdb -c "CREATE EXTENSION postgis; CREATE EXTENSION vector;"
 
 # 3. Apply EverLeafDB Schema Scripts
-psql -h localhost -U arborist -d everleafdb -f sql/01_schema.sql
-psql -h localhost -U arborist -d everleafdb -f sql/04_triggers.sql
-psql -h localhost -U arborist -d everleafdb -f sql/05_procedures.sql
-psql -h localhost -U arborist -d everleafdb -f sql/06_views.sql
-psql -h localhost -U arborist -d everleafdb -f sql/07_seed_data.sql
+psql -h localhost -U everleaf_admin -d everleafdb -f sql/01_schema.sql
+psql -h localhost -U everleaf_admin -d everleafdb -f sql/04_triggers.sql
+psql -h localhost -U everleaf_admin -d everleafdb -f sql/05_procedures.sql
+psql -h localhost -U everleaf_admin -d everleafdb -f sql/06_views.sql
+psql -h localhost -U everleaf_admin -d everleafdb -f sql/07_seed_data.sql
 ```
 
 ---
 
 ## Viva & Examination Reference Guide
 
-> **"Trees are managed by place, species, age, and history, and diseases are recognised by sight. Normally those live in separate tools. EverLeafDB puts all of them in one relational database so a single SQL query can combine geographic coordinates, biological taxonomy, and visual similarity. Similarity is used to retrieve past cases for human confirmation, not to replace arborist judgment."**
+> **"Trees are managed by place, species, age, and history, and diseases are recognised by sight. Normally those live in separate tools. EverLeafDB puts all of them in one relational database so a single SQL query can combine geographic coordinates, biological taxonomy, and visual similarity. Similarity is used to retrieve past cases for human confirmation, not to replace field inspector judgment."**
 
 ### Quick Viva Q&A
 1. **Q: Why pgvector instead of Pinecone/Milvus?**  

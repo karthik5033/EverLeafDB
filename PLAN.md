@@ -12,7 +12,7 @@
 ## Phase Overview Map
 
 ```
-[ FOUNDATION ]  ──>  [ DATA & SPATIAL ]  ──>  [ VECTOR & INGESTION ]  ──>  [ ACTIVE LOGIC & QUERIES ]  ──>  [ UI & ARBORIST WORKFLOW ]  ──>  [ EVALUATION & POLISH ]
+[ FOUNDATION ]  ──>  [ DATA & SPATIAL ]  ──>  [ VECTOR & INGESTION ]  ──>  [ ACTIVE LOGIC & QUERIES ]  ──>  [ UI & CLINICAL WORKFLOW ]  ──>  [ EVALUATION & POLISH ]
   Phases 1-3            Phases 4-8                Phases 9-12                    Phases 13-20                     Phases 21-27                     Phases 28-30
 ```
 
@@ -142,7 +142,7 @@
 ---
 
 ### Phase 12: Field Inspection Form & Multimodal Ingestion UI
-- **Objective:** Create a mobile-first field inspection interface for arborists on duty.
+- **Objective:** Create a mobile-first field inspection interface for field inspectors on duty.
 - **Tasks:**
   1. Build mobile-responsive inspection form at `/inspections/new?tree_id=<id>`.
   2. Implement camera shutter / file upload component with real-time image preview.
@@ -178,7 +178,7 @@
 - **Tasks:**
   1. Build backend service function executing vector search: `ORDER BY image_embedding <=> $vector ASC LIMIT 5`.
   2. Join matched images back to historical `diagnoses`, `diseases`, and `treatment_records`.
-  3. Return calculated similarity percentages, arborist notes, and treatment outcome statuses (`SUCCESSFUL`, `FAILED`).
+  3. Return calculated similarity percentages, field inspector notes, and treatment outcome statuses (`SUCCESSFUL`, `FAILED`).
   4. Create UI card component displaying retrieved precedent cases side-by-side with the uploaded query image.
 - **Deliverables:** Case-based recommendation engine explaining visual matches with clinical history.
 
@@ -220,7 +220,7 @@
   1. Write SQL aggregation query grouping by disease and treatment, computing percentage of `SUCCESSFUL` outcomes and average cost.
   2. Expose endpoint `/api/analytics/treatment-efficacy`.
   3. Build analytical dashboard with shadcn/ui charts (Recharts bar chart comparing success rates and treatment costs).
-- **Deliverables:** Analytical query and visual ROI chart for municipal arborists.
+- **Deliverables:** Analytical query and visual ROI chart for municipal tree managers.
 
 ---
 
@@ -234,13 +234,13 @@
 
 ---
 
-### Phase 21: Clinical Diagnosis & Arborist Triage Interface
+### Phase 21: Clinical Diagnosis & Supervisor Triage Interface
 - **Objective:** Provide a clinical review screen for certified supervisors to confirm diagnoses.
 - **Tasks:**
   1. Build Supervisor Triage Dashboard at `/alerts` listing all `PENDING` risk alerts.
   2. Create side-by-side inspection viewer comparing the current suspicious photo with the top retrieved reference case.
-  3. Add arborist input controls to confirm disease, adjust confidence source (`manual` vs `vector_suggested`), and select treatment plan.
-- **Deliverables:** Professional arborist triage portal with visual comparison and confirmation workflow.
+  3. Add supervisor input controls to confirm disease, adjust confidence source (`manual` vs `vector_suggested`), and select treatment plan.
+- **Deliverables:** Professional supervisor triage portal with visual comparison and confirmation workflow.
 
 ---
 

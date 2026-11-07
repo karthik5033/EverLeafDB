@@ -19,7 +19,7 @@
 +─────────────────────────────────────────────────────────────────────────────+
 │                                CLIENT TIER                                  │
 │  - Field Inspector Web App (Leaflet / MapLibre GIS + HTML5 Camera)         │
-│  - Arborist Supervisor Portal (Analytical Dashboards & Alert Dispatch)     │
+│  - Municipal Tree Supervisor Portal (Analytical Dashboards & Alert Dispatch)│
 +──────────────────────────────────────┬──────────────────────────────────────+
                                        │ HTTPS / TLS 1.3
                                        ▼
@@ -228,7 +228,7 @@ CREATE TABLE species_disease_susceptibility (
     PRIMARY KEY (species_id, disease_id)
 );
 
--- Clinical Diagnoses Confirmed by Arborists
+-- Clinical Diagnoses Confirmed by Municipal Supervisors
 CREATE TABLE diagnoses (
     diagnosis_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     inspection_id UUID NOT NULL REFERENCES inspections(inspection_id) ON DELETE CASCADE,
@@ -257,7 +257,7 @@ CREATE TABLE treatment_records (
     start_date DATE NOT NULL DEFAULT CURRENT_DATE,
     end_date DATE CHECK (end_date >= start_date),
     outcome_status treatment_outcome NOT NULL DEFAULT 'ONGOING',
-    arborist_remarks TEXT,
+    inspector_remarks TEXT,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -461,7 +461,7 @@ BEGIN
         treatment_id,
         start_date,
         outcome_status,
-        arborist_remarks
+        inspector_remarks
     ) VALUES (
         v_diagnosis_id,
         p_treatment_id,
