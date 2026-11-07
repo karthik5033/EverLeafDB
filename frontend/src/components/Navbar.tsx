@@ -1,30 +1,31 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   Trees,
   Menu,
   Search,
-  Moon,
   Database,
   Compass,
   Layers,
   Sparkles,
   X,
-  ArrowRight,
   ShieldAlert,
-  MapPin,
-  Stethoscope
+  Wrench,
+  BarChart3,
+  Megaphone,
+  User,
+  ArrowRight
 } from "lucide-react";
 import { TREES, WARDS, DISEASES } from "@/lib/db";
 
 const GithubIcon = ({ className }: { className?: string }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width="20"
-    height="20"
+    width="18"
+    height="18"
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
@@ -38,11 +39,32 @@ const GithubIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
+const NAV_LINKS = [
+  { title: "Trees", href: "/trees" },
+  { title: "Spatial Map", href: "/map" },
+  { title: "Triage", href: "/alerts" },
+  { title: "Field Kanban", href: "/work-orders" },
+  { title: "Analytics", href: "/analytics" },
+  { title: "Citizen Portal", href: "/report" }
+];
+
 export default function Navbar() {
   const pathname = usePathname();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  // Keyboard shortcut (⌘K or Ctrl+K)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+        e.preventDefault();
+        setIsSearchOpen((prev) => !prev);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   // Quick search results
   const searchResults = searchQuery.trim()
@@ -60,214 +82,160 @@ export default function Navbar() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 flex items-center justify-between px-6 py-3.5 bg-white/90 backdrop-blur-md border-b border-gray-100">
-        <div className="flex items-center gap-3">
-          <Link href="/" className="flex items-center gap-2 group">
-            <div className="w-8 h-8 bg-black rounded-full flex items-center justify-center transition-transform group-hover:scale-105">
+      <header className="sticky top-0 z-50 h-14 bg-white/95 backdrop-blur-md border-b border-slate-200 px-4 md:px-6 flex items-center justify-between">
+        {/* Left: Brand Identity */}
+        <div className="flex items-center gap-3 shrink-0">
+          <Link href="/" className="flex items-center gap-2.5 group shrink-0">
+            <div className="w-8 h-8 bg-slate-950 rounded-lg flex items-center justify-center transition-transform group-hover:scale-105 shadow-xs">
               <Trees className="w-4 h-4 text-white" />
             </div>
-            <span className="font-bold text-lg tracking-tight text-gray-950">EverLeafDB</span>
+            <span className="font-bold text-base tracking-tight text-slate-950">EverLeafDB</span>
           </Link>
-          <span className="hidden sm:inline-flex text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 font-semibold">
-            PostgreSQL + PostGIS + pgvector
+          <span className="hidden sm:inline-flex text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 font-semibold shrink-0 whitespace-nowrap">
+            PostgreSQL 16
           </span>
         </div>
 
-        <div className="flex items-center gap-3">
-          {/* Quick Action Icons */}
-          <div className="flex items-center gap-1.5">
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 text-gray-500 hover:text-black hover:bg-gray-100 rounded-md transition-colors border border-gray-200"
-              title="Navigation Menu"
-            >
-              <Menu className="w-4 h-4" />
+        {/* Center: Standard Clean Navigation Links */}
+        <nav className="hidden lg:flex items-center gap-1 mx-4">
+          {NAV_LINKS.map((link) => {
+            const isActive = pathname === link.href || (link.href !== "/" && pathname.startsWith(link.href));
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors shrink-0 whitespace-nowrap ${
+                  isActive
+                    ? "bg-slate-900 text-white font-semibold shadow-xs"
+                    : "text-slate-600 hover:text-slate-950 hover:bg-slate-100"
+                }`}
+              >
+                {link.title}
+              </Link>
+            );
+          })}
+        </nav>
+
+        {/* Right: Actions */}
+        <div className="flex items-center gap-2 shrink-0">
+          {/* Search Trigger */}
+          <button
+            onClick={() => setIsSearchOpen(true)}
+            className="hidden md:flex items-center gap-2 h-8 px-2.5 text-xs text-slate-500 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-lg transition-colors shrink-0 whitespace-nowrap"
+            title="Quick Search (⌘K)"
+          >
+            <Search className="w-3.5 h-3.5 text-slate-400" />
+            <span>Search DB...</span>
+            <kbd className="text-[10px] bg-white border border-slate-200 px-1.5 py-0.2 rounded text-slate-500 font-mono shadow-2xs">
+              ⌘K
+            </kbd>
+          </button>
+
+          {/* GitHub Repository */}
+          <a
+            href="https://github.com/karthik5033/EverLeafDB"
+            target="_blank"
+            rel="noreferrer"
+            className="p-1.5 text-slate-500 hover:text-slate-950 hover:bg-slate-100 rounded-md transition-colors shrink-0"
+            title="GitHub Open Source Repository"
+          >
+            <GithubIcon />
+          </a>
+
+          <div className="hidden sm:block h-4 w-px bg-slate-200 mx-1 shrink-0"></div>
+
+          {/* Sign In */}
+          <Link
+            href="/login"
+            className={`hidden sm:inline-flex items-center px-3 py-1.5 text-xs font-medium rounded-lg transition-colors shrink-0 whitespace-nowrap ${
+              pathname === "/login"
+                ? "bg-slate-100 text-slate-950 font-semibold"
+                : "text-slate-700 hover:text-slate-950 hover:bg-slate-100"
+            }`}
+          >
+            Sign In
+          </Link>
+
+          {/* Primary CTA */}
+          <Link href="/console" className="shrink-0">
+            <button className="h-8 px-3.5 text-xs font-medium bg-slate-950 hover:bg-slate-800 text-white rounded-lg shadow-xs flex items-center gap-1.5 transition-colors shrink-0 whitespace-nowrap">
+              <span>Console</span>
+              <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
             </button>
+          </Link>
 
-            <button
-              onClick={() => setIsSearchOpen(true)}
-              className="p-2 text-gray-500 hover:text-black hover:bg-gray-100 rounded-md transition-colors border border-gray-200 flex items-center gap-2 text-xs font-mono"
-              title="Quick Search (Ctrl+K)"
-            >
-              <Search className="w-4 h-4" />
-              <span className="hidden lg:inline text-gray-400">Search DB...</span>
-              <kbd className="hidden lg:inline text-[9px] bg-gray-100 border border-gray-200 px-1 py-0.5 rounded text-gray-500">⌘K</kbd>
-            </button>
-
-            <Link
-              href="/console"
-              className={`p-2 rounded-md transition-all border ${
-                pathname === "/console"
-                  ? "bg-emerald-800 text-white border-emerald-900 shadow-xs"
-                  : "bg-black text-white hover:bg-gray-800 border-black"
-              }`}
-              title="Interactive SQL Console"
-            >
-              <Database className="w-4 h-4" />
-            </Link>
-          </div>
-
-          <div className="h-6 w-px bg-gray-200 mx-1 hidden sm:block"></div>
-
-          {/* Engine Direct Nav Links */}
-          <div className="hidden sm:flex items-center gap-2">
-            <a
-              href="https://github.com/karthik5033/EverLeafDB"
-              target="_blank"
-              rel="noreferrer"
-              className="p-2 text-gray-500 hover:text-black hover:bg-gray-50 rounded-md transition-colors"
-              title="GitHub Open Source Repository"
-            >
-              <GithubIcon className="w-4 h-4" />
-            </a>
-
-            <Link
-              href="/trees"
-              className={`p-2 rounded-md transition-colors flex items-center gap-1 text-xs font-medium ${
-                pathname.startsWith("/trees")
-                  ? "bg-emerald-50 text-emerald-800 border border-emerald-200 font-bold"
-                  : "text-gray-600 hover:text-black hover:bg-gray-50"
-              }`}
-              title="3NF Urban Tree Registry"
-            >
-              <Trees className="w-4 h-4" />
-              <span className="hidden xl:inline">Tree Registry</span>
-            </Link>
-
-            <Link
-              href="/map"
-              className={`p-2 rounded-md transition-colors flex items-center gap-1 text-xs font-medium ${
-                pathname === "/map"
-                  ? "bg-emerald-50 text-emerald-800 border border-emerald-200 font-bold"
-                  : "text-gray-600 hover:text-black hover:bg-gray-50"
-              }`}
-              title="PostGIS Spatial Subsystem & Wards"
-            >
-              <Compass className="w-4 h-4" />
-              <span className="hidden xl:inline">Spatial Map</span>
-            </Link>
-
-            <Link
-              href="/inspections"
-              className={`p-2 rounded-md transition-colors flex items-center gap-1 text-xs font-medium ${
-                pathname.startsWith("/inspections")
-                  ? "bg-emerald-50 text-emerald-800 border border-emerald-200 font-bold"
-                  : "text-gray-600 hover:text-black hover:bg-gray-50"
-              }`}
-              title="Field Health Inspection Logging"
-            >
-              <Stethoscope className="w-4 h-4" />
-              <span className="hidden xl:inline">Inspections</span>
-            </Link>
-
-            <Link
-              href="/similarity"
-              className={`p-2 rounded-md transition-colors flex items-center gap-1 text-xs font-medium ${
-                pathname === "/similarity"
-                  ? "bg-emerald-50 text-emerald-800 border border-emerald-200 font-bold"
-                  : "text-gray-600 hover:text-black hover:bg-gray-50"
-              }`}
-              title="pgvector Disease Similarity Engine"
-            >
-              <Layers className="w-4 h-4" />
-              <span className="hidden xl:inline">Vector Engine</span>
-            </Link>
-
-            <Link
-              href="/queries/nearby-similar"
-              className={`p-2 rounded-md transition-colors flex items-center gap-1 text-xs font-medium ${
-                pathname.startsWith("/queries/nearby-similar")
-                  ? "bg-emerald-50 text-emerald-800 border border-emerald-200 font-bold"
-                  : "text-gray-600 hover:text-black hover:bg-gray-50"
-              }`}
-              title="Hybrid Query 1: Nearby Visually Similar Cases"
-            >
-              <Compass className="w-4 h-4" />
-              <span className="hidden xl:inline">Query 1</span>
-            </Link>
-          </div>
-
-          {/* Action Buttons */}
-          <div className="flex items-center gap-2.5 ml-2">
-            <Link
-              href="/login"
-              className={`px-3.5 py-1.5 text-xs font-semibold rounded-md transition-colors border ${
-                pathname === "/login"
-                  ? "bg-emerald-50 border-emerald-300 text-emerald-900"
-                  : "border-gray-200 hover:bg-gray-50 text-gray-800"
-              }`}
-            >
-              Inspector Sign In
-            </Link>
-
-            <Link
-              href="/console"
-              className="px-3.5 py-1.5 text-xs font-semibold text-white bg-[#111111] hover:bg-black rounded-md transition-all shadow-xs flex items-center gap-1.5"
-            >
-              Launch Console <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
-            </Link>
-          </div>
+          {/* Mobile Menu Toggle */}
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="lg:hidden p-1.5 text-slate-600 hover:text-slate-950 hover:bg-slate-100 rounded-lg transition-colors border border-slate-200 ml-1"
+            title="Toggle Navigation Menu"
+          >
+            {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+          </button>
         </div>
       </header>
 
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-b border-gray-200 bg-white p-4 space-y-2 animate-in fade-in slide-in-from-top-2">
-          <Link
-            href="/"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block px-3 py-2 text-sm font-semibold text-gray-900 rounded-md hover:bg-gray-50"
-          >
-            Overview &amp; Metrics
-          </Link>
-          <Link
-            href="/console"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block px-3 py-2 text-sm font-semibold text-gray-900 rounded-md hover:bg-gray-50"
-          >
-            SQL &amp; Multi-Model Console
-          </Link>
-          <Link
-            href="/map"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block px-3 py-2 text-sm font-semibold text-gray-900 rounded-md hover:bg-gray-50"
-          >
-            PostGIS Geospatial Map
-          </Link>
-          <Link
-            href="/similarity"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block px-3 py-2 text-sm font-semibold text-gray-900 rounded-md hover:bg-gray-50"
-          >
-            pgvector HNSW Similarity Studio
-          </Link>
-          <Link
-            href="/login"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block px-3 py-2 text-sm font-semibold text-emerald-800 rounded-md bg-emerald-50"
-          >
-            Inspector Fleet Sign In
-          </Link>
+        <div className="lg:hidden border-b border-slate-200 bg-white p-4 space-y-1 animate-in fade-in slide-in-from-top-2">
+          {NAV_LINKS.map((link) => {
+            const isActive = pathname === link.href || (link.href !== "/" && pathname.startsWith(link.href));
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setMobileMenuOpen(false)}
+                className={`block px-3 py-2 text-xs font-medium rounded-lg transition-colors ${
+                  isActive ? "bg-slate-900 text-white font-semibold" : "text-slate-700 hover:bg-slate-100"
+                }`}
+              >
+                {link.title}
+              </Link>
+            );
+          })}
+          <div className="pt-2 border-t border-slate-100 space-y-1">
+            <Link
+              href="/console"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block px-3 py-2 text-xs font-semibold text-slate-900 rounded-lg hover:bg-slate-100 flex items-center justify-between"
+            >
+              <span>Multi-Model SQL Console</span>
+              <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
+            </Link>
+            <Link
+              href="/login"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block px-3 py-2 text-xs font-medium text-slate-600 rounded-lg hover:bg-slate-100"
+            >
+              Sign In (Inspector Session)
+            </Link>
+          </div>
         </div>
       )}
 
-      {/* Search Modal */}
+      {/* Search Modal (⌘K) */}
       {isSearchOpen && (
-        <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-start justify-center pt-20 p-4">
-          <div className="bg-white border border-gray-200 rounded-xl max-w-xl w-full shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
-            <div className="p-3.5 border-b border-gray-100 flex items-center gap-3">
-              <Search className="w-4 h-4 text-gray-400" />
+        <div
+          className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-start justify-center pt-20 p-4"
+          onClick={() => setIsSearchOpen(false)}
+        >
+          <div
+            className="bg-white border border-slate-200 rounded-xl max-w-xl w-full shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="p-3.5 border-b border-slate-100 flex items-center gap-3">
+              <Search className="w-4 h-4 text-slate-400" />
               <input
                 autoFocus
                 type="text"
-                placeholder="Search cataloged trees, municipal wards, or pathological diseases..."
+                placeholder="Search cataloged trees, municipal wards, or pathologies..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full text-sm outline-none text-gray-900 placeholder:text-gray-400 font-sans"
+                className="w-full text-sm outline-none text-slate-900 placeholder:text-slate-400 font-sans"
               />
               <button
                 onClick={() => setIsSearchOpen(false)}
-                className="p-1 text-gray-400 hover:text-black rounded"
+                className="p-1 text-slate-400 hover:text-slate-900 rounded"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -275,25 +243,25 @@ export default function Navbar() {
 
             <div className="max-h-80 overflow-y-auto p-3 text-xs space-y-3 font-mono">
               {!searchQuery.trim() ? (
-                <div className="p-4 text-center text-gray-400 font-sans text-xs">
-                  Type to search trees by tag (e.g. <span className="font-mono text-black font-semibold">TREE-1084</span>), species (<span className="font-mono text-black font-semibold">Banyan</span>), or ward (<span className="font-mono text-black font-semibold">Cubbon</span>).
+                <div className="p-4 text-center text-slate-400 font-sans text-xs">
+                  Type to search trees by tag (e.g. <span className="font-mono text-slate-900 font-semibold">TREE-1084</span>), species (<span className="font-mono text-slate-900 font-semibold">Banyan</span>), or ward (<span className="font-mono text-slate-900 font-semibold">Cubbon</span>).
                 </div>
               ) : searchResults && (
                 <>
                   {searchResults.trees.length > 0 && (
                     <div>
-                      <div className="text-[10px] uppercase font-bold text-gray-400 mb-1 font-sans">Trees Found</div>
+                      <div className="text-[10px] uppercase font-bold text-slate-400 mb-1 font-sans">Trees Found</div>
                       <div className="space-y-1">
                         {searchResults.trees.map((t) => (
                           <Link
                             key={t.tree_id}
                             href={`/map?tree_id=${t.tree_id}`}
                             onClick={() => setIsSearchOpen(false)}
-                            className="p-2 rounded bg-gray-50 hover:bg-emerald-50/60 border border-gray-200/80 flex items-center justify-between text-gray-800 transition-colors"
+                            className="p-2 rounded-lg bg-slate-50 hover:bg-emerald-50/60 border border-slate-200 flex items-center justify-between text-slate-800 transition-colors"
                           >
                             <div>
-                              <span className="font-bold text-gray-950 mr-2">{t.tag_number}</span>
-                              <span className="text-gray-600">{t.species_common} ({t.ward_name})</span>
+                              <span className="font-bold text-slate-950 mr-2">{t.tag_number}</span>
+                              <span className="text-slate-600">{t.species_common} ({t.ward_name})</span>
                             </div>
                             <span className="text-[10px] px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-800 border border-emerald-200 font-semibold font-mono">
                               {t.health_status}
@@ -306,17 +274,17 @@ export default function Navbar() {
 
                   {searchResults.wards.length > 0 && (
                     <div>
-                      <div className="text-[10px] uppercase font-bold text-gray-400 mb-1 font-sans">Municipal Wards</div>
+                      <div className="text-[10px] uppercase font-bold text-slate-400 mb-1 font-sans">Municipal Wards</div>
                       <div className="space-y-1">
                         {searchResults.wards.map((w) => (
                           <Link
                             key={w.ward_id}
                             href={`/map?ward_id=${w.ward_id}`}
                             onClick={() => setIsSearchOpen(false)}
-                            className="p-2 rounded bg-gray-50 hover:bg-emerald-50/60 border border-gray-200/80 flex items-center justify-between text-gray-800 transition-colors"
+                            className="p-2 rounded-lg bg-slate-50 hover:bg-emerald-50/60 border border-slate-200 flex items-center justify-between text-slate-800 transition-colors"
                           >
-                            <span className="font-bold">{w.name} (Ward {w.ward_number})</span>
-                            <span className="text-gray-500 font-mono text-[10px]">{w.tree_count.toLocaleString()} trees</span>
+                            <span className="font-bold text-slate-900">{w.name} (Ward {w.ward_number})</span>
+                            <span className="text-slate-500 font-mono text-[10px]">{w.tree_count.toLocaleString()} trees</span>
                           </Link>
                         ))}
                       </div>
@@ -325,16 +293,16 @@ export default function Navbar() {
 
                   {searchResults.diseases.length > 0 && (
                     <div>
-                      <div className="text-[10px] uppercase font-bold text-gray-400 mb-1 font-sans">Pathologies</div>
+                      <div className="text-[10px] uppercase font-bold text-slate-400 mb-1 font-sans">Pathologies</div>
                       <div className="space-y-1">
                         {searchResults.diseases.map((d) => (
                           <Link
                             key={d.disease_id}
                             href="/similarity"
                             onClick={() => setIsSearchOpen(false)}
-                            className="p-2 rounded bg-gray-50 hover:bg-emerald-50/60 border border-gray-200/80 flex items-center justify-between text-gray-800 transition-colors"
+                            className="p-2 rounded-lg bg-slate-50 hover:bg-emerald-50/60 border border-slate-200 flex items-center justify-between text-slate-800 transition-colors"
                           >
-                            <span className="font-bold">{d.common_name}</span>
+                            <span className="font-bold text-slate-900">{d.common_name}</span>
                             <span className="text-emerald-800 font-semibold">{d.typical_cure_rate}% Cure</span>
                           </Link>
                         ))}
@@ -343,7 +311,7 @@ export default function Navbar() {
                   )}
 
                   {searchResults.trees.length === 0 && searchResults.wards.length === 0 && searchResults.diseases.length === 0 && (
-                    <div className="p-4 text-center text-gray-400 font-sans">
+                    <div className="p-4 text-center text-slate-400 font-sans">
                       No records found matching &ldquo;{searchQuery}&rdquo;.
                     </div>
                   )}
@@ -351,7 +319,7 @@ export default function Navbar() {
               )}
             </div>
 
-            <div className="p-2.5 bg-gray-50 border-t border-gray-100 flex items-center justify-between text-[11px] text-gray-500">
+            <div className="p-2.5 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
               <span>Quick navigation across 142,850 cataloged records</span>
               <span className="font-mono text-emerald-800 font-semibold">GiST Index Active</span>
             </div>
@@ -361,4 +329,3 @@ export default function Navbar() {
     </>
   );
 }
-
