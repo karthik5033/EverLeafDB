@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import { InteractiveVelocityChart } from "@/components/InteractiveVelocityChart";
+import { Geofence3DViewer } from "@/components/Geofence3DViewer";
 import {
   Menu,
   Search,
@@ -42,31 +43,6 @@ const GithubIcon = ({ className }: { className?: string }) => (
     <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/>
     <path d="M9 18c-4.51 2-5-2-7-2"/>
   </svg>
-);
-
-const GeofenceTelemetryRadar = () => (
-  <div className="absolute right-3 bottom-3 w-28 h-28 pointer-events-none opacity-90 flex items-center justify-center">
-    <svg className="w-full h-full text-emerald-600" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-      {/* Radar rings */}
-      <circle cx="50" cy="50" r="44" stroke="currentColor" strokeWidth="1" strokeDasharray="3 3" opacity="0.2" />
-      <circle cx="50" cy="50" r="30" stroke="currentColor" strokeWidth="1" opacity="0.3" />
-      <circle cx="50" cy="50" r="16" stroke="currentColor" strokeWidth="1" strokeDasharray="2 2" opacity="0.4" />
-      <circle cx="50" cy="50" r="3" fill="currentColor" opacity="0.8" />
-      
-      {/* Reticle axis */}
-      <line x1="50" y1="6" x2="50" y2="94" stroke="currentColor" strokeWidth="1" strokeDasharray="2 2" opacity="0.25" />
-      <line x1="6" y1="50" x2="94" y2="50" stroke="currentColor" strokeWidth="1" strokeDasharray="2 2" opacity="0.25" />
-      
-      {/* Simulated Geofence Ward Polygon */}
-      <polygon points="35,24 72,32 64,68 28,62" fill="currentColor" fillOpacity="0.08" stroke="currentColor" strokeWidth="1.5" opacity="0.65" />
-      
-      {/* Active inspector nodes with pulse */}
-      <circle cx="42" cy="38" r="2.5" fill="#10b981" />
-      <circle cx="42" cy="38" r="5" stroke="#10b981" strokeWidth="1" opacity="0.5" className="animate-ping" />
-      <circle cx="58" cy="52" r="2" fill="#10b981" />
-      <circle cx="34" cy="54" r="2" fill="#10b981" />
-    </svg>
-  </div>
 );
 
 export default function Home() {
@@ -306,7 +282,10 @@ export default function Home() {
               <span className="text-[11px] text-gray-400">1,280 active sessions</span>
             </div>
             
-            <GeofenceTelemetryRadar />
+            {/* Real 3D Interactive Urban Tree with Holographic RLS Geofence Dome */}
+            <div className="absolute right-1 -bottom-2 pointer-events-auto z-10 flex items-center justify-center">
+              <Geofence3DViewer />
+            </div>
           </div>
         </div>
 
