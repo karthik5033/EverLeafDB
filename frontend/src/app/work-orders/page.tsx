@@ -214,22 +214,20 @@ export default function WorkOrdersKanbanPage() {
 
   return (
     <DashboardShell>
-      <div className="p-6 md:p-8 max-w-7xl mx-auto space-y-6 pb-28">
+      <div className="p-4 md:p-6 max-w-7xl mx-auto space-y-4 pb-12">
         {/* Page Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-5">
-          <div>
-            <div className="flex items-center gap-3">
-              <div className="p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800">
-                <Wrench className="h-6 w-6" />
-              </div>
-              <div>
-                <h1 className="text-2xl font-bold tracking-tight text-slate-900">
-                  Municipal Field Crew Dispatch &amp; Task Kanban
-                </h1>
-                <p className="text-sm text-slate-500">
-                  Task orchestration for municipal tree response teams, contractors, and field crews across Bangalore wards.
-                </p>
-              </div>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200 pb-3.5">
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800">
+              <Wrench className="h-5 w-5" />
+            </div>
+            <div>
+              <h1 className="text-xl md:text-2xl font-bold tracking-tight text-slate-900">
+                Municipal Field Crew Dispatch &amp; Task Kanban
+              </h1>
+              <p className="text-xs text-slate-500">
+                Task orchestration for municipal tree response teams, contractors, and field crews across Bangalore wards.
+              </p>
             </div>
           </div>
 
@@ -240,7 +238,7 @@ export default function WorkOrdersKanbanPage() {
               size="sm"
               onClick={fetchBoardData}
               disabled={loading}
-              className="gap-1.5 border-slate-200 text-slate-700 hover:bg-slate-50"
+              className="gap-1.5 border-slate-200 text-slate-700 hover:bg-slate-50 h-8 text-xs"
             >
               <RefreshCw className={`h-3.5 w-3.5 ${loading ? "animate-spin" : ""}`} />
               Refresh Board
@@ -248,171 +246,171 @@ export default function WorkOrdersKanbanPage() {
           </div>
         </div>
 
-        {/* KPI Metrics Cards */}
+        {/* KPI Metrics Strip */}
         {boardData && (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <Card className="bg-white border-slate-200 shadow-xs">
-              <CardHeader className="pb-2">
-                <CardDescription className="text-xs font-medium uppercase tracking-wider text-slate-500 flex items-center justify-between">
-                  Total Managed Orders
-                  <Layers className="h-4 w-4 text-emerald-600" />
-                </CardDescription>
-                <CardTitle className="text-2xl font-bold text-slate-900">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <Card className="bg-white border-slate-200 shadow-xs p-3 flex items-center justify-between">
+              <div>
+                <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                  Total Managed
+                </div>
+                <div className="text-lg font-extrabold text-slate-900 mt-0.5">
                   {boardData.kpis.total_orders} Orders
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-xs text-slate-500">Across all municipal crews</p>
-              </CardContent>
+                </div>
+                <div className="text-[10px] text-slate-500">All municipal crews</div>
+              </div>
+              <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200/60 flex items-center justify-center">
+                <Layers className="h-4 w-4" />
+              </div>
             </Card>
 
-            <Card className="bg-white border-slate-200 shadow-xs">
-              <CardHeader className="pb-2">
-                <CardDescription className="text-xs font-medium uppercase tracking-wider text-slate-500 flex items-center justify-between">
+            <Card className="bg-white border-slate-200 shadow-xs p-3 flex items-center justify-between">
+              <div>
+                <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
                   Active In-Progress
-                  <Play className="h-4 w-4 text-blue-600" />
-                </CardDescription>
-                <CardTitle className="text-2xl font-bold text-blue-700">
+                </div>
+                <div className="text-lg font-extrabold text-blue-700 mt-0.5">
                   {boardData.kpis.in_progress_count} On-Site
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-xs text-slate-500">Under active treatment</p>
-              </CardContent>
+                </div>
+                <div className="text-[10px] text-slate-500">Under active treatment</div>
+              </div>
+              <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-700 border border-blue-200/60 flex items-center justify-center">
+                <Play className="h-4 w-4" />
+              </div>
             </Card>
 
-            <Card className="bg-white border-slate-200 shadow-xs">
-              <CardHeader className="pb-2">
-                <CardDescription className="text-xs font-medium uppercase tracking-wider text-slate-500 flex items-center justify-between">
+            <Card className="bg-white border-slate-200 shadow-xs p-3 flex items-center justify-between">
+              <div>
+                <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
                   Emergency SLA Queue
-                  <Flame className="h-4 w-4 text-red-600" />
-                </CardDescription>
-                <CardTitle className="text-2xl font-bold text-red-700">
+                </div>
+                <div className="text-lg font-extrabold text-red-700 mt-0.5">
                   {boardData.kpis.emergency_sla_count} Critical
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-xs text-slate-500">24-hour turnaround mandate</p>
-              </CardContent>
+                </div>
+                <div className="text-[10px] text-destructive font-semibold">24h SLA mandate</div>
+              </div>
+              <div className="w-8 h-8 rounded-lg bg-red-50 text-red-700 border border-red-200/60 flex items-center justify-center">
+                <Flame className="h-4 w-4" />
+              </div>
             </Card>
 
-            <Card className="bg-white border-slate-200 shadow-xs">
-              <CardHeader className="pb-2">
-                <CardDescription className="text-xs font-medium uppercase tracking-wider text-slate-500 flex items-center justify-between">
-                  Completed Remediations
-                  <CheckCircle2 className="h-4 w-4 text-emerald-600" />
-                </CardDescription>
-                <CardTitle className="text-2xl font-bold text-emerald-700">
+            <Card className="bg-white border-slate-200 shadow-xs p-3 flex items-center justify-between">
+              <div>
+                <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                  Completed Cures
+                </div>
+                <div className="text-lg font-extrabold text-emerald-700 mt-0.5">
                   {boardData.kpis.completed_count} Cured
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-xs text-slate-500">Total: ${boardData.kpis.total_cost_allocated} USD</p>
-              </CardContent>
+                </div>
+                <div className="text-[10px] text-slate-500">${boardData.kpis.total_cost_allocated} USD</div>
+              </div>
+              <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200/60 flex items-center justify-center">
+                <CheckCircle2 className="h-4 w-4" />
+              </div>
             </Card>
           </div>
         )}
 
         {/* Filter and Search Bar */}
-        <div className="flex flex-col md:flex-row items-center justify-between gap-3 bg-white p-3 rounded-xl border border-slate-200 shadow-xs">
-        <div className="flex flex-wrap items-center gap-2.5 w-full md:w-auto">
-          {/* Crew Filter */}
-          <div className="flex items-center gap-1.5 text-xs">
-            <span className="text-muted-foreground font-medium">Crew:</span>
-            <Select value={selectedCrew} onValueChange={setSelectedCrew}>
-              <SelectTrigger className="w-[180px] h-8 text-xs bg-background">
-                <SelectValue placeholder="All Crews" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="ALL">All Field Crews</SelectItem>
-                {boardData?.all_crews.map((crew) => (
-                  <SelectItem key={crew} value={crew} className="text-xs">
-                    {crew}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+        <div className="flex flex-col md:flex-row items-center justify-between gap-3 bg-white p-2.5 rounded-xl border border-slate-200 shadow-xs">
+          <div className="flex flex-wrap items-center gap-2.5 w-full md:w-auto">
+            {/* Crew Filter */}
+            <div className="flex items-center gap-1.5 text-xs">
+              <span className="text-muted-foreground font-medium">Crew:</span>
+              <Select value={selectedCrew} onValueChange={setSelectedCrew}>
+                <SelectTrigger className="w-[180px] h-8 text-xs bg-background">
+                  <SelectValue placeholder="All Crews" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="ALL">All Field Crews</SelectItem>
+                  {boardData?.all_crews.map((crew) => (
+                    <SelectItem key={crew} value={crew} className="text-xs">
+                      {crew}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Ward Filter */}
+            <div className="flex items-center gap-1.5 text-xs">
+              <span className="text-muted-foreground font-medium">Ward:</span>
+              <Select value={selectedWard} onValueChange={setSelectedWard}>
+                <SelectTrigger className="w-[170px] h-8 text-xs bg-background">
+                  <SelectValue placeholder="All Wards" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="ALL">All Bangalore Wards</SelectItem>
+                  {boardData?.all_wards.map((w) => (
+                    <SelectItem key={w.ward_id} value={w.ward_id} className="text-xs">
+                      {w.ward_name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Priority Filter */}
+            <div className="flex items-center gap-1.5 text-xs">
+              <span className="text-muted-foreground font-medium">Priority:</span>
+              <Select value={selectedPriority} onValueChange={setSelectedPriority}>
+                <SelectTrigger className="w-[130px] h-8 text-xs bg-background">
+                  <SelectValue placeholder="All Priorities" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="ALL">All Priorities</SelectItem>
+                  <SelectItem value="EMERGENCY">Emergency Only</SelectItem>
+                  <SelectItem value="HIGH">High Only</SelectItem>
+                  <SelectItem value="STANDARD">Standard Only</SelectItem>
+                  <SelectItem value="LOW">Low Only</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
 
-          {/* Ward Filter */}
-          <div className="flex items-center gap-1.5 text-xs">
-            <span className="text-muted-foreground font-medium">Ward:</span>
-            <Select value={selectedWard} onValueChange={setSelectedWard}>
-              <SelectTrigger className="w-[170px] h-8 text-xs bg-background">
-                <SelectValue placeholder="All Wards" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="ALL">All Bangalore Wards</SelectItem>
-                {boardData?.all_wards.map((w) => (
-                  <SelectItem key={w.ward_id} value={w.ward_id} className="text-xs">
-                    {w.ward_name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
-          {/* Priority Filter */}
-          <div className="flex items-center gap-1.5 text-xs">
-            <span className="text-muted-foreground font-medium">Priority:</span>
-            <Select value={selectedPriority} onValueChange={setSelectedPriority}>
-              <SelectTrigger className="w-[130px] h-8 text-xs bg-background">
-                <SelectValue placeholder="All Priorities" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="ALL">All Priorities</SelectItem>
-                <SelectItem value="EMERGENCY">Emergency Only</SelectItem>
-                <SelectItem value="HIGH">High Only</SelectItem>
-                <SelectItem value="STANDARD">Standard Only</SelectItem>
-                <SelectItem value="LOW">Low Only</SelectItem>
-              </SelectContent>
-            </Select>
+          {/* Text Search Input */}
+          <div className="relative w-full md:w-64">
+            <Search className="absolute left-2.5 top-2.5 h-3.5 w-3.5 text-muted-foreground" />
+            <Input
+              type="text"
+              placeholder="Search order ID, tree tag, species..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-8 h-8 text-xs bg-background"
+            />
           </div>
         </div>
 
-        {/* Text Search Input */}
-        <div className="relative w-full md:w-64">
-          <Search className="absolute left-2.5 top-2.5 h-3.5 w-3.5 text-muted-foreground" />
-          <Input
-            type="text"
-            placeholder="Search order ID, tree tag, species..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-8 h-8 text-xs bg-background"
-          />
-        </div>
-      </div>
+        {/* 4-Column Kanban Board - Natural Adaptive Height */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-start">
+          {COLUMN_CONFIG.map((col) => {
+            const items = boardData ? boardData.columns[col.id] : [];
+            const Icon = col.icon;
 
-      {/* 4-Column Kanban Board */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 items-start">
-        {COLUMN_CONFIG.map((col) => {
-          const items = boardData ? boardData.columns[col.id] : [];
-          const Icon = col.icon;
-
-          return (
-            <div
-              key={col.id}
-              className={`rounded-2xl border ${col.border} ${col.bg} p-3.5 flex flex-col min-h-[650px] space-y-3.5`}
-            >
-              {/* Column Header */}
-              <div className="flex items-center justify-between pb-2 border-b border-border/40">
-                <div className="flex items-center gap-2">
-                  <Icon className={`h-4 w-4 ${col.color}`} />
-                  <h3 className="text-sm font-bold text-foreground">{col.title}</h3>
-                </div>
-                <Badge variant="outline" className={`font-mono text-xs ${col.color} border-current/30`}>
-                  {items.length}
-                </Badge>
-              </div>
-
-              {/* Card List Container */}
-              <div className="space-y-3 flex-1 overflow-y-auto max-h-[680px] custom-scrollbar pr-0.5">
-                {items.length === 0 ? (
-                  <div className="p-8 text-center text-xs text-muted-foreground border border-dashed border-border/40 rounded-xl bg-card/20">
-                    No orders in this stage
+            return (
+              <div
+                key={col.id}
+                className={`rounded-2xl border ${col.border} ${col.bg} p-3 flex flex-col space-y-3 transition-all`}
+              >
+                {/* Column Header */}
+                <div className="flex items-center justify-between pb-2 border-b border-border/40">
+                  <div className="flex items-center gap-2">
+                    <Icon className={`h-4 w-4 ${col.color}`} />
+                    <h3 className="text-xs font-bold uppercase tracking-wider text-foreground">{col.title}</h3>
                   </div>
-                ) : (
-                  items.map((item) => (
+                  <Badge variant="outline" className={`font-mono text-[10px] font-bold ${col.color} border-current/30 px-1.5 py-0`}>
+                    {items.length}
+                  </Badge>
+                </div>
+
+                {/* Card List Container */}
+                <div className="space-y-2.5">
+                  {items.length === 0 ? (
+                    <div className="p-4 text-center text-xs text-muted-foreground border border-dashed border-border/40 rounded-xl bg-card/20">
+                      No orders in this stage
+                    </div>
+                  ) : (
+                    items.map((item) => (
                     <Card
                       key={item.order_id}
                       className="bg-card hover:bg-card/90 transition-all border-border/60 hover:border-emerald-500/50 shadow-sm relative group"
