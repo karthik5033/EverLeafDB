@@ -137,21 +137,21 @@ export default function Home() {
 
 
       {/* Hero Section - Full First Fold with Perfectly Balanced Viewport */}
-      <section className="min-h-[calc(100vh-3.5rem)] flex flex-col items-center justify-center py-12 md:py-20 px-4 text-center relative overflow-hidden">
+      <section className="min-h-[calc(100vh-3.5rem)] flex flex-col items-center justify-center py-4 sm:py-6 md:py-8 px-4 text-center relative overflow-hidden">
         {/* Subtle Background Radial Glow */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-emerald-500/5 rounded-full blur-3xl pointer-events-none -z-10" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-emerald-500/5 rounded-full blur-3xl pointer-events-none -z-10" />
 
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-emerald-200/80 text-xs font-semibold mb-6 bg-emerald-50/70 text-emerald-950 shadow-sm shadow-emerald-500/10 transition-transform hover:scale-105">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full border border-emerald-200/80 text-xs font-semibold mb-3 bg-emerald-50/70 text-emerald-950 shadow-xs transition-transform hover:scale-105">
           <Sparkles className="w-3.5 h-3.5 text-emerald-700" />
           Spatial &amp; Vector Urban Forestry DBMS
         </div>
 
-        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[68px] font-extrabold tracking-tight text-[#111111] max-w-5xl leading-[1.1] mb-6">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-[48px] font-extrabold tracking-tight text-[#111111] max-w-4xl leading-[1.14] mb-3">
           Urban Tree Lifecycle Management with <br className="hidden sm:inline" />
-          <span className="relative inline-block mt-2">
+          <span className="relative inline-block mt-1">
             Spatial &amp; Similarity Search
             <svg
-              className="absolute w-full h-3.5 -bottom-2 left-0 text-emerald-600"
+              className="absolute w-full h-2.5 -bottom-1 left-0 text-emerald-600"
               viewBox="0 0 300 12"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -160,47 +160,47 @@ export default function Home() {
               <path
                 d="M2 9.5C85.5 3.5 198.5 1.5 298 7"
                 stroke="currentColor"
-                strokeWidth="3.5"
+                strokeWidth="2.5"
                 strokeLinecap="round"
               />
             </svg>
           </span>
         </h1>
 
-        <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-2xl mb-6 leading-relaxed font-normal">
+        <p className="text-xs sm:text-sm md:text-base text-gray-600 max-w-2xl mb-3.5 leading-relaxed font-normal">
           Unified PostgreSQL engine combining PostGIS geospatial boundaries, 3NF lifecycle records, and pgvector multimodal disease similarity search.
         </p>
 
         {/* Dynamic Typing Terminal Line */}
-        <div className="text-sm sm:text-base text-gray-500 mb-8 flex items-center justify-center font-mono">
+        <div className="text-xs sm:text-sm text-gray-500 mb-4 flex items-center justify-center font-mono">
           <span>Hybrid SQL with</span>
-          <span className="text-emerald-800 font-bold ml-2 bg-emerald-50/90 px-2.5 py-1 rounded-md border border-emerald-200/90 shadow-xs">
+          <span className="text-emerald-800 font-bold ml-2 bg-emerald-50/90 px-2 py-0.5 rounded-md border border-emerald-200/90 shadow-xs text-xs sm:text-xs">
             {displayText || "\u00A0"}
           </span>
-          <span className="w-[2px] h-5 bg-emerald-600 ml-1.5 animate-pulse inline-block shadow-sm shadow-emerald-500"></span>
+          <span className="w-[2px] h-3.5 bg-emerald-600 ml-1.5 animate-pulse inline-block shadow-sm shadow-emerald-500"></span>
         </div>
 
         {/* CTA Buttons with Emerald Shadow Hue */}
-        <div className="flex flex-col sm:flex-row items-center gap-4">
+        <div className="flex flex-col sm:flex-row items-center gap-3">
           <Link
             href="/console"
-            className="px-6 py-3 bg-slate-950 hover:bg-slate-900 text-white border border-emerald-500/40 hover:border-emerald-400 rounded-xl text-sm md:text-base font-bold flex items-center gap-2.5 transition-all duration-300 shadow-lg shadow-emerald-500/25 hover:shadow-xl hover:shadow-emerald-500/40 hover:-translate-y-0.5"
+            className="px-5 py-2 bg-slate-950 hover:bg-slate-900 text-white border border-emerald-500/40 hover:border-emerald-400 rounded-lg text-xs sm:text-sm font-bold flex items-center gap-2 transition-all duration-300 shadow-md shadow-emerald-500/20 hover:shadow-lg hover:shadow-emerald-500/35 hover:-translate-y-0.5"
           >
             Explore 3NF Schema &amp; DDL <Database className="w-4 h-4 text-emerald-400" />
           </Link>
 
           <Link
             href="/console"
-            className="px-6 py-3 bg-white hover:bg-emerald-50/40 text-slate-950 border border-emerald-500/30 hover:border-emerald-500/60 rounded-xl text-sm md:text-base font-bold flex items-center gap-2.5 transition-all duration-300 shadow-md shadow-emerald-500/15 hover:shadow-lg hover:shadow-emerald-500/25 hover:-translate-y-0.5"
+            className="px-5 py-2 bg-white hover:bg-emerald-50/40 text-slate-950 border border-emerald-500/30 hover:border-emerald-500/60 rounded-lg text-xs sm:text-sm font-bold flex items-center gap-2 transition-all duration-300 shadow-sm shadow-emerald-500/15 hover:shadow-md hover:shadow-emerald-500/25 hover:-translate-y-0.5"
           >
             Execute Hybrid Queries <ArrowRight className="w-4 h-4 text-emerald-600" />
           </Link>
         </div>
 
         {/* Subtle Scroll Hint */}
-        <div className="mt-14 text-xs font-mono text-slate-400 flex flex-col items-center gap-1.5 animate-bounce">
+        <div className="mt-5 text-[11px] font-mono text-slate-400 flex flex-col items-center gap-1 animate-bounce">
           <span>Explore Live System Architecture</span>
-          <ChevronDown className="w-4 h-4 text-emerald-600" />
+          <ChevronDown className="w-3.5 h-3.5 text-emerald-600" />
         </div>
       </section>
 
