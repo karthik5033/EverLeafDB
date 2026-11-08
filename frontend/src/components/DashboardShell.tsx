@@ -50,11 +50,6 @@ const NAV_SECTIONS: NavSection[] = [
     title: "Operations & GIS",
     items: [
       {
-        title: "Canopy Overview",
-        href: "/",
-        icon: Trees
-      },
-      {
         title: "Tree Directory",
         href: "/trees",
         icon: Database
