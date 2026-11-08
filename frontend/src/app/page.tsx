@@ -769,15 +769,15 @@ export default function Home() {
                   {/* B-Tree */}
                   <div className="p-3 bg-white border border-gray-200/90 rounded-lg shadow-xs flex flex-col justify-between hover:border-emerald-300 transition-colors">
                     <div className="flex items-center justify-between gap-1 mb-2 pb-1.5 border-b border-gray-100">
-                      <span className="text-xs font-bold text-gray-900 truncate">Relational B+ Tree</span>
-                      <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-800 border border-emerald-200/80 font-bold shrink-0">O(log N)</span>
+                      <span className="text-xs sm:text-sm font-bold text-gray-900 truncate">Relational B+ Tree</span>
+                      <span className="text-xs font-mono px-2 py-0.5 rounded bg-emerald-50 text-emerald-800 border border-emerald-200/80 font-bold shrink-0">O(log N)</span>
                     </div>
-                    <div className="space-y-1 font-mono text-[9px] text-gray-600 bg-gray-50 p-2 rounded border border-gray-100 mb-2">
+                    <div className="space-y-1 font-mono text-xs text-gray-600 bg-gray-50 p-2 rounded border border-gray-100 mb-2">
                       <div className="text-gray-400">[Root Page: Index Meta]</div>
                       <div className="pl-2">↓ [Internal: Keys]</div>
                       <div className="pl-3.5 text-emerald-800 font-bold">↳ [Leaf: Key + ctid]</div>
                     </div>
-                    <div className="text-[10px] font-mono text-emerald-900 bg-emerald-50/70 p-1.5 rounded border border-emerald-200/50 truncate">
+                    <div className="text-xs font-mono text-emerald-900 bg-emerald-50/70 p-1.5 rounded border border-emerald-200/50 truncate">
                       <strong className="text-emerald-950">INDEX</strong> trees(species, status)
                     </div>
                   </div>
@@ -785,15 +785,15 @@ export default function Home() {
                   {/* GiST R-Tree */}
                   <div className="p-3 bg-white border border-gray-200/90 rounded-lg shadow-xs flex flex-col justify-between hover:border-emerald-300 transition-colors">
                     <div className="flex items-center justify-between gap-1 mb-2 pb-1.5 border-b border-gray-100">
-                      <span className="text-xs font-bold text-gray-900 truncate">PostGIS GiST R-Tree</span>
-                      <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-800 border border-emerald-200/80 font-bold shrink-0">SRID 4326</span>
+                      <span className="text-xs sm:text-sm font-bold text-gray-900 truncate">PostGIS GiST R-Tree</span>
+                      <span className="text-xs font-mono px-2 py-0.5 rounded bg-emerald-50 text-emerald-800 border border-emerald-200/80 font-bold shrink-0">SRID 4326</span>
                     </div>
-                    <div className="space-y-1 font-mono text-[9px] text-gray-600 bg-gray-50 p-2 rounded border border-gray-100 mb-2">
+                    <div className="space-y-1 font-mono text-xs text-gray-600 bg-gray-50 p-2 rounded border border-gray-100 mb-2">
                       <div className="text-gray-400">[Bounding Box R1, R2]</div>
                       <div className="pl-2">↓ [Sub-Boxes &amp; Wards]</div>
                       <div className="pl-3.5 text-emerald-800 font-bold">↳ [Point Geometries]</div>
                     </div>
-                    <div className="text-[10px] font-mono text-emerald-900 bg-emerald-50/70 p-1.5 rounded border border-emerald-200/50 truncate">
+                    <div className="text-xs font-mono text-emerald-900 bg-emerald-50/70 p-1.5 rounded border border-emerald-200/50 truncate">
                       <strong className="text-emerald-950">USING</strong> gist(location_geom)
                     </div>
                   </div>
@@ -801,15 +801,15 @@ export default function Home() {
                   {/* HNSW Graph */}
                   <div className="p-3 bg-white border border-gray-200/90 rounded-lg shadow-xs flex flex-col justify-between hover:border-emerald-300 transition-colors">
                     <div className="flex items-center justify-between gap-1 mb-2 pb-1.5 border-b border-gray-100">
-                      <span className="text-xs font-bold text-gray-900 truncate">pgvector HNSW</span>
-                      <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-800 border border-emerald-200/80 font-bold shrink-0">512-dim</span>
+                      <span className="text-xs sm:text-sm font-bold text-gray-900 truncate">pgvector HNSW</span>
+                      <span className="text-xs font-mono px-2 py-0.5 rounded bg-emerald-50 text-emerald-800 border border-emerald-200/80 font-bold shrink-0">512-dim</span>
                     </div>
-                    <div className="space-y-1 font-mono text-[9px] text-gray-600 bg-gray-50 p-2 rounded border border-gray-100 mb-2">
+                    <div className="space-y-1 font-mono text-xs text-gray-600 bg-gray-50 p-2 rounded border border-gray-100 mb-2">
                       <div className="text-gray-400">[Layer 2: Fast Skips]</div>
                       <div className="pl-2">↓ [Layer 1: Proximity]</div>
                       <div className="pl-3.5 text-emerald-800 font-bold">↳ [Layer 0: Cosine &lt;=&gt;]</div>
                     </div>
-                    <div className="text-[10px] font-mono text-emerald-900 bg-emerald-50/70 p-1.5 rounded border border-emerald-200/50 truncate">
+                    <div className="text-xs font-mono text-emerald-900 bg-emerald-50/70 p-1.5 rounded border border-emerald-200/50 truncate">
                       <strong className="text-emerald-950">HNSW</strong> (m=16, ef_const=64)
                     </div>
                   </div>
@@ -889,16 +889,16 @@ export default function Home() {
                   <div className="text-emerald-700 font-bold">USING (ward_id = current_setting(&apos;app.ward_id&apos;)::int);</div>
                 </div>
 
-                <div className="mt-3 grid grid-cols-2 gap-2 text-[10px]">
-                  <div className="p-2 bg-white border border-gray-200 rounded-md">
-                    <div className="text-gray-500 text-[9px]">INSPECTOR (WARD 3)</div>
-                    <div className="font-bold text-emerald-800 mt-0.5">142 Trees Visible</div>
-                    <div className="text-[9px] text-gray-400">Restricted to Ward Polygon</div>
+                <div className="mt-3 grid grid-cols-2 gap-2 text-xs">
+                  <div className="p-2.5 bg-white border border-gray-200 rounded-md">
+                    <div className="text-gray-500 text-xs">INSPECTOR (WARD 3)</div>
+                    <div className="font-bold text-emerald-800 mt-0.5 text-sm">142 Trees Visible</div>
+                    <div className="text-xs text-gray-400">Restricted to Ward Polygon</div>
                   </div>
-                  <div className="p-2 bg-white border border-gray-200 rounded-md">
-                    <div className="text-gray-500 text-[9px]">UNAUTHORIZED WARDS</div>
-                    <div className="font-bold text-emerald-950 mt-0.5">0 Rows Returned</div>
-                    <div className="text-[9px] text-gray-400">Zero Query Leakage</div>
+                  <div className="p-2.5 bg-white border border-gray-200 rounded-md">
+                    <div className="text-gray-500 text-xs">UNAUTHORIZED WARDS</div>
+                    <div className="font-bold text-emerald-950 mt-0.5 text-sm">0 Rows Returned</div>
+                    <div className="text-xs text-gray-400">Zero Query Leakage</div>
                   </div>
                 </div>
               </div>
@@ -908,7 +908,7 @@ export default function Home() {
             <div className="p-6 md:p-8 flex flex-col h-full overflow-hidden">
               <div className="flex items-center justify-between mb-2">
                 <h3 className="text-xl font-bold">Trigger-Based Audit Trail</h3>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-50 text-emerald-800 font-bold border border-emerald-200">
+                <span className="text-xs font-mono px-2 py-0.5 rounded bg-emerald-50 text-emerald-800 font-bold border border-emerald-200">
                   JSONB DIFFS
                 </span>
               </div>
@@ -916,26 +916,26 @@ export default function Home() {
                 Active trigger records immutable JSONB snapshots on every tree mutation, diagnosis update, and work order transition.
               </p>
               
-              <div className="w-full bg-[#fafafa] border border-gray-200/80 rounded-xl p-3.5 mt-auto font-mono text-[10px]">
-                <div className="flex justify-between items-center pb-2 mb-2 border-b border-gray-200 text-[9px] text-gray-500 font-bold">
+              <div className="w-full bg-[#fafafa] border border-gray-200/80 rounded-xl p-3.5 mt-auto font-mono text-xs">
+                <div className="flex justify-between items-center pb-2 mb-2 border-b border-gray-200 text-xs text-gray-500 font-bold">
                   <span>AUDIT_LOG RECORD</span>
                   <span className="text-emerald-800">TX #849201</span>
                 </div>
 
                 <div className="space-y-1.5">
-                  <div className="flex justify-between bg-white p-1.5 rounded border border-gray-200 text-[9px]">
+                  <div className="flex justify-between bg-white p-2 rounded border border-gray-200 text-xs">
                     <span className="text-gray-500">Operation:</span>
                     <span className="font-bold text-emerald-950">UPDATE on trees (tree_id = &apos;3b91...&apos;)</span>
                   </div>
-                  <div className="flex justify-between bg-white p-1.5 rounded border border-gray-200 text-[9px]">
+                  <div className="flex justify-between bg-white p-2 rounded border border-gray-200 text-xs">
                     <span className="text-gray-500">OLD_VALUES:</span>
                     <span className="font-mono text-gray-700">{JSON.stringify({ status: "healthy", score: 4 })}</span>
                   </div>
-                  <div className="flex justify-between bg-white p-1.5 rounded border border-gray-200 text-[9px]">
+                  <div className="flex justify-between bg-white p-2 rounded border border-gray-200 text-xs">
                     <span className="text-gray-500">NEW_VALUES:</span>
                     <span className="font-mono text-emerald-900 font-bold">{JSON.stringify({ status: "under_treatment", score: 1 })}</span>
                   </div>
-                  <div className="flex justify-between bg-white p-1.5 rounded border border-gray-200 text-[9px]">
+                  <div className="flex justify-between bg-white p-2 rounded border border-gray-200 text-xs">
                     <span className="text-gray-500">Session Context:</span>
                     <span className="text-gray-700">user_id = inspector_04 | WAL: Archiving ON</span>
                   </div>
@@ -964,23 +964,23 @@ export default function Home() {
                   <span className="text-emerald-900 font-bold">Cutoff &ge; 0.82</span>
                 </div>
 
-                <div className="space-y-2 text-[10px]">
+                <div className="space-y-2 text-xs">
                   {/* Step 1 */}
-                  <div className="p-2 bg-white border border-gray-200 rounded-md">
-                    <div className="text-gray-400 text-[9px]">1. INGESTION &amp; EXTRACTION</div>
+                  <div className="p-2.5 bg-white border border-gray-200 rounded-md">
+                    <div className="text-gray-500 text-xs font-semibold">1. INGESTION &amp; EXTRACTION</div>
                     <div className="text-gray-800 font-bold mt-0.5">NEW.image_embedding [512-dim Float32]</div>
                   </div>
                   {/* Step 2 */}
-                  <div className="p-2 bg-white border border-gray-200 rounded-md">
-                    <div className="text-gray-400 text-[9px]">2. HNSW NEAREST-NEIGHBOR QUERY</div>
+                  <div className="p-2.5 bg-white border border-gray-200 rounded-md">
+                    <div className="text-gray-500 text-xs font-semibold">2. HNSW NEAREST-NEIGHBOR QUERY</div>
                     <div className="text-gray-800 font-bold mt-0.5">1 - (known.embedding &lt;=&gt; NEW.embedding)</div>
-                    <div className="text-emerald-800 font-semibold mt-0.5 text-[9px]">Matched: Ganoderma Lucidum (Sim: 0.892)</div>
+                    <div className="text-emerald-800 font-bold mt-0.5 text-xs">Matched: Ganoderma Lucidum (Sim: 0.892)</div>
                   </div>
                   {/* Step 3 */}
-                  <div className="p-2 bg-emerald-50 text-emerald-950 border border-emerald-300 rounded-md">
-                    <div className="text-emerald-800 text-[9px] font-bold">3. AUTOMATIC ESCALATION ACTION</div>
+                  <div className="p-2.5 bg-emerald-50 text-emerald-950 border border-emerald-300 rounded-md">
+                    <div className="text-emerald-800 text-xs font-bold">3. AUTOMATIC ESCALATION ACTION</div>
                     <div className="text-emerald-950 font-bold mt-0.5">INSERT INTO alerts (severity=&apos;CRITICAL&apos;)</div>
-                    <div className="text-emerald-700 text-[9px] mt-0.5">UPDATE trees SET health_status=&apos;under_treatment&apos;</div>
+                    <div className="text-emerald-700 text-xs mt-0.5">UPDATE trees SET health_status=&apos;under_treatment&apos;</div>
                   </div>
                 </div>
               </div>
@@ -1028,45 +1028,45 @@ export default function Home() {
                 Empirical retrieval quality evaluation across 500 labeled botanical pathological images comparing models and distance metrics.
               </p>
 
-              <div className="w-full bg-[#fafafa] border border-gray-200/80 rounded-xl p-3 mt-auto font-mono text-[10px]">
+              <div className="w-full bg-[#fafafa] border border-gray-200/80 rounded-xl p-3.5 mt-auto font-mono text-xs">
                 <table className="w-full text-left border-collapse">
                   <thead>
-                    <tr className="border-b border-gray-200 text-[9px] text-gray-500 font-bold">
+                    <tr className="border-b border-gray-200 text-xs text-gray-500 font-bold">
                       <th className="pb-1.5">Model / Metric</th>
                       <th className="pb-1.5">Dim</th>
                       <th className="pb-1.5">Top-1</th>
                       <th className="pb-1.5">Precision@5</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-gray-100 text-[9.5px]">
+                  <tbody className="divide-y divide-gray-100 text-xs">
                     <tr className="bg-emerald-50/60 font-semibold text-emerald-950">
-                      <td className="py-1.5 font-bold">CLIP ViT-B/32 (&lt;=&gt;)</td>
-                      <td className="py-1.5">512</td>
-                      <td className="py-1.5">84.6%</td>
-                      <td className="py-1.5 text-emerald-700">88.2%</td>
+                      <td className="py-2 font-bold">CLIP ViT-B/32 (&lt;=&gt;)</td>
+                      <td className="py-2">512</td>
+                      <td className="py-2">84.6%</td>
+                      <td className="py-2 text-emerald-700 font-bold">88.2%</td>
                     </tr>
                     <tr>
-                      <td className="py-1.5 text-gray-700">MobileNetV3 (L2)</td>
-                      <td className="py-1.5">512</td>
-                      <td className="py-1.5">72.1%</td>
-                      <td className="py-1.5 text-gray-700">74.8%</td>
+                      <td className="py-2 text-gray-700">MobileNetV3 (L2)</td>
+                      <td className="py-2">512</td>
+                      <td className="py-2">72.1%</td>
+                      <td className="py-2 text-gray-700">74.8%</td>
                     </tr>
                     <tr>
-                      <td className="py-1.5 text-gray-700">ResNet-50 (L2)</td>
-                      <td className="py-1.5">2048</td>
-                      <td className="py-1.5">68.4%</td>
-                      <td className="py-1.5 text-gray-700">71.2%</td>
+                      <td className="py-2 text-gray-700">ResNet-50 (L2)</td>
+                      <td className="py-2">2048</td>
+                      <td className="py-2">68.4%</td>
+                      <td className="py-2 text-gray-700">71.2%</td>
                     </tr>
                     <tr className="text-gray-400">
-                      <td className="py-1.5">Text-Only Baseline</td>
-                      <td className="py-1.5">384</td>
-                      <td className="py-1.5">42.0%</td>
-                      <td className="py-1.5">46.5%</td>
+                      <td className="py-2">Text-Only Baseline</td>
+                      <td className="py-2">384</td>
+                      <td className="py-2">42.0%</td>
+                      <td className="py-2">46.5%</td>
                     </tr>
                   </tbody>
                 </table>
 
-                <div className="mt-2.5 pt-2 border-t border-gray-200/80 flex items-center justify-between text-[9px] text-gray-500">
+                <div className="mt-3 pt-2.5 border-t border-gray-200/80 flex items-center justify-between text-xs text-gray-500">
                   <span>Cosine Distance Formula:</span>
                   <span className="font-bold text-gray-900">1 - (u·v)/(||u||·||v||)</span>
                 </div>
@@ -1085,8 +1085,8 @@ export default function Home() {
                 Connect via standard psql, asyncpg, or pgAdmin to inspect extensions and execute hybrid spatial-vector queries.
               </p>
               
-              <div className="w-full bg-[#111111] text-white rounded-xl p-3.5 mt-auto font-mono text-[10px] shadow-sm">
-                <div className="flex items-center justify-between pb-2 mb-2 border-b border-gray-800 text-[9px] text-gray-400">
+              <div className="w-full bg-[#111111] text-white rounded-xl p-3.5 mt-auto font-mono text-xs shadow-sm">
+                <div className="flex items-center justify-between pb-2 mb-2 border-b border-gray-800 text-xs text-gray-400">
                   <div className="flex items-center gap-1.5">
                     <span className="w-2 h-2 rounded-full bg-red-500"></span>
                     <span className="w-2 h-2 rounded-full bg-yellow-500"></span>
@@ -1096,14 +1096,14 @@ export default function Home() {
                   <span>pg16.3</span>
                 </div>
 
-                <div className="text-gray-300 space-y-1 text-[9.5px]">
-                  <div><span className="text-emerald-400">everleafdb=#</span> \dx</div>
-                  <div className="text-gray-400 text-[8.5px] leading-tight">
+                <div className="text-gray-300 space-y-1 text-xs">
+                  <div><span className="text-emerald-400 font-bold">everleafdb=#</span> \dx</div>
+                  <div className="text-gray-400 text-xs leading-relaxed font-mono">
                     &nbsp;postgis&nbsp;&nbsp;&nbsp;|&nbsp;3.4.2&nbsp;|&nbsp;Spatial geometry &amp; GiST<br/>
                     &nbsp;vector&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;0.7.0&nbsp;|&nbsp;pgvector cosine &amp; HNSW<br/>
                     &nbsp;uuid-ossp&nbsp;|&nbsp;1.1&nbsp;&nbsp;&nbsp;|&nbsp;UUID generation functions
                   </div>
-                  <div className="pt-1.5 border-t border-gray-800 text-gray-400 text-[9px] flex justify-between">
+                  <div className="pt-2 border-t border-gray-800 text-gray-400 text-xs flex justify-between">
                     <span>Connection Pool: 100</span>
                     <span className="text-emerald-400 font-bold">READY</span>
                   </div>
@@ -1257,12 +1257,12 @@ export default function Home() {
                       <div className="absolute inset-x-0 h-0.5 bg-gradient-to-r from-transparent via-emerald-400 to-transparent shadow-[0_0_12px_#10b981] animate-pulse top-1/2 pointer-events-none" />
                       
                       {/* High-tech targeting reticle overlay */}
-                      <div className="relative z-10 p-2.5 flex justify-between items-start text-[9px] font-mono text-emerald-200">
+                      <div className="relative z-10 p-2.5 flex justify-between items-start text-xs font-mono text-emerald-200">
                         <span className="bg-emerald-950/90 px-2 py-0.5 rounded border border-emerald-700/80 font-bold">TARGET: NECROTIC LEAF</span>
                         <span className="bg-emerald-950/90 px-2 py-0.5 rounded border border-emerald-700/80 font-bold">CONF: 94.8%</span>
                       </div>
                       
-                      <div className="relative z-10 p-2.5 flex justify-between items-end text-[9px] font-mono text-emerald-100">
+                      <div className="relative z-10 p-2.5 flex justify-between items-end text-xs font-mono text-emerald-100">
                         <span className="bg-black/80 px-2 py-0.5 rounded">Ficus benghalensis</span>
                         <span className="bg-emerald-950/90 px-2 py-0.5 rounded text-emerald-300 border border-emerald-700/80 font-bold">512-d CLIP Extracted</span>
                       </div>
@@ -1467,171 +1467,171 @@ export default function Home() {
 
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* Card 1: Vector Cosine Distance */}
-          <div className="p-6 bg-white border border-gray-200 rounded-xl shadow-xs flex flex-col justify-between">
+          <div className="p-6 bg-white border border-gray-200 rounded-xl shadow-xs flex flex-col justify-between hover:border-purple-300 transition-colors">
             <div>
               <div className="flex justify-between items-start mb-3">
-                <div className="flex items-center gap-2 font-bold text-sm text-gray-900">
-                  <Layers className="w-4 h-4 text-purple-700" /> High-Dim Cosine Metric
+                <div className="flex items-center gap-2 font-bold text-base text-gray-950">
+                  <Layers className="w-4 h-4 text-purple-700 shrink-0" /> High-Dim Cosine Metric
                 </div>
-                <span className="text-[9px] font-mono px-2 py-0.5 rounded bg-purple-50 text-purple-700 font-semibold border border-purple-200">
+                <span className="text-xs font-mono px-2.5 py-1 rounded bg-purple-50 text-purple-700 font-bold border border-purple-200 shrink-0 whitespace-nowrap">
                   pgvector (&lt;=&gt;)
                 </span>
               </div>
 
               {/* Formula Box */}
-              <div className="bg-gray-50 border border-gray-200 rounded-lg p-2.5 my-3 text-center font-mono text-[11px] text-gray-900 font-semibold shadow-2xs">
+              <div className="bg-slate-50 border border-slate-200/90 rounded-lg p-3 my-3 text-center font-mono text-[13px] text-slate-900 font-bold shadow-2xs overflow-x-auto">
                 D_cos(u, v) = 1 - (u &middot; v) / (||u||₂ &middot; ||v||₂)
               </div>
 
-              <p className="text-gray-600 text-xs leading-relaxed mb-3">
+              <p className="text-gray-600 text-sm leading-relaxed mb-3.5">
                 Measures angular deviation in 512-d CLIP embedding space. Invariant to sunlight exposure and camera shadows in foliage imagery.
               </p>
             </div>
 
-            <div className="pt-2.5 border-t border-gray-100 font-mono text-[9.5px] text-gray-500">
-              <span className="font-semibold text-gray-800">SIMD Optimization: </span>
+            <div className="pt-3 border-t border-gray-100 font-mono text-xs text-gray-600 leading-normal">
+              <span className="font-semibold text-gray-900">SIMD Optimization: </span>
               With unit vectors (||u||=1), reduces to <code className="text-purple-700 font-bold">1 - ∑(u_i &middot; v_i)</code> via AVX-512.
             </div>
           </div>
 
           {/* Card 2: Haversine Geodesic Distance */}
-          <div className="p-6 bg-white border border-gray-200 rounded-xl shadow-xs flex flex-col justify-between">
+          <div className="p-6 bg-white border border-gray-200 rounded-xl shadow-xs flex flex-col justify-between hover:border-emerald-300 transition-colors">
             <div>
               <div className="flex justify-between items-start mb-3">
-                <div className="flex items-center gap-2 font-bold text-sm text-gray-900">
-                  <MapPin className="w-4 h-4 text-emerald-700" /> Geodesic Spatial Distance
+                <div className="flex items-center gap-2 font-bold text-base text-gray-950">
+                  <MapPin className="w-4 h-4 text-emerald-700 shrink-0" /> Geodesic Spatial Distance
                 </div>
-                <span className="text-[9px] font-mono px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 font-semibold border border-emerald-200">
+                <span className="text-xs font-mono px-2.5 py-1 rounded bg-emerald-50 text-emerald-800 font-bold border border-emerald-200 shrink-0 whitespace-nowrap">
                   PostGIS (SRID 4326)
                 </span>
               </div>
 
               {/* Formula Box */}
-              <div className="bg-gray-50 border border-gray-200 rounded-lg p-2.5 my-3 text-center font-mono text-[10px] text-gray-900 font-semibold shadow-2xs">
-                d = 2R &middot; arcsin(&radic;(sin&sup2;(&Delta;&phi;/2) + cos &phi;&sub1; cos &phi;&sub2; sin&sup2;(&Delta;&lambda;/2)))
+              <div className="bg-slate-50 border border-slate-200/90 rounded-lg p-3 my-3 text-center font-mono text-xs sm:text-[13px] text-slate-900 font-bold shadow-2xs overflow-x-auto">
+                d = 2R · arcsin(√(sin²(Δφ/2) + cos(φ₁) · cos(φ₂) · sin²(Δλ/2)))
               </div>
 
-              <p className="text-gray-600 text-xs leading-relaxed mb-3">
+              <p className="text-gray-600 text-sm leading-relaxed mb-3.5">
                 Great-circle distance over WGS 84 ellipsoid (R = 6,371 km). Calculates spherical distance between tree coordinates and ward boundaries.
               </p>
             </div>
 
-            <div className="pt-2.5 border-t border-gray-100 font-mono text-[9.5px] text-gray-500">
-              <span className="font-semibold text-gray-800">Spatial Pruning: </span>
+            <div className="pt-3 border-t border-gray-100 font-mono text-xs text-gray-600 leading-normal">
+              <span className="font-semibold text-gray-900">Spatial Pruning: </span>
               Powers <code className="text-emerald-700 font-bold">ST_DWithin(geom, 500m)</code> inside 2D GiST R-Tree bounding boxes.
             </div>
           </div>
 
           {/* Card 3: 3NF Relational Normalization */}
-          <div className="p-6 bg-white border border-gray-200 rounded-xl shadow-xs flex flex-col justify-between">
+          <div className="p-6 bg-white border border-gray-200 rounded-xl shadow-xs flex flex-col justify-between hover:border-blue-300 transition-colors">
             <div>
               <div className="flex justify-between items-start mb-3">
-                <div className="flex items-center gap-2 font-bold text-sm text-gray-900">
-                  <Database className="w-4 h-4 text-blue-700" /> Third Normal Form (3NF)
+                <div className="flex items-center gap-2 font-bold text-base text-gray-950">
+                  <Database className="w-4 h-4 text-blue-700 shrink-0" /> Third Normal Form (3NF)
                 </div>
-                <span className="text-[9px] font-mono px-2 py-0.5 rounded bg-blue-50 text-blue-700 font-semibold border border-blue-200">
+                <span className="text-xs font-mono px-2.5 py-1 rounded bg-blue-50 text-blue-700 font-bold border border-blue-200 shrink-0 whitespace-nowrap">
                   Codd&apos;s Theorem
                 </span>
               </div>
 
               {/* Formula Box */}
-              <div className="bg-gray-50 border border-gray-200 rounded-lg p-2.5 my-3 text-center font-mono text-[11px] text-gray-900 font-semibold shadow-2xs">
+              <div className="bg-slate-50 border border-slate-200/90 rounded-lg p-3 my-3 text-center font-mono text-[13px] text-slate-900 font-bold shadow-2xs overflow-x-auto">
                 &forall; (X &rarr; A) &isin; F⁺ : (X is superkey) &or; (A is prime)
               </div>
 
-              <p className="text-gray-600 text-xs leading-relaxed mb-3">
+              <p className="text-gray-600 text-sm leading-relaxed mb-3.5">
                 Decomposes flat inspection sheets by removing partial dependencies (2NF) and transitive dependencies (3NF):
-                <code className="block mt-1 text-[10px] font-mono text-gray-800">tree_id &rarr; species_id &rarr; lifespan &rArr; trees &bowtie; species</code>
+                <code className="block mt-1.5 text-xs font-mono text-gray-900 bg-slate-50 p-1.5 rounded border border-slate-200/70">tree_id → species_id → lifespan ⇒ trees ⋈ species</code>
               </p>
             </div>
 
-            <div className="pt-2.5 border-t border-gray-100 font-mono text-[9.5px] text-gray-500">
-              <span className="font-semibold text-gray-800">Formal Guarantee: </span>
+            <div className="pt-3 border-t border-gray-100 font-mono text-xs text-gray-600 leading-normal">
+              <span className="font-semibold text-gray-900">Formal Guarantee: </span>
               Lossless-join &amp; dependency-preserving across all 14 database relations.
             </div>
           </div>
 
           {/* Card 4: HNSW Search Complexity */}
-          <div className="p-6 bg-white border border-gray-200 rounded-xl shadow-xs flex flex-col justify-between">
+          <div className="p-6 bg-white border border-gray-200 rounded-xl shadow-xs flex flex-col justify-between hover:border-indigo-300 transition-colors">
             <div>
               <div className="flex justify-between items-start mb-3">
-                <div className="flex items-center gap-2 font-bold text-sm text-gray-900">
-                  <TrendingUp className="w-4 h-4 text-indigo-700" /> HNSW Graph Complexity
+                <div className="flex items-center gap-2 font-bold text-base text-gray-950">
+                  <TrendingUp className="w-4 h-4 text-indigo-700 shrink-0" /> HNSW Graph Complexity
                 </div>
-                <span className="text-[9px] font-mono px-2 py-0.5 rounded bg-indigo-50 text-indigo-700 font-semibold border border-indigo-200">
+                <span className="text-xs font-mono px-2.5 py-1 rounded bg-indigo-50 text-indigo-700 font-bold border border-indigo-200 shrink-0 whitespace-nowrap">
                   O(log N) ANN
                 </span>
               </div>
 
               {/* Formula Box */}
-              <div className="bg-gray-50 border border-gray-200 rounded-lg p-2.5 my-3 text-center font-mono text-[11px] text-gray-900 font-semibold shadow-2xs">
+              <div className="bg-slate-50 border border-slate-200/90 rounded-lg p-3 my-3 text-center font-mono text-[13px] text-slate-900 font-bold shadow-2xs overflow-x-auto">
                 T_search = O(log N) &bull; P(layer = l) = e^(-l &middot; m_L)
               </div>
 
-              <p className="text-gray-600 text-xs leading-relaxed mb-3">
+              <p className="text-gray-600 text-sm leading-relaxed mb-3.5">
                 Hierarchical Navigable Small World index with M=16 and ef_construction=64. Constructs multi-layer geometric skip-graphs over 512-d unit vectors.
               </p>
             </div>
 
-            <div className="pt-2.5 border-t border-gray-100 font-mono text-[9.5px] text-gray-500">
-              <span className="font-semibold text-gray-800">Benchmark Latency: </span>
+            <div className="pt-3 border-t border-gray-100 font-mono text-xs text-gray-600 leading-normal">
+              <span className="font-semibold text-gray-900">Benchmark Latency: </span>
               <code className="text-indigo-700 font-bold">6.84ms</code> top-5 query time vs 3,890ms unindexed sequential scan.
             </div>
           </div>
 
           {/* Card 5: Trigger Decision Boundary */}
-          <div className="p-6 bg-white border border-gray-200 rounded-xl shadow-xs flex flex-col justify-between">
+          <div className="p-6 bg-white border border-gray-200 rounded-xl shadow-xs flex flex-col justify-between hover:border-red-300 transition-colors">
             <div>
               <div className="flex justify-between items-start mb-3">
-                <div className="flex items-center gap-2 font-bold text-sm text-gray-900">
-                  <TriangleAlert className="w-4 h-4 text-red-600" /> Trigger Decision Rule
+                <div className="flex items-center gap-2 font-bold text-base text-gray-950">
+                  <TriangleAlert className="w-4 h-4 text-red-600 shrink-0" /> Trigger Decision Rule
                 </div>
-                <span className="text-[9px] font-mono px-2 py-0.5 rounded bg-red-50 text-red-700 font-semibold border border-red-200">
+                <span className="text-xs font-mono px-2.5 py-1 rounded bg-red-50 text-red-700 font-bold border border-red-200 shrink-0 whitespace-nowrap">
                   &tau; = 0.82 Threshold
                 </span>
               </div>
 
               {/* Formula Box */}
-              <div className="bg-gray-50 border border-gray-200 rounded-lg p-2.5 my-3 text-center font-mono text-[10.5px] text-gray-900 font-semibold shadow-2xs">
+              <div className="bg-slate-50 border border-slate-200/90 rounded-lg p-3 my-3 text-center font-mono text-xs sm:text-[13px] text-slate-900 font-bold shadow-2xs overflow-x-auto">
                 Alert &hArr; max(1 - (e_query &lt;=&gt; e_severe)) &ge; &tau; (&tau; = 0.82)
               </div>
 
-              <p className="text-gray-600 text-xs leading-relaxed mb-3">
+              <p className="text-gray-600 text-sm leading-relaxed mb-3.5">
                 Autonomous Bayesian decision boundary executed inside PostgreSQL trigger. Compares incoming symptom vector against verified critical cases.
               </p>
             </div>
 
-            <div className="pt-2.5 border-t border-gray-100 font-mono text-[9.5px] text-gray-500">
-              <span className="font-semibold text-gray-800">Calibrated Accuracy: </span>
+            <div className="pt-3 border-t border-gray-100 font-mono text-xs text-gray-600 leading-normal">
+              <span className="font-semibold text-gray-900">Calibrated Accuracy: </span>
               <code className="text-red-700 font-bold">Recall = 91.5%</code>, False Alarm Rate = 10.6% on test set.
             </div>
           </div>
 
           {/* Card 6: ACID Conflict Serializability */}
-          <div className="p-6 bg-white border border-gray-200 rounded-xl shadow-xs flex flex-col justify-between">
+          <div className="p-6 bg-white border border-gray-200 rounded-xl shadow-xs flex flex-col justify-between hover:border-teal-300 transition-colors">
             <div>
               <div className="flex justify-between items-start mb-3">
-                <div className="flex items-center gap-2 font-bold text-sm text-gray-900">
-                  <ShieldCheck className="w-4 h-4 text-teal-700" /> Conflict Serializability
+                <div className="flex items-center gap-2 font-bold text-base text-gray-950">
+                  <ShieldCheck className="w-4 h-4 text-teal-700 shrink-0" /> Conflict Serializability
                 </div>
-                <span className="text-[9px] font-mono px-2 py-0.5 rounded bg-teal-50 text-teal-700 font-semibold border border-teal-200">
+                <span className="text-xs font-mono px-2.5 py-1 rounded bg-teal-50 text-teal-800 font-bold border border-teal-200 shrink-0 whitespace-nowrap">
                   2PL &amp; MVCC
                 </span>
               </div>
 
               {/* Formula Box */}
-              <div className="bg-gray-50 border border-gray-200 rounded-lg p-2.5 my-3 text-center font-mono text-[10.5px] text-gray-900 font-semibold shadow-2xs">
+              <div className="bg-slate-50 border border-slate-200/90 rounded-lg p-3 my-3 text-center font-mono text-[13px] text-slate-900 font-bold shadow-2xs overflow-x-auto">
                 Conflict Serializable &hArr; Precedence Graph G(S) is Acyclic
               </div>
 
-              <p className="text-gray-600 text-xs leading-relaxed mb-3">
+              <p className="text-gray-600 text-sm leading-relaxed mb-3.5">
                 Guarantees transaction atomicity in stored procedures via pessimistic row locks:
-                <code className="block mt-1 text-[10px] font-mono text-gray-800">SELECT * FROM alerts WHERE id=$1 FOR UPDATE;</code>
+                <code className="block mt-1.5 text-xs font-mono text-gray-900 bg-slate-50 p-1.5 rounded border border-slate-200/70">SELECT * FROM alerts WHERE id=$1 FOR UPDATE;</code>
               </p>
             </div>
 
-            <div className="pt-2.5 border-t border-gray-100 font-mono text-[9.5px] text-gray-500">
-              <span className="font-semibold text-gray-800">ACID Concurrency: </span>
+            <div className="pt-3 border-t border-gray-100 font-mono text-xs text-gray-600 leading-normal">
+              <span className="font-semibold text-gray-900">ACID Concurrency: </span>
               Eliminates dirty reads and double-dispatch anomalies during supervisor triage.
             </div>
           </div>
@@ -1756,7 +1756,7 @@ export default function Home() {
                   </div>
                   <div className="text-sm font-extrabold text-gray-950 mt-3 pt-2 border-t border-gray-100 flex items-center justify-between">
                     <span>{tier.capacity}</span>
-                    <span className={`text-[9px] font-mono px-1.5 py-0.5 rounded ${
+                    <span className={`text-xs font-mono px-2 py-0.5 rounded ${
                       isSelected ? "bg-emerald-100 text-emerald-900 border border-emerald-300/80 font-bold" : "bg-gray-100 text-gray-600"
                     }`}>
                       {tier.badge}

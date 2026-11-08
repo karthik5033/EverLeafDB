@@ -249,63 +249,63 @@ export default function WorkOrdersKanbanPage() {
         {/* KPI Metrics Strip */}
         {boardData && (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            <Card className="bg-white border-slate-200 shadow-xs p-3 flex items-center justify-between">
+            <Card className="bg-white border-slate-200 shadow-xs p-3.5 flex items-center justify-between">
               <div>
-                <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                <div className="text-xs font-bold uppercase tracking-wider text-slate-500">
                   Total Managed
                 </div>
-                <div className="text-lg font-extrabold text-slate-900 mt-0.5">
+                <div className="text-xl font-extrabold text-slate-900 mt-0.5">
                   {boardData.kpis.total_orders} Orders
                 </div>
-                <div className="text-[10px] text-slate-500">All municipal crews</div>
+                <div className="text-xs text-slate-500">All municipal crews</div>
               </div>
-              <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200/60 flex items-center justify-center">
-                <Layers className="h-4 w-4" />
+              <div className="w-9 h-9 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200/60 flex items-center justify-center">
+                <Layers className="h-4.5 w-4.5" />
               </div>
             </Card>
 
-            <Card className="bg-white border-slate-200 shadow-xs p-3 flex items-center justify-between">
+            <Card className="bg-white border-slate-200 shadow-xs p-3.5 flex items-center justify-between">
               <div>
-                <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                <div className="text-xs font-bold uppercase tracking-wider text-slate-500">
                   Active In-Progress
                 </div>
-                <div className="text-lg font-extrabold text-blue-700 mt-0.5">
+                <div className="text-xl font-extrabold text-blue-700 mt-0.5">
                   {boardData.kpis.in_progress_count} On-Site
                 </div>
-                <div className="text-[10px] text-slate-500">Under active treatment</div>
+                <div className="text-xs text-slate-500">Under active treatment</div>
               </div>
-              <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-700 border border-blue-200/60 flex items-center justify-center">
-                <Play className="h-4 w-4" />
+              <div className="w-9 h-9 rounded-lg bg-blue-50 text-blue-700 border border-blue-200/60 flex items-center justify-center">
+                <Play className="h-4.5 w-4.5" />
               </div>
             </Card>
 
-            <Card className="bg-white border-slate-200 shadow-xs p-3 flex items-center justify-between">
+            <Card className="bg-white border-slate-200 shadow-xs p-3.5 flex items-center justify-between">
               <div>
-                <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                <div className="text-xs font-bold uppercase tracking-wider text-slate-500">
                   Emergency SLA Queue
                 </div>
-                <div className="text-lg font-extrabold text-red-700 mt-0.5">
+                <div className="text-xl font-extrabold text-red-700 mt-0.5">
                   {boardData.kpis.emergency_sla_count} Critical
                 </div>
-                <div className="text-[10px] text-destructive font-semibold">24h SLA mandate</div>
+                <div className="text-xs text-red-600 font-semibold">24h SLA mandate</div>
               </div>
-              <div className="w-8 h-8 rounded-lg bg-red-50 text-red-700 border border-red-200/60 flex items-center justify-center">
-                <Flame className="h-4 w-4" />
+              <div className="w-9 h-9 rounded-lg bg-red-50 text-red-700 border border-red-200/60 flex items-center justify-center">
+                <Flame className="h-4.5 w-4.5" />
               </div>
             </Card>
 
-            <Card className="bg-white border-slate-200 shadow-xs p-3 flex items-center justify-between">
+            <Card className="bg-white border-slate-200 shadow-xs p-3.5 flex items-center justify-between">
               <div>
-                <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                <div className="text-xs font-bold uppercase tracking-wider text-slate-500">
                   Completed Cures
                 </div>
-                <div className="text-lg font-extrabold text-emerald-700 mt-0.5">
+                <div className="text-xl font-extrabold text-emerald-700 mt-0.5">
                   {boardData.kpis.completed_count} Cured
                 </div>
-                <div className="text-[10px] text-slate-500">${boardData.kpis.total_cost_allocated} USD</div>
+                <div className="text-xs text-slate-500">${boardData.kpis.total_cost_allocated} USD</div>
               </div>
-              <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200/60 flex items-center justify-center">
-                <CheckCircle2 className="h-4 w-4" />
+              <div className="w-9 h-9 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200/60 flex items-center justify-center">
+                <CheckCircle2 className="h-4.5 w-4.5" />
               </div>
             </Card>
           </div>
@@ -417,25 +417,25 @@ export default function WorkOrdersKanbanPage() {
                     >
                       <CardHeader className="p-3.5 pb-2">
                         <div className="flex items-start justify-between gap-1.5">
-                          <div className="space-y-0.5">
+                          <div className="space-y-1 flex-1 min-w-0">
                             <div className="flex items-center gap-1.5">
                               <span className="font-mono text-xs font-bold text-foreground">
                                 {item.order_id}
                               </span>
                               {getPriorityBadge(item.priority)}
                             </div>
-                            <div className="text-[11px] text-muted-foreground flex items-center gap-1">
-                              <TreeDeciduous className="h-3 w-3 text-emerald-500" />
-                              <span className="font-mono">{item.tree_tag}</span>
-                              <span>•</span>
-                              <span className="truncate max-w-[110px]">{item.species_common}</span>
+                            <div className="text-xs text-muted-foreground flex items-center gap-1.5 truncate">
+                              <TreeDeciduous className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
+                              <span className="font-mono font-medium">{item.tree_tag}</span>
+                              <span className="text-muted-foreground/60">•</span>
+                              <span className="truncate font-medium text-foreground/80">{item.species_common}</span>
                             </div>
                           </div>
 
                           <Button
                             variant="ghost"
                             size="icon"
-                            className="h-6 w-6 text-muted-foreground hover:text-foreground"
+                            className="h-7 w-7 text-muted-foreground hover:text-foreground shrink-0"
                             onClick={() => openDetailsModal(item)}
                           >
                             <Eye className="h-3.5 w-3.5" />
@@ -443,43 +443,43 @@ export default function WorkOrdersKanbanPage() {
                         </div>
                       </CardHeader>
 
-                      <CardContent className="p-3.5 pt-0 space-y-2.5">
+                      <CardContent className="p-3.5 pt-0 space-y-3">
                         {/* Protocol & Disease */}
-                        <div className="bg-muted/40 p-2 rounded-lg border border-border/30 text-[11px] space-y-1">
-                          <span className="font-semibold text-foreground block line-clamp-1">
+                        <div className="bg-muted/40 p-2.5 rounded-lg border border-border/40 text-xs space-y-1">
+                          <span className="font-semibold text-foreground block line-clamp-2 leading-snug">
                             {item.protocol}
                           </span>
-                          <span className="text-amber-500 text-[10px] block">
+                          <span className="text-amber-600 font-medium text-xs block">
                             Target: {item.disease_name}
                           </span>
                         </div>
 
                         {/* Location & Crew */}
-                        <div className="space-y-1 text-[11px] text-muted-foreground">
+                        <div className="space-y-1.5 text-xs text-muted-foreground">
                           <div className="flex items-center justify-between">
-                            <span className="flex items-center gap-1 truncate max-w-[140px]">
-                              <MapPin className="h-3 w-3 text-slate-400 shrink-0" />
-                              {item.ward_name}
+                            <span className="flex items-center gap-1.5 truncate flex-1 min-w-0 pr-2">
+                              <MapPin className="h-3.5 w-3.5 text-slate-400 shrink-0" />
+                              <span className="truncate">{item.ward_name}</span>
                             </span>
-                            <span className="font-mono text-[10px] font-semibold text-foreground">
+                            <span className="font-mono text-xs font-bold text-foreground shrink-0">
                               ${item.cost_estimate_usd}
                             </span>
                           </div>
 
-                          <div className="flex items-center justify-between text-[10px] pt-1 border-t border-border/30">
-                            <span className="flex items-center gap-1 truncate max-w-[130px]">
-                              <UserCheck className="h-3 w-3 text-emerald-500 shrink-0" />
-                              {item.assigned_crew}
+                          <div className="flex items-center justify-between text-xs pt-1.5 border-t border-border/40">
+                            <span className="flex items-center gap-1.5 truncate flex-1 min-w-0 pr-2">
+                              <UserCheck className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
+                              <span className="truncate">{item.assigned_crew}</span>
                             </span>
 
                             {/* SLA Badge */}
                             {col.id !== "COMPLETED" && col.id !== "CANCELLED" && (
                               <span
-                                className={`font-mono text-[10px] font-semibold ${
+                                className={`font-mono text-xs font-bold shrink-0 ${
                                   item.is_overdue
-                                    ? "text-red-500"
+                                    ? "text-red-600"
                                     : item.sla_remaining_hours <= 12
-                                    ? "text-amber-500"
+                                    ? "text-amber-600"
                                     : "text-muted-foreground"
                                 }`}
                               >
@@ -489,7 +489,7 @@ export default function WorkOrdersKanbanPage() {
                               </span>
                             )}
                             {col.id === "COMPLETED" && (
-                              <span className="text-emerald-500 font-mono text-[10px]">
+                              <span className="text-emerald-600 font-mono text-xs font-bold shrink-0">
                                 CURED
                               </span>
                             )}
@@ -497,15 +497,15 @@ export default function WorkOrdersKanbanPage() {
                         </div>
 
                         {/* Status Transition Action Buttons */}
-                        <div className="pt-2 border-t border-border/30 flex items-center justify-between gap-1.5">
+                        <div className="pt-2.5 border-t border-border/40 flex items-center justify-between gap-2">
                           {col.id === "PENDING" && (
                             <Button
                               size="sm"
                               disabled={actionLoading}
                               onClick={() => handleTransition(item.order_id, "IN_PROGRESS")}
-                              className="w-full h-7 text-xs bg-blue-600 hover:bg-blue-700 text-white gap-1.5"
+                              className="w-full h-8 text-xs font-medium bg-blue-600 hover:bg-blue-700 text-white gap-1.5"
                             >
-                              <Play className="h-3 w-3" />
+                              <Play className="h-3.5 w-3.5" />
                               Start Work
                             </Button>
                           )}
@@ -517,7 +517,7 @@ export default function WorkOrdersKanbanPage() {
                                 variant="outline"
                                 disabled={actionLoading}
                                 onClick={() => handleTransition(item.order_id, "PENDING")}
-                                className="h-7 text-[11px] px-2 text-muted-foreground"
+                                className="h-8 text-xs font-medium px-2.5 text-muted-foreground hover:text-foreground"
                               >
                                 <RotateCcw className="h-3 w-3 mr-1" />
                                 Hold
@@ -526,9 +526,9 @@ export default function WorkOrdersKanbanPage() {
                                 size="sm"
                                 disabled={actionLoading}
                                 onClick={() => handleTransition(item.order_id, "COMPLETED")}
-                                className="flex-1 h-7 text-xs bg-emerald-600 hover:bg-emerald-700 text-white gap-1"
+                                className="flex-1 h-8 text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white gap-1"
                               >
-                                <Check className="h-3 w-3" />
+                                <Check className="h-3.5 w-3.5" />
                                 Complete
                               </Button>
                             </>
@@ -540,9 +540,9 @@ export default function WorkOrdersKanbanPage() {
                               variant="outline"
                               disabled={actionLoading}
                               onClick={() => handleTransition(item.order_id, "IN_PROGRESS")}
-                              className="w-full h-7 text-xs text-muted-foreground hover:text-foreground gap-1"
+                              className="w-full h-8 text-xs font-medium border-border/60 hover:bg-muted text-muted-foreground gap-1.5"
                             >
-                              <RotateCcw className="h-3 w-3" />
+                              <RotateCcw className="h-3.5 w-3.5" />
                               Reopen Case
                             </Button>
                           )}
@@ -553,9 +553,9 @@ export default function WorkOrdersKanbanPage() {
                               variant="outline"
                               disabled={actionLoading}
                               onClick={() => handleTransition(item.order_id, "PENDING")}
-                              className="w-full h-7 text-xs text-muted-foreground hover:text-foreground gap-1"
+                              className="w-full h-8 text-xs font-medium border-border/60 hover:bg-muted text-muted-foreground gap-1.5"
                             >
-                              <RotateCcw className="h-3 w-3" />
+                              <RotateCcw className="h-3.5 w-3.5" />
                               Reactivate Order
                             </Button>
                           )}

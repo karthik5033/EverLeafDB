@@ -251,7 +251,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
           {/* Desktop Collapsible Clean Sidebar - Fixed Viewport Position */}
           <aside
             className={`hidden md:flex flex-col border-r border-slate-200 bg-white transition-all duration-300 shrink-0 h-full relative z-30 ${
-              isCollapsed ? "w-16" : "w-64"
+              isCollapsed ? "w-16" : "w-72"
             }`}
           >
             {/* Collapse / Expand Toggle Button */}
@@ -334,12 +334,16 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
 
             {/* Sidebar User Tenant Footer */}
             {!isCollapsed && (
-              <div className="p-3 border-t border-slate-200 bg-slate-50/80 text-xs font-mono shrink-0">
-                <div className="text-[11px] text-slate-400 uppercase font-bold tracking-wider mb-0.5">
-                  Tenant Boundary
+              <div className="p-3.5 border-t border-slate-200 bg-slate-50/90 text-xs font-mono shrink-0">
+                <div className="flex items-center justify-between text-[11px] text-slate-500 uppercase font-bold tracking-wider mb-1">
+                  <span>Tenant Boundary</span>
+                  <span className="flex items-center gap-1 text-emerald-700 font-semibold lowercase">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                    active
+                  </span>
                 </div>
-                <div className="font-semibold text-slate-900 truncate text-[13px]">Ward 03 Cubbon Heritage</div>
-                <div className="text-[11px] text-slate-500 truncate">inspector_04 • Active</div>
+                <div className="font-bold text-slate-900 truncate text-sm">Ward 03 Cubbon Heritage</div>
+                <div className="text-xs text-slate-500 truncate mt-0.5">inspector_04 • Verified RLS</div>
               </div>
             )}
           </aside>
