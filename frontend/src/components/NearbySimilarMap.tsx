@@ -71,6 +71,7 @@ export default function NearbySimilarMap({
   const targetMarkerRef = useRef<L.Marker | null>(null);
   const wardPolygonRef = useRef<L.Polygon | null>(null);
   const candidatesLayerRef = useRef<L.LayerGroup | null>(null);
+  const lastTargetIdRef = useRef<string | null>(null);
 
   const [basemap, setBasemap] = useState<BasemapKey>("satellite");
   const [currentZoom, setCurrentZoom] = useState<number>(16);
@@ -80,12 +81,16 @@ export default function NearbySimilarMap({
     if (!mapContainerRef.current) return;
     if (mapInstanceRef.current) return;
 
+    lastTargetIdRef.current = targetTree.tree_id;
+
     const map = L.map(mapContainerRef.current, {
       center: [targetTree.latitude, targetTree.longitude],
       zoom: 16,
       minZoom: 11,
       maxZoom: 19,
-      zoomControl: false
+      zoomControl: false,
+      zoomAnimation: false,
+      fadeAnimation: true
     });
 
     const tileConfig = BASEMAP_TILES[basemap];
@@ -99,16 +104,24 @@ export default function NearbySimilarMap({
     candidatesLayerRef.current = candidatesGroup;
 
     map.on("zoomend", () => {
-      setCurrentZoom(map.getZoom());
+      setCurrentZoom(Math.round(map.getZoom() * 10) / 10);
     });
 
     mapInstanceRef.current = map;
 
-    setTimeout(() => {
-      map.invalidateSize();
-    }, 200);
+    // Use ResizeObserver with { pan: false } so container settling never shifts the camera
+    let resizeObserver: ResizeObserver | null = null;
+    if (typeof ResizeObserver !== "undefined" && mapContainerRef.current) {
+      resizeObserver = new ResizeObserver(() => {
+        if (mapInstanceRef.current) {
+          mapInstanceRef.current.invalidateSize({ pan: false });
+        }
+      });
+      resizeObserver.observe(mapContainerRef.current);
+    }
 
     return () => {
+      if (resizeObserver) resizeObserver.disconnect();
       map.remove();
       mapInstanceRef.current = null;
     };
@@ -167,8 +180,14 @@ export default function NearbySimilarMap({
     const map = mapInstanceRef.current;
     if (!map) return;
 
-    // Pan to target
-    map.flyTo([targetTree.latitude, targetTree.longitude], map.getZoom(), { duration: 0.8 });
+    // Pan to target only if focal tree actually changed
+    if (!lastTargetIdRef.current) {
+      lastTargetIdRef.current = targetTree.tree_id;
+      map.setView([targetTree.latitude, targetTree.longitude], 16, { animate: false });
+    } else if (lastTargetIdRef.current !== targetTree.tree_id) {
+      lastTargetIdRef.current = targetTree.tree_id;
+      map.panTo([targetTree.latitude, targetTree.longitude], { animate: true, duration: 0.4 });
+    }
 
     // Target Marker
     if (targetMarkerRef.current) {
@@ -178,9 +197,9 @@ export default function NearbySimilarMap({
     const targetIcon = L.divIcon({
       html: `
         <div class="relative flex items-center justify-center cursor-pointer group">
-          <span class="absolute w-12 h-12 rounded-full bg-red-500/40 animate-ping"></span>
-          <span class="absolute w-8 h-8 rounded-full border-2 border-amber-300 border-dashed animate-spin"></span>
-          <div class="relative w-7 h-7 rounded-full bg-red-600 ring-4 ring-red-400/80 flex items-center justify-center text-white shadow-2xl border-2 border-white">
+          <span class="absolute w-10 h-10 rounded-full bg-red-500/30 animate-pulse pointer-events-none"></span>
+          <span class="absolute w-7 h-7 rounded-full border border-amber-300/80 border-dashed animate-spin pointer-events-none"></span>
+          <div class="relative w-7 h-7 rounded-full bg-red-600 ring-2 ring-red-400/80 flex items-center justify-center text-white shadow-lg border-2 border-white">
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="12" cy="12" r="10"/>
               <line x1="22" y1="12" x2="18" y2="12"/>
@@ -337,7 +356,7 @@ export default function NearbySimilarMap({
   const handleZoomIn = () => mapInstanceRef.current?.zoomIn();
   const handleZoomOut = () => mapInstanceRef.current?.zoomOut();
   const handleResetTarget = () => {
-    mapInstanceRef.current?.flyTo([targetTree.latitude, targetTree.longitude], 16, { duration: 0.8 });
+    mapInstanceRef.current?.setView([targetTree.latitude, targetTree.longitude], 16, { animate: true });
   };
   const handleFitAll = () => {
     if (!mapInstanceRef.current) return;
@@ -417,7 +436,7 @@ export default function NearbySimilarMap({
         <div className="flex items-center gap-2">
           <span>Target: {targetTree.tag_number} ({targetTree.latitude.toFixed(4)}, {targetTree.longitude.toFixed(4)})</span>
           <span className="text-slate-500">•</span>
-          <span className="text-emerald-400">Zoom: {currentZoom}x</span>
+          <span className="text-emerald-400">Zoom: {typeof currentZoom === "number" ? currentZoom.toFixed(1) : currentZoom}x</span>
         </div>
       </div>
     </div>

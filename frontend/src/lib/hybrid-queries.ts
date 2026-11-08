@@ -337,6 +337,8 @@ export interface EndangeredTree {
   endangered_tree_id: string;
   endangered_tag: string;
   endangered_species: string;
+  latitude?: number;
+  longitude?: number;
   distance_to_epicenter_meters: number;
   similarity_percent: number;
   cosine_distance: number;
@@ -490,6 +492,8 @@ export function executeContagionClustersQuery(params?: {
         endangered_tree_id: neighbor.tree_id || (neighbor as any).id,
         endangered_tag: neighbor.tag_number,
         endangered_species: neighbor.species_common,
+        latitude: neighbor.latitude,
+        longitude: neighbor.longitude,
         distance_to_epicenter_meters: Math.round(dist * 10) / 10,
         similarity_percent: Math.round(sim * 10000) / 100,
         cosine_distance: Math.round(cosDist * 1000) / 1000,

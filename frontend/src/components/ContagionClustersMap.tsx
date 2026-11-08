@@ -71,6 +71,7 @@ export default function ContagionClustersMap({
   const mapInstanceRef = useRef<L.Map | null>(null);
   const tileLayerRef = useRef<L.TileLayer | null>(null);
   const zonesLayerRef = useRef<L.LayerGroup | null>(null);
+  const lastCenteredAlertIdRef = useRef<string | null>(null);
 
   const [basemap, setBasemap] = useState<BasemapKey>("satellite");
   const [currentZoom, setCurrentZoom] = useState<number>(15);
@@ -84,12 +85,18 @@ export default function ContagionClustersMap({
       ? [activeZone.epicenter_lat, activeZone.epicenter_lng]
       : [12.9716, 77.5946];
 
+    if (activeZone) {
+      lastCenteredAlertIdRef.current = activeZone.alert_id;
+    }
+
     const map = L.map(mapContainerRef.current, {
       center: initialCenter,
       zoom: 15,
       minZoom: 11,
       maxZoom: 19,
-      zoomControl: false
+      zoomControl: false,
+      zoomAnimation: false,
+      fadeAnimation: true
     });
 
     const tileConfig = BASEMAP_TILES[basemap];
@@ -103,16 +110,24 @@ export default function ContagionClustersMap({
     zonesLayerRef.current = zonesGroup;
 
     map.on("zoomend", () => {
-      setCurrentZoom(map.getZoom());
+      setCurrentZoom(Math.round(map.getZoom() * 10) / 10);
     });
 
     mapInstanceRef.current = map;
 
-    setTimeout(() => {
-      map.invalidateSize();
-    }, 200);
+    // Use ResizeObserver with { pan: false } so layout settling never jerks the viewport
+    let resizeObserver: ResizeObserver | null = null;
+    if (typeof ResizeObserver !== "undefined" && mapContainerRef.current) {
+      resizeObserver = new ResizeObserver(() => {
+        if (mapInstanceRef.current) {
+          mapInstanceRef.current.invalidateSize({ pan: false });
+        }
+      });
+      resizeObserver.observe(mapContainerRef.current);
+    }
 
     return () => {
+      if (resizeObserver) resizeObserver.disconnect();
       map.remove();
       mapInstanceRef.current = null;
     };
@@ -144,9 +159,15 @@ export default function ContagionClustersMap({
 
     group.clearLayers();
 
-    // Fly to active zone
+    // Only pan if activeZone is valid AND has actually changed to a different epicenter
     if (activeZone) {
-      map.flyTo([activeZone.epicenter_lat, activeZone.epicenter_lng], map.getZoom(), { duration: 0.8 });
+      if (!lastCenteredAlertIdRef.current) {
+        lastCenteredAlertIdRef.current = activeZone.alert_id;
+        map.setView([activeZone.epicenter_lat, activeZone.epicenter_lng], 15, { animate: false });
+      } else if (lastCenteredAlertIdRef.current !== activeZone.alert_id) {
+        lastCenteredAlertIdRef.current = activeZone.alert_id;
+        map.panTo([activeZone.epicenter_lat, activeZone.epicenter_lng], { animate: true, duration: 0.4 });
+      }
     }
 
     hazardZones.forEach((zone) => {
@@ -167,13 +188,13 @@ export default function ContagionClustersMap({
         { sticky: true, className: "ward-map-tooltip" }
       );
 
-      // 2. Epicenter Marker
+      // 2. Epicenter Marker (GPU-optimized pulse, no layout thrashing)
       const epicenterIcon = L.divIcon({
         html: `
           <div class="relative flex items-center justify-center cursor-pointer group">
-            <span class="absolute w-12 h-12 rounded-full bg-red-600/50 animate-ping"></span>
-            <span class="absolute w-8 h-8 rounded-full border-2 border-amber-300 border-dashed animate-spin"></span>
-            <div class="relative w-8 h-8 rounded-full bg-red-600 ring-4 ring-red-400 flex items-center justify-center text-white shadow-2xl border-2 border-white">
+            <span class="absolute w-10 h-10 rounded-full bg-red-600/30 animate-pulse pointer-events-none"></span>
+            <span class="absolute w-7 h-7 rounded-full border border-amber-300/80 border-dashed animate-spin pointer-events-none"></span>
+            <div class="relative w-8 h-8 rounded-full bg-red-600 ring-2 ring-red-400 flex items-center justify-center text-white shadow-lg border-2 border-white">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>
               </svg>
@@ -224,8 +245,19 @@ export default function ContagionClustersMap({
         const isSelected = selectedTree?.endangered_tree_id === t.endangered_tree_id;
         const matchingDbTree = TREES.find((dbT) => dbT.tree_id === t.endangered_tree_id);
 
-        const lat = matchingDbTree?.latitude || activeZone.epicenter_lat + (Math.random() - 0.5) * 0.003;
-        const lng = matchingDbTree?.longitude || activeZone.epicenter_lng + (Math.random() - 0.5) * 0.003;
+        let lat = t.latitude || matchingDbTree?.latitude;
+        let lng = t.longitude || matchingDbTree?.longitude;
+
+        if (!lat || !lng) {
+          // Deterministic trigonometric placement based on tree tag/id so pins never jump
+          const hash = (t.endangered_tree_id || t.endangered_tag || "tree")
+            .split("")
+            .reduce((acc, c, i) => acc + c.charCodeAt(0) * (i + 1), 0);
+          const angle = ((hash % 360) * Math.PI) / 180;
+          const distOffset = (t.distance_to_epicenter_meters || 200) / 111000;
+          lat = activeZone.epicenter_lat + Math.sin(angle) * distOffset;
+          lng = activeZone.epicenter_lng + (Math.cos(angle) * distOffset) / Math.cos((activeZone.epicenter_lat * Math.PI) / 180);
+        }
 
         // Contagion vector line
         const vectorLine = L.polyline(
@@ -313,7 +345,7 @@ export default function ContagionClustersMap({
   const handleZoomOut = () => mapInstanceRef.current?.zoomOut();
   const handleReset = () => {
     if (activeZone && mapInstanceRef.current) {
-      mapInstanceRef.current.flyTo([activeZone.epicenter_lat, activeZone.epicenter_lng], 15, { duration: 0.8 });
+      mapInstanceRef.current.setView([activeZone.epicenter_lat, activeZone.epicenter_lng], 15, { animate: true });
     }
   };
 
@@ -362,7 +394,7 @@ export default function ContagionClustersMap({
 
         {/* Right Active Zone Pill */}
         <div className="bg-slate-950/85 backdrop-blur-md border border-slate-700/80 text-white rounded-lg px-2.5 py-1 shadow-md text-xs font-mono flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
+          <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
           <span>ST_Buffer: <b>{radiusMeters}m</b></span>
           <span className="text-slate-500">•</span>
           <span className="text-red-300 font-bold">{endangeredTrees.length} In Danger</span>
@@ -382,7 +414,7 @@ export default function ContagionClustersMap({
         <div className="flex items-center gap-2">
           <span>Epicenter: {activeZone?.epicenter_tag}</span>
           <span className="text-slate-500">•</span>
-          <span className="text-emerald-400">Zoom: {currentZoom}x</span>
+          <span className="text-emerald-400">Zoom: {typeof currentZoom === "number" ? currentZoom.toFixed(1) : currentZoom}x</span>
         </div>
       </div>
     </div>
