@@ -1,11 +1,22 @@
 "use client";
 
 import React, { useState } from "react";
+import dynamic from "next/dynamic";
 import { DashboardShell } from "@/components/DashboardShell";
-import GisMapExplorer from "@/components/GisMapExplorer";
 import { WARDS, TREES } from "@/lib/db";
 import { Compass, Trees, ShieldCheck, MapPin, Layers, Sparkles } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+
+const GisMapExplorer = dynamic(() => import("@/components/GisMapExplorer"), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-[680px] flex flex-col items-center justify-center bg-slate-950 text-slate-300 rounded-2xl border border-slate-800">
+      <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-emerald-500 mb-4" />
+      <p className="font-mono text-sm text-white font-medium">Initializing PostGIS Geospatial Subsystem...</p>
+      <p className="text-xs text-slate-400 mt-1">Streaming High-Resolution Satellite &amp; GIS Vector Tiles (SRID 4326)</p>
+    </div>
+  )
+});
 
 export default function MapPage() {
   const [selectedWardId, setSelectedWardId] = useState<string>("ward_03");
@@ -32,7 +43,7 @@ export default function MapPage() {
               </span>
             </div>
             <p className="text-xs text-slate-500">
-              Interactive vector tile map with dynamic marker clustering, geofence boundary layers, proximity buffer circles (<code className="font-mono text-emerald-800 font-medium">ST_DWithin</code>), and specimen inspection drawers.
+              Production-grade GIS console with Esri High-Resolution Satellite &amp; Dark Vector tiles, municipal ward polygons, dynamic specimen clustering, and interactive <code className="font-mono text-emerald-800 font-medium">ST_DWithin</code> proximity buffers.
             </p>
           </div>
 
@@ -56,7 +67,7 @@ export default function MapPage() {
         </div>
 
         {/* Map Explorer Full Container */}
-        <div className="w-full min-h-[640px] rounded-2xl border border-slate-200 overflow-hidden shadow-xs bg-slate-50">
+        <div className="w-full h-[calc(100vh-210px)] min-h-[660px] rounded-2xl border border-slate-200 overflow-hidden shadow-xs bg-slate-950 relative">
           <GisMapExplorer initialWardId={selectedWardId} />
         </div>
       </div>

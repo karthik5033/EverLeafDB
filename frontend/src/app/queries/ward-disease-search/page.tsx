@@ -206,7 +206,7 @@ export default function WardDiseaseSearchPage() {
               {data?.execution_stats.btree_indexes}
             </span>
           </div>
-          <pre className="text-[11px] text-emerald-300 leading-relaxed overflow-x-auto whitespace-pre-wrap">
+          <pre className="text-[11px] text-emerald-300 leading-relaxed overflow-x-auto whitespace-pre-wrap max-h-[170px] overflow-y-auto custom-scrollbar">
             {data?.sql_executed || "-- Executing ward disease query..."}
           </pre>
         </Card>

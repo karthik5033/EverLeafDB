@@ -221,10 +221,10 @@ export default function ExecutiveAnalyticsDashboard() {
         )}
 
       {/* Visualizations Grid: Health Distribution Donut & Species Biodiversity Bars */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         {/* Left Column (5 cols): Health Distribution Donut Chart */}
-        <Card className="lg:col-span-5 border-border/60 shadow-sm flex flex-col">
-          <CardHeader className="pb-2 border-b border-border/30">
+        <Card className="lg:col-span-5 border-border/60 shadow-sm flex flex-col h-[480px]">
+          <CardHeader className="pb-3 border-b border-border/30 shrink-0">
             <CardTitle className="text-sm font-semibold flex items-center justify-between">
               <span className="flex items-center gap-2">
                 <Activity className="h-4 w-4 text-emerald-500" />
@@ -239,10 +239,10 @@ export default function ExecutiveAnalyticsDashboard() {
             </CardDescription>
           </CardHeader>
 
-          <CardContent className="p-5 flex-1 flex flex-col justify-between space-y-4">
+          <CardContent className="p-5 flex-1 min-h-0 flex flex-col justify-between space-y-4">
             {/* SVG Donut Visual */}
-            <div className="relative flex items-center justify-center py-4">
-              <svg width="200" height="200" viewBox="0 0 200 200" className="transform -rotate-90">
+            <div className="relative flex items-center justify-center py-2 shrink-0">
+              <svg width="180" height="180" viewBox="0 0 200 200" className="transform -rotate-90">
                 {/* Background Ring */}
                 <circle
                   cx="100"
@@ -289,7 +289,7 @@ export default function ExecutiveAnalyticsDashboard() {
             </div>
 
             {/* Categorical Legend */}
-            <div className="space-y-2 pt-2 border-t border-border/40">
+            <div className="space-y-2 pt-2 border-t border-border/40 shrink-0">
               {healthDist.map((cat) => (
                 <div key={cat.status} className="flex items-center justify-between text-xs">
                   <div className="flex items-center gap-2">
@@ -312,8 +312,8 @@ export default function ExecutiveAnalyticsDashboard() {
         </Card>
 
         {/* Right Column (7 cols): Species Biodiversity Breakdown Bar Chart */}
-        <Card className="lg:col-span-7 border-border/60 shadow-sm flex flex-col">
-          <CardHeader className="pb-2 border-b border-border/30">
+        <Card className="lg:col-span-7 border-border/60 shadow-sm flex flex-col h-[480px]">
+          <CardHeader className="pb-3 border-b border-border/30 shrink-0">
             <CardTitle className="text-sm font-semibold flex items-center justify-between">
               <span className="flex items-center gap-2">
                 <Trees className="h-4 w-4 text-emerald-500" />
@@ -328,7 +328,7 @@ export default function ExecutiveAnalyticsDashboard() {
             </CardDescription>
           </CardHeader>
 
-          <CardContent className="p-5 flex-1 space-y-4">
+          <CardContent className="p-5 flex-1 min-h-0 overflow-y-auto custom-scrollbar pr-3">
             <div className="space-y-3.5">
               {speciesBio.map((sp) => {
                 const maxPct = Math.max(...speciesBio.map((s) => s.biodiversity_percentage), 1);

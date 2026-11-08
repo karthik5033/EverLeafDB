@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useMemo } from "react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { DashboardShell } from "@/components/DashboardShell";
 import { TREES, SPECIES_SEED, Tree } from "@/lib/db";
@@ -24,6 +25,17 @@ import {
   Zap,
   Activity
 } from "lucide-react";
+
+const NearbySimilarMap = dynamic(() => import("@/components/NearbySimilarMap"), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-[420px] rounded-xl flex flex-col items-center justify-center bg-slate-950 text-slate-300 border border-slate-800">
+      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-500 mb-3" />
+      <p className="font-mono text-xs text-white">Initializing PostGIS Spatial Buffer Map...</p>
+      <p className="text-[11px] text-slate-400 mt-0.5">Projecting SRID 4326 GIS Coordinates &amp; Vector Precedents</p>
+    </div>
+  )
+});
 
 export default function NearbySimilarQueryPage() {
   const [selectedTreeId, setSelectedTreeId] = useState<string>("tree_1084");
@@ -96,9 +108,9 @@ export default function NearbySimilarQueryPage() {
         </div>
 
         {/* Split Screen Control Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           {/* Left Column: Query Parameters & SQL Terminal (5 cols) */}
-          <div className="lg:col-span-5 space-y-5">
+          <div className="lg:col-span-5 space-y-4">
             <Card className="p-5 space-y-4">
               <div className="flex items-center justify-between border-b border-border pb-3">
                 <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
@@ -194,7 +206,7 @@ export default function NearbySimilarQueryPage() {
                 </span>
                 <span className="text-[10px] text-slate-500">Hybrid Optimization</span>
               </div>
-              <pre className="text-[11px] text-emerald-300 leading-relaxed overflow-x-auto whitespace-pre-wrap">
+              <pre className="text-[11px] text-emerald-300 leading-relaxed overflow-x-auto whitespace-pre-wrap max-h-[160px] overflow-y-auto custom-scrollbar">
                 {queryData?.sql_executed || "-- Executing hybrid query..."}
               </pre>
             </Card>
@@ -202,132 +214,14 @@ export default function NearbySimilarQueryPage() {
 
           {/* Right Column: Interactive Spatial Buffer Map & Results (7 cols) */}
           <div className="lg:col-span-7 space-y-5">
-            {/* SVG GIS Proximity Visualizer */}
-            <Card className="overflow-hidden border border-border shadow-xs">
-              <div className="bg-muted/40 px-4 py-2.5 border-b border-border flex items-center justify-between">
-                <span className="text-xs font-bold text-foreground flex items-center gap-1.5">
-                  <Compass className="w-3.5 h-3.5 text-emerald-800" />
-                  Dynamic Proximity Buffer Ring (Radius: {radiusMeters}m)
-                </span>
-                <span className="text-[11px] font-mono text-muted-foreground">
-                  Target: {selectedTree.tag_number}
-                </span>
-              </div>
-
-              {/* Map Canvas */}
-              <div className="relative aspect-16/10 bg-slate-900 overflow-hidden flex items-center justify-center p-4">
-                <svg
-                  viewBox="-300 -200 600 400"
-                  className="w-full h-full select-none"
-                >
-                  {/* Grid Lines */}
-                  <defs>
-                    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1e293b" strokeWidth="0.8" />
-                    </pattern>
-                  </defs>
-                  <rect x="-300" y="-200" width="600" height="400" fill="url(#grid)" />
-
-                  {/* Dynamic Proximity Buffer Ring */}
-                  {/* Radius scaled: 100m -> 30px, 500m -> 90px, 2000m -> 180px */}
-                  {(() => {
-                    const scaledRadius = 25 + (radiusMeters / 2000) * 160;
-                    return (
-                      <>
-                        <circle
-                          cx="0"
-                          cy="0"
-                          r={scaledRadius}
-                          fill="#059669"
-                          fillOpacity="0.12"
-                          stroke="#10b981"
-                          strokeWidth="1.5"
-                          strokeDasharray="4 3"
-                        />
-                        <text
-                          x="0"
-                          y={-scaledRadius - 6}
-                          textAnchor="middle"
-                          fill="#10b981"
-                          fontSize="9"
-                          fontFamily="monospace"
-                        >
-                          ST_DWithin Buffer: {radiusMeters}m
-                        </text>
-                      </>
-                    );
-                  })()}
-
-                  {/* Ward Boundary Guide */}
-                  <polygon
-                    points="-250,-150 240,-130 260,140 -200,160"
-                    fill="none"
-                    stroke="#334155"
-                    strokeWidth="1"
-                    strokeDasharray="6 4"
-                  />
-
-                  {/* Center Target Tree */}
-                  <g>
-                    <circle cx="0" cy="0" r="10" fill="#047857" className="animate-pulse" />
-                    <circle cx="0" cy="0" r="5" fill="#ffffff" />
-                    <text x="0" y="20" textAnchor="middle" fill="#ffffff" fontSize="10" fontWeight="bold">
-                      {selectedTree.tag_number} (Focal Target)
-                    </text>
-                  </g>
-
-                  {/* Nearby Candidate Trees inside / near buffer */}
-                  {(queryData?.results || []).map((res, i) => {
-                    // Spread nearby trees radially around center
-                    const angle = (i * (360 / Math.max(1, queryData!.results.length)) * Math.PI) / 180;
-                    const r = 25 + (res.distance_meters / Math.max(1, radiusMeters)) * 140;
-                    const cx = Math.cos(angle) * r;
-                    const cy = Math.sin(angle) * r;
-                    const isSelected = selectedResult?.tree_id === res.tree_id;
-
-                    return (
-                      <g
-                        key={res.tree_id + i}
-                        className="cursor-pointer transition-all"
-                        onClick={() => setSelectedResult(res)}
-                      >
-                        <line
-                          x1="0"
-                          y1="0"
-                          x2={cx}
-                          y2={cy}
-                          stroke="#334155"
-                          strokeWidth="0.8"
-                          strokeDasharray="2 2"
-                        />
-                        <circle
-                          cx={cx}
-                          cy={cy}
-                          r={isSelected ? 9 : 6}
-                          fill={res.similarity_percent >= 82 ? "#ef4444" : "#10b981"}
-                          stroke={isSelected ? "#ffffff" : "#0f172a"}
-                          strokeWidth={isSelected ? "2" : "1"}
-                        />
-                        <text
-                          x={cx}
-                          y={cy - 10}
-                          textAnchor="middle"
-                          fill="#cbd5e1"
-                          fontSize="8"
-                          fontFamily="monospace"
-                        >
-                          {res.tag_number} ({res.distance_meters}m)
-                        </text>
-                      </g>
-                    );
-                  })}
-                </svg>
-
-                <div className="absolute bottom-2 right-2 bg-slate-900/80 backdrop-blur-xs px-2.5 py-1 rounded text-[10px] font-mono text-slate-300 border border-slate-700">
-                  PostGIS SRID 4326 • Spatial Precision: ±0.1m
-                </div>
-              </div>
-            </Card>
+            {/* Production Leaflet GIS Map with Real Satellite/Dark/Street Tiles */}
+            <NearbySimilarMap
+              targetTree={selectedTree}
+              radiusMeters={radiusMeters}
+              results={queryData?.results || []}
+              selectedResult={selectedResult}
+              onSelectResult={setSelectedResult}
+            />
 
             {/* Selected Specimen Preview Card */}
             {selectedResult && (

@@ -86,8 +86,8 @@ export default function Navbar() {
         {/* Left: Brand Identity */}
         <div className="flex items-center gap-3 shrink-0">
           <Link href="/" className="flex items-center gap-2.5 group shrink-0">
-            <div className="w-8 h-8 bg-slate-950 rounded-lg flex items-center justify-center transition-transform group-hover:scale-105 shadow-xs">
-              <Trees className="w-4 h-4 text-white" />
+            <div className="w-8 h-8 rounded-lg overflow-hidden flex items-center justify-center transition-transform group-hover:scale-105 shadow-xs border border-emerald-500/30">
+              <img src="/icon.svg" alt="EverLeafDB" className="w-full h-full object-cover" />
             </div>
             <span className="font-bold text-base tracking-tight text-slate-950">EverLeafDB</span>
           </Link>
@@ -158,7 +158,7 @@ export default function Navbar() {
 
           {/* Primary CTA */}
           <Link href="/console" className="shrink-0">
-            <button className="h-8 px-3.5 text-xs font-medium bg-slate-950 hover:bg-slate-800 text-white rounded-lg shadow-xs flex items-center gap-1.5 transition-colors shrink-0 whitespace-nowrap">
+            <button className="h-8 px-3.5 text-xs font-semibold bg-slate-950 hover:bg-slate-900 text-white rounded-lg border border-emerald-500/40 shadow-sm shadow-emerald-500/20 hover:shadow-md hover:shadow-emerald-500/35 transition-all flex items-center gap-1.5 shrink-0 whitespace-nowrap hover:border-emerald-400">
               <span>Console</span>
               <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
             </button>

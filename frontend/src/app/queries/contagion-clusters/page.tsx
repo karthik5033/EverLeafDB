@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { DashboardShell } from "@/components/DashboardShell";
 import { HybridQuery3Response, ContagionHazardCluster, EndangeredTree } from "@/lib/hybrid-queries";
@@ -24,6 +25,17 @@ import {
   Zap,
   CheckCircle2
 } from "lucide-react";
+
+const ContagionClustersMap = dynamic(() => import("@/components/ContagionClustersMap"), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-[420px] rounded-xl flex flex-col items-center justify-center bg-slate-950 text-slate-300 border border-slate-800">
+      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-red-500 mb-3" />
+      <p className="font-mono text-xs text-white">Initializing PostGIS Contagion Outbreak Map...</p>
+      <p className="text-[11px] text-slate-400 mt-0.5">Projecting ST_Buffer Biosecurity Quarantine Polygons</p>
+    </div>
+  )
+});
 
 export default function ContagionClustersPage() {
   const [radiusMeters, setRadiusMeters] = useState<number>(500);
@@ -126,12 +138,13 @@ export default function ContagionClustersPage() {
         </div>
 
         {/* Split-Screen Interactive Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           {/* Left Column: Parameter Sliders & SQL (5 cols) */}
-          <div className="lg:col-span-5 space-y-5">
+          <div className="lg:col-span-5 space-y-4">
             <Card className="p-5 space-y-4">
               <div className="flex items-center justify-between border-b border-border pb-3">
-                <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+                  <ShieldAlert className="w-3.5 h-3.5 text-red-600" />
                   Outbreak Cluster Parameters
                 </span>
                 <span className="text-[11px] font-mono text-red-600 font-bold">
@@ -220,7 +233,7 @@ export default function ContagionClustersPage() {
                 </span>
                 <span className="text-[10px] text-slate-500">GiST Accelerated</span>
               </div>
-              <pre className="text-[11px] text-red-300 leading-relaxed overflow-x-auto whitespace-pre-wrap">
+              <pre className="text-[11px] text-red-300 leading-relaxed overflow-x-auto whitespace-pre-wrap max-h-[170px] overflow-y-auto custom-scrollbar">
                 {data?.sql_executed || "-- Executing contagion cluster detection..."}
               </pre>
             </Card>
@@ -228,128 +241,21 @@ export default function ContagionClustersPage() {
 
           {/* Right Column: Interactive Translucent Red Hazard Map (7 cols) */}
           <div className="lg:col-span-7 space-y-5">
-            <Card className="overflow-hidden border border-border shadow-xs">
-              <div className="bg-muted/40 px-4 py-2.5 border-b border-border flex items-center justify-between">
-                <span className="text-xs font-bold text-foreground flex items-center gap-1.5">
-                  <Flame className="w-3.5 h-3.5 text-red-600" />
-                  Translucent Hazard Heat Zone ({radiusMeters}m ST_Buffer)
-                </span>
-                <span className="text-[11px] font-mono text-muted-foreground">
-                  Epicenter: {activeZone?.epicenter_tag}
-                </span>
-              </div>
-
-              {/* Map Canvas */}
-              <div className="relative aspect-16/10 bg-slate-950 overflow-hidden flex items-center justify-center p-4">
-                <svg viewBox="-300 -200 600 400" className="w-full h-full select-none">
-                  {/* Grid Lines */}
-                  <defs>
-                    <radialGradient id="heatGlow" cx="50%" cy="50%" r="50%">
-                      <stop offset="0%" stopColor="#ef4444" stopOpacity="0.5" />
-                      <stop offset="60%" stopColor="#dc2626" stopOpacity="0.25" />
-                      <stop offset="100%" stopColor="#991b1b" stopOpacity="0.0" />
-                    </radialGradient>
-                  </defs>
-
-                  {/* Translucent Red Hazard Heat Zone Circle */}
-                  {(() => {
-                    const scaledRadius = 35 + (radiusMeters / 1500) * 155;
-                    return (
-                      <>
-                        <circle
-                          cx="0"
-                          cy="0"
-                          r={scaledRadius}
-                          fill="url(#heatGlow)"
-                          stroke="#ef4444"
-                          strokeWidth="2"
-                          strokeDasharray="6 4"
-                          className="animate-pulse"
-                        />
-                        <text
-                          x="0"
-                          y={-scaledRadius - 8}
-                          textAnchor="middle"
-                          fill="#ef4444"
-                          fontSize="9"
-                          fontFamily="monospace"
-                          fontWeight="bold"
-                        >
-                          DANGER CONTAGION ZONE ({radiusMeters}m BUFFER)
-                        </text>
-                      </>
-                    );
-                  })()}
-
-                  {/* Epicenter Target */}
-                  <g>
-                    <circle cx="0" cy="0" r="14" fill="#ef4444" fillOpacity="0.4" className="animate-ping" />
-                    <circle cx="0" cy="0" r="9" fill="#dc2626" />
-                    <circle cx="0" cy="0" r="4" fill="#ffffff" />
-                    <text x="0" y="24" textAnchor="middle" fill="#fca5a5" fontSize="10" fontWeight="bold">
-                      {activeZone?.epicenter_tag} (CRITICAL EPICENTER)
-                    </text>
-                  </g>
-
-                  {/* Endangered Trees inside Danger Zone */}
-                  {(data?.endangered_trees || []).map((t, idx) => {
-                    const angle = (idx * (360 / Math.max(1, data!.endangered_trees.length)) * Math.PI) / 180;
-                    const r = 30 + (t.distance_to_epicenter_meters / Math.max(1, radiusMeters)) * 130;
-                    const cx = Math.cos(angle) * r;
-                    const cy = Math.sin(angle) * r;
-                    const isSelected = selectedTree?.endangered_tree_id === t.endangered_tree_id;
-
-                    const color =
-                      t.quarantine_priority === "EMERGENCY_ISOLATE"
-                        ? "#ef4444"
-                        : t.quarantine_priority === "HIGH_QUARANTINE"
-                        ? "#f59e0b"
-                        : "#10b981";
-
-                    return (
-                      <g
-                        key={t.endangered_tree_id + idx}
-                        className="cursor-pointer transition-all"
-                        onClick={() => setSelectedTree(t)}
-                      >
-                        <line
-                          x1="0"
-                          y1="0"
-                          x2={cx}
-                          y2={cy}
-                          stroke="#ef4444"
-                          strokeWidth="0.8"
-                          strokeOpacity="0.4"
-                          strokeDasharray="2 2"
-                        />
-                        <circle
-                          cx={cx}
-                          cy={cy}
-                          r={isSelected ? 9 : 6}
-                          fill={color}
-                          stroke={isSelected ? "#ffffff" : "#450a0a"}
-                          strokeWidth={isSelected ? "2" : "1"}
-                        />
-                        <text
-                          x={cx}
-                          y={cy - 10}
-                          textAnchor="middle"
-                          fill="#fecaca"
-                          fontSize="8"
-                          fontFamily="monospace"
-                        >
-                          {t.endangered_tag} ({t.distance_to_epicenter_meters}m)
-                        </text>
-                      </g>
-                    );
-                  })}
-                </svg>
-
-                <div className="absolute bottom-2 right-2 bg-red-950/80 backdrop-blur-xs px-2.5 py-1 rounded text-[10px] font-mono text-red-300 border border-red-800">
-                  PostGIS ST_Buffer Polygon • HNSW Vector Scan Active
-                </div>
-              </div>
-            </Card>
+            {/* Production Leaflet Hazard Map with Real Satellite / Dark / Street Tiles */}
+            <ContagionClustersMap
+              hazardZones={data?.hazard_zones || []}
+              activeZone={activeZone || null}
+              radiusMeters={radiusMeters}
+              endangeredTrees={data?.endangered_trees || []}
+              selectedTree={selectedTree}
+              onSelectZone={(zone) => {
+                const matchedTree = data?.endangered_trees.find(
+                  (t) => t.epicenter_alert_id === zone.alert_id
+                );
+                if (matchedTree) setSelectedTree(matchedTree);
+              }}
+              onSelectTree={setSelectedTree}
+            />
 
             {/* Selected Endangered Specimen Card */}
             {selectedTree && (

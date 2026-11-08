@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
+import { InteractiveVelocityChart } from "@/components/InteractiveVelocityChart";
 import {
   Menu,
   Search,
@@ -74,6 +75,47 @@ export default function Home() {
   const [isPaused, setIsPaused] = useState(false);
   const [activeTier, setActiveTier] = useState(2); // Default to City Scale (Recommended)
 
+  // Dynamic Typing Animation Phrases
+  const TYPING_PHRASES = [
+    "Spatial + Vector Filters",
+    "PostGIS ST_DWithin(geom, 500m)",
+    "pgvector HNSW Cosine Distance (<=>)",
+    "3NF ACID Tree Health Lifecycle",
+    "Biosecurity Contagion Radii",
+    "PostgreSQL 16 Repeatable Read"
+  ];
+
+  const [phraseIndex, setPhraseIndex] = useState(0);
+  const [displayText, setDisplayText] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  useEffect(() => {
+    const currentPhrase = TYPING_PHRASES[phraseIndex];
+    let timeout: NodeJS.Timeout;
+
+    if (!isDeleting && displayText === currentPhrase) {
+      // Pause at full word for 2.2 seconds
+      timeout = setTimeout(() => setIsDeleting(true), 2200);
+    } else if (isDeleting && displayText === "") {
+      // Finished deleting, move to next phrase
+      setIsDeleting(false);
+      setPhraseIndex((prev) => (prev + 1) % TYPING_PHRASES.length);
+      timeout = setTimeout(() => {}, 200);
+    } else {
+      // Smooth typing or deleting cadence
+      const speed = isDeleting ? 30 : 65;
+      timeout = setTimeout(() => {
+        setDisplayText((prev) =>
+          isDeleting
+            ? currentPhrase.substring(0, prev.length - 1)
+            : currentPhrase.substring(0, prev.length + 1)
+        );
+      }, speed);
+    }
+
+    return () => clearTimeout(timeout);
+  }, [displayText, isDeleting, phraseIndex]);
+
   useEffect(() => {
     if (isPaused) return;
     const interval = setInterval(() => {
@@ -94,19 +136,22 @@ export default function Home() {
       <Navbar />
 
 
-      {/* Hero Section */}
-      <section className="flex flex-col items-center justify-center pt-10 md:pt-12 pb-6 px-4 text-center">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full border border-gray-200 text-xs font-medium mb-4 bg-gray-50/80 shadow-xs">
-          <Sparkles className="w-3.5 h-3.5 text-emerald-800" />
+      {/* Hero Section - Full First Fold with Perfectly Balanced Viewport */}
+      <section className="min-h-[calc(100vh-3.5rem)] flex flex-col items-center justify-center py-12 md:py-20 px-4 text-center relative overflow-hidden">
+        {/* Subtle Background Radial Glow */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-emerald-500/5 rounded-full blur-3xl pointer-events-none -z-10" />
+
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-emerald-200/80 text-xs font-semibold mb-6 bg-emerald-50/70 text-emerald-950 shadow-sm shadow-emerald-500/10 transition-transform hover:scale-105">
+          <Sparkles className="w-3.5 h-3.5 text-emerald-700" />
           Spatial &amp; Vector Urban Forestry DBMS
         </div>
 
-        <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-[#111111] max-w-4xl leading-[1.12] mb-4">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[68px] font-extrabold tracking-tight text-[#111111] max-w-5xl leading-[1.1] mb-6">
           Urban Tree Lifecycle Management with <br className="hidden sm:inline" />
-          <span className="relative inline-block mt-1">
+          <span className="relative inline-block mt-2">
             Spatial &amp; Similarity Search
             <svg
-              className="absolute w-full h-3 -bottom-1.5 left-0 text-black"
+              className="absolute w-full h-3.5 -bottom-2 left-0 text-emerald-600"
               viewBox="0 0 300 12"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -115,36 +160,47 @@ export default function Home() {
               <path
                 d="M2 9.5C85.5 3.5 198.5 1.5 298 7"
                 stroke="currentColor"
-                strokeWidth="3"
+                strokeWidth="3.5"
                 strokeLinecap="round"
               />
             </svg>
           </span>
         </h1>
 
-        <p className="text-sm sm:text-base md:text-lg text-gray-600 max-w-2xl mb-3.5 leading-relaxed font-normal">
+        <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-2xl mb-6 leading-relaxed font-normal">
           Unified PostgreSQL engine combining PostGIS geospatial boundaries, 3NF lifecycle records, and pgvector multimodal disease similarity search.
         </p>
 
-        <div className="text-xs sm:text-sm text-gray-500 mb-6 flex items-center justify-center">
-          Hybrid SQL with <span className="text-black font-semibold ml-1.5">Spatial + Vector Filters</span>
-          <span className="w-[1.5px] h-4 bg-black ml-1 animate-pulse"></span>
+        {/* Dynamic Typing Terminal Line */}
+        <div className="text-sm sm:text-base text-gray-500 mb-8 flex items-center justify-center font-mono">
+          <span>Hybrid SQL with</span>
+          <span className="text-emerald-800 font-bold ml-2 bg-emerald-50/90 px-2.5 py-1 rounded-md border border-emerald-200/90 shadow-xs">
+            {displayText || "\u00A0"}
+          </span>
+          <span className="w-[2px] h-5 bg-emerald-600 ml-1.5 animate-pulse inline-block shadow-sm shadow-emerald-500"></span>
         </div>
 
-        <div className="flex flex-col sm:flex-row items-center gap-3">
+        {/* CTA Buttons with Emerald Shadow Hue */}
+        <div className="flex flex-col sm:flex-row items-center gap-4">
           <Link
             href="/console"
-            className="px-5 py-2.5 bg-[#111111] text-white rounded-lg text-sm font-semibold flex items-center gap-2 hover:bg-black transition-all shadow-sm"
+            className="px-6 py-3 bg-slate-950 hover:bg-slate-900 text-white border border-emerald-500/40 hover:border-emerald-400 rounded-xl text-sm md:text-base font-bold flex items-center gap-2.5 transition-all duration-300 shadow-lg shadow-emerald-500/25 hover:shadow-xl hover:shadow-emerald-500/40 hover:-translate-y-0.5"
           >
-            Explore 3NF Schema &amp; DDL <Database className="w-4 h-4" />
+            Explore 3NF Schema &amp; DDL <Database className="w-4 h-4 text-emerald-400" />
           </Link>
 
           <Link
             href="/console"
-            className="px-5 py-2.5 bg-white text-black border border-gray-300 rounded-lg text-sm font-semibold flex items-center gap-2 hover:bg-gray-50 transition-all shadow-xs"
+            className="px-6 py-3 bg-white hover:bg-emerald-50/40 text-slate-950 border border-emerald-500/30 hover:border-emerald-500/60 rounded-xl text-sm md:text-base font-bold flex items-center gap-2.5 transition-all duration-300 shadow-md shadow-emerald-500/15 hover:shadow-lg hover:shadow-emerald-500/25 hover:-translate-y-0.5"
           >
-            Execute Hybrid Queries <ArrowRight className="w-4 h-4" />
+            Execute Hybrid Queries <ArrowRight className="w-4 h-4 text-emerald-600" />
           </Link>
+        </div>
+
+        {/* Subtle Scroll Hint */}
+        <div className="mt-14 text-xs font-mono text-slate-400 flex flex-col items-center gap-1.5 animate-bounce">
+          <span>Explore Live System Architecture</span>
+          <ChevronDown className="w-4 h-4 text-emerald-600" />
         </div>
       </section>
 
@@ -256,166 +312,8 @@ export default function Home() {
 
         {/* Bottom Charts */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
-          {/* Main Inspection Velocity Chart */}
-          <div className="col-span-1 lg:col-span-6 p-6 rounded-xl border border-gray-200/90 shadow-sm bg-white flex flex-col justify-between">
-            <div>
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
-                <div>
-                  <div className="flex items-center gap-2">
-                    <h3 className="font-bold text-lg text-gray-950">Canopy Health & Inspection Velocity</h3>
-                    <span className="text-[11px] font-mono bg-emerald-50 text-emerald-800 px-2 py-0.5 rounded border border-emerald-200 font-semibold">
-                      p95: 7.2ms
-                    </span>
-                  </div>
-                  <p className="text-xs text-gray-500 mt-0.5">Weekly commit volume and query latency across municipal wards</p>
-                </div>
-                
-                {/* Timeframe selector & legend */}
-                <div className="flex items-center gap-3">
-                  <div className="flex items-center gap-1 bg-gray-100 p-0.5 rounded-lg border border-gray-200/70 text-xs">
-                    <button className="px-2.5 py-1 bg-emerald-700 text-white rounded font-semibold shadow-xs">7D</button>
-                    <button className="px-2.5 py-1 text-gray-500 hover:text-gray-900">14D</button>
-                    <button className="px-2.5 py-1 text-gray-500 hover:text-gray-900">30D</button>
-                  </div>
-                  <button className="text-gray-400 hover:text-black">
-                    <MoreVertical className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
-
-              {/* Chart Legend */}
-              <div className="flex items-center gap-5 text-xs text-gray-500 mb-4">
-                <div className="flex items-center gap-2">
-                  <span className="w-3 h-1 bg-emerald-700 rounded-full"></span>
-                  <span className="font-medium text-gray-800">Spatial Commits / Day</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="w-3 h-[2px] border-t-2 border-dashed border-gray-400"></span>
-                  <span>p95 Latency Benchmark (ms)</span>
-                </div>
-              </div>
-              
-              {/* Professional Smooth SVG Chart */}
-              <div className="relative h-64 w-full select-none">
-                {/* Y Axis Labels */}
-                <div className="absolute left-0 top-0 bottom-6 w-9 flex flex-col justify-between text-[11px] font-mono text-gray-400">
-                  <span>6.0k</span>
-                  <span>4.8k</span>
-                  <span>3.6k</span>
-                  <span>2.4k</span>
-                  <span>1.2k</span>
-                  <span>0</span>
-                </div>
-                
-                <div className="absolute left-10 right-0 top-1 bottom-6">
-                  {/* Subtle Grid lines */}
-                  <div className="w-full h-full flex flex-col justify-between">
-                    {[...Array(6)].map((_, i) => (
-                      <div key={i} className="w-full h-px border-t border-dashed border-gray-200/80"></div>
-                    ))}
-                  </div>
-                  
-                  {/* Smooth Bezier SVG Graph */}
-                  <svg className="absolute inset-0 w-full h-full overflow-visible" viewBox="0 0 540 200" preserveAspectRatio="none">
-                    <defs>
-                      <linearGradient id="gradientDarkGreenArea" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="#047857" stopOpacity="0.25" />
-                        <stop offset="65%" stopColor="#047857" stopOpacity="0.06" />
-                        <stop offset="100%" stopColor="#047857" stopOpacity="0.0" />
-                      </linearGradient>
-                      <filter id="darkGreenGlow" x="-20%" y="-20%" width="140%" height="140%">
-                        <feDropShadow dx="0" dy="2" stdDeviation="3" floodColor="#047857" floodOpacity="0.3"/>
-                      </filter>
-                    </defs>
-
-                    {/* Secondary benchmark dashed curve (Query Latency) */}
-                    <path
-                      d="M 10,140 C 60,135 120,130 180,120 C 240,110 300,105 360,95 C 420,85 480,75 530,65"
-                      fill="none"
-                      stroke="#94a3b8"
-                      strokeWidth="1.5"
-                      strokeDasharray="4 4"
-                    />
-
-                    {/* Smooth Area Gradient Fill */}
-                    <path
-                      d="M 10,160 C 50,155 90,135 130,128 C 170,120 210,80 250,75 C 290,70 330,110 370,105 C 410,100 450,45 490,40 C 510,38 525,28 535,22 L 535,200 L 10,200 Z"
-                      fill="url(#gradientDarkGreenArea)"
-                    />
-
-                    {/* Primary Curve: Smooth Spline */}
-                    <path
-                      d="M 10,160 C 50,155 90,135 130,128 C 170,120 210,80 250,75 C 290,70 330,110 370,105 C 410,100 450,45 490,40 C 510,38 525,28 535,22"
-                      fill="none"
-                      stroke="#047857"
-                      strokeWidth="2.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      filter="url(#darkGreenGlow)"
-                    />
-
-                    {/* Active Target Cursor Line */}
-                    <line x1="490" y1="10" x2="490" y2="200" stroke="#047857" strokeWidth="1" strokeDasharray="3 3" opacity="0.6" />
-
-                    {/* Active Data Points */}
-                    <circle cx="250" cy="75" r="3" fill="#047857" stroke="#ffffff" strokeWidth="1.5" />
-                    <circle cx="370" cy="105" r="3" fill="#047857" stroke="#ffffff" strokeWidth="1.5" />
-                    
-                    {/* Peak Marker (Saturday) with Pulse Ring */}
-                    <circle cx="490" cy="40" r="9" fill="#047857" fillOpacity="0.2" className="animate-pulse" />
-                    <circle cx="490" cy="40" r="4" fill="#047857" stroke="#ffffff" strokeWidth="2" />
-                  </svg>
-
-                  {/* Interactive Pinned Tooltip - Frosted Card */}
-                  <div className="absolute right-4 top-2 pointer-events-none bg-white/95 backdrop-blur-md text-gray-900 rounded-lg p-2.5 shadow-lg border border-emerald-200/90 text-[11px] leading-tight z-20">
-                    <div className="flex items-center justify-between gap-3 font-semibold mb-1">
-                      <span className="text-emerald-900 font-bold">Saturday Peak</span>
-                      <span className="text-emerald-700 font-mono font-bold">5,140 commits</span>
-                    </div>
-                    <div className="text-gray-600 flex items-center justify-between gap-3 text-[10px]">
-                      <span>Hybrid Latency</span>
-                      <span className="font-mono text-emerald-800 font-semibold">7.2ms (p95)</span>
-                    </div>
-                    <div className="text-gray-600 flex items-center justify-between gap-3 text-[10px] mt-0.5">
-                      <span>Spatial GiST Cache</span>
-                      <span className="font-mono text-emerald-700 font-semibold">99.2% Hit</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* X Axis Labels */}
-                <div className="absolute left-10 right-0 bottom-0 h-5 flex justify-between text-[11px] font-mono text-gray-500">
-                  <span>Mon 28</span>
-                  <span>Tue 29</span>
-                  <span>Wed 30</span>
-                  <span>Thu 31</span>
-                  <span>Fri 01</span>
-                  <span className="font-bold text-gray-900">Sat 02</span>
-                  <span>Sun 03</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Bottom Telemetry Strip */}
-            <div className="mt-5 pt-3.5 border-t border-gray-100 grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
-              <div>
-                <span className="text-gray-400 block text-[10px] uppercase font-semibold">Weekly Volume</span>
-                <span className="font-bold font-mono text-gray-900">32,840</span>
-              </div>
-              <div>
-                <span className="text-gray-400 block text-[10px] uppercase font-semibold">Avg Exec Time</span>
-                <span className="font-bold font-mono text-gray-900">8.4ms</span>
-              </div>
-              <div>
-                <span className="text-gray-400 block text-[10px] uppercase font-semibold">GiST Index Hit</span>
-                <span className="font-bold font-mono text-emerald-800">99.4%</span>
-              </div>
-              <div>
-                <span className="text-gray-400 block text-[10px] uppercase font-semibold">pgvector Recall</span>
-                <span className="font-bold font-mono text-emerald-800">99.1%</span>
-              </div>
-            </div>
-          </div>
+          {/* Main Inspection Velocity Chart - Dynamic Interactive Component */}
+          <InteractiveVelocityChart />
 
           {/* Operational Pipeline Card - Clean Green Theme */}
           <div className="col-span-1 lg:col-span-3 p-6 rounded-xl border border-gray-200/90 shadow-sm bg-white flex flex-col justify-between">

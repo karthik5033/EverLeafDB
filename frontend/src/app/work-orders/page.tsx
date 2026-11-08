@@ -406,7 +406,7 @@ export default function WorkOrdersKanbanPage() {
               </div>
 
               {/* Card List Container */}
-              <div className="space-y-3 flex-1 overflow-y-auto max-h-[750px] pr-0.5">
+              <div className="space-y-3 flex-1 overflow-y-auto max-h-[680px] custom-scrollbar pr-0.5">
                 {items.length === 0 ? (
                   <div className="p-8 text-center text-xs text-muted-foreground border border-dashed border-border/40 rounded-xl bg-card/20">
                     No orders in this stage

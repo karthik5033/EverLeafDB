@@ -162,9 +162,9 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
 
   return (
     <TooltipProvider delayDuration={0}>
-      <div className="min-h-screen bg-slate-50 flex flex-col font-sans text-slate-900">
+      <div className="h-screen bg-slate-50 flex flex-col font-sans text-slate-900 overflow-hidden">
         {/* Top App Bar (Clean Light Landing Page Styling) */}
-        <header className="sticky top-0 z-40 h-14 bg-white/95 backdrop-blur-md border-b border-slate-200 px-4 md:px-6 flex items-center justify-between">
+        <header className="shrink-0 z-40 h-14 bg-white/95 backdrop-blur-md border-b border-slate-200 px-4 md:px-6 flex items-center justify-between">
           <div className="flex items-center gap-3">
             {/* Mobile Navigation Sheet */}
             <Sheet>
@@ -225,8 +225,8 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
 
             {/* Brand Logo */}
             <Link href="/" className="flex items-center gap-2.5 group">
-              <div className="w-8 h-8 bg-slate-950 rounded-lg flex items-center justify-center transition-transform group-hover:scale-105 shadow-xs">
-                <Trees className="w-4 h-4 text-white" />
+              <div className="w-8 h-8 rounded-lg overflow-hidden flex items-center justify-center transition-transform group-hover:scale-105 shadow-xs border border-emerald-500/30">
+                <img src="/icon.svg" alt="EverLeafDB" className="w-full h-full object-cover" />
               </div>
               <span className="font-bold text-base tracking-tight text-slate-950">EverLeafDB</span>
             </Link>
@@ -252,10 +252,10 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
         </header>
 
         {/* Master Workspace Layout */}
-        <div className="flex-1 flex overflow-hidden">
-          {/* Desktop Collapsible Clean Sidebar */}
+        <div className="flex-1 flex min-h-0 overflow-hidden">
+          {/* Desktop Collapsible Clean Sidebar - Fixed Viewport Position */}
           <aside
-            className={`hidden md:flex flex-col border-r border-slate-200 bg-white transition-all duration-300 relative ${
+            className={`hidden md:flex flex-col border-r border-slate-200 bg-white transition-all duration-300 shrink-0 h-full relative z-30 ${
               isCollapsed ? "w-16" : "w-64"
             }`}
           >
@@ -269,7 +269,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
             </button>
 
             {/* Sidebar Navigation Items */}
-            <div className="p-3 pb-8 space-y-4 flex-1 overflow-y-auto no-scrollbar">
+            <div className="p-3 pb-8 space-y-4 flex-1 overflow-y-auto custom-scrollbar">
               {NAV_SECTIONS.map((section) => (
                 <div key={section.title} className="space-y-1">
                   {!isCollapsed && (
@@ -339,7 +339,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
 
             {/* Sidebar User Tenant Footer */}
             {!isCollapsed && (
-              <div className="p-3 border-t border-slate-200 bg-slate-50/80 text-xs font-mono">
+              <div className="p-3 border-t border-slate-200 bg-slate-50/80 text-xs font-mono shrink-0">
                 <div className="text-[10px] text-slate-400 uppercase font-bold tracking-wider mb-0.5">
                   Tenant Boundary
                 </div>
@@ -350,7 +350,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
           </aside>
 
           {/* Main Content Viewport */}
-          <main className="flex-1 overflow-y-auto bg-slate-50">{children}</main>
+          <main className="flex-1 min-w-0 overflow-y-auto bg-slate-50">{children}</main>
         </div>
       </div>
     </TooltipProvider>

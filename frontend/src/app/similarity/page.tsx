@@ -89,7 +89,7 @@ export default function SimilarityPage() {
         </div>
 
         {/* 2-Column Studio Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 flex-1">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 flex-1 items-start">
           {/* Left Column: Query Specimen Ingestion (5 cols) */}
           <div className="lg:col-span-5 flex flex-col gap-4">
             <div className="bg-white p-5 rounded-2xl border border-gray-200/90 shadow-xs space-y-4">
