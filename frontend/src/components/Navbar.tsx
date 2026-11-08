@@ -250,20 +250,20 @@ export default function Navbar() {
                 <>
                   {searchResults.trees.length > 0 && (
                     <div>
-                      <div className="text-[10px] uppercase font-bold text-slate-400 mb-1 font-sans">Trees Found</div>
+                      <div className="text-xs uppercase font-bold text-slate-500 mb-1 font-sans">Trees Found</div>
                       <div className="space-y-1">
                         {searchResults.trees.map((t) => (
                           <Link
                             key={t.tree_id}
                             href={`/map?tree_id=${t.tree_id}`}
                             onClick={() => setIsSearchOpen(false)}
-                            className="p-2 rounded-lg bg-slate-50 hover:bg-emerald-50/60 border border-slate-200 flex items-center justify-between text-slate-800 transition-colors"
+                            className="p-2 rounded-lg bg-slate-50 hover:bg-emerald-50/60 border border-slate-200 flex items-center justify-between text-slate-800 transition-colors text-sm"
                           >
                             <div>
                               <span className="font-bold text-slate-950 mr-2">{t.tag_number}</span>
                               <span className="text-slate-600">{t.species_common} ({t.ward_name})</span>
                             </div>
-                            <span className="text-[10px] px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-800 border border-emerald-200 font-semibold font-mono">
+                            <span className="text-xs px-2 py-0.5 rounded bg-emerald-50 text-emerald-800 border border-emerald-200 font-semibold font-mono">
                               {t.health_status}
                             </span>
                           </Link>
@@ -274,17 +274,17 @@ export default function Navbar() {
 
                   {searchResults.wards.length > 0 && (
                     <div>
-                      <div className="text-[10px] uppercase font-bold text-slate-400 mb-1 font-sans">Municipal Wards</div>
+                      <div className="text-xs uppercase font-bold text-slate-500 mb-1 font-sans">Municipal Wards</div>
                       <div className="space-y-1">
                         {searchResults.wards.map((w) => (
                           <Link
                             key={w.ward_id}
                             href={`/map?ward_id=${w.ward_id}`}
                             onClick={() => setIsSearchOpen(false)}
-                            className="p-2 rounded-lg bg-slate-50 hover:bg-emerald-50/60 border border-slate-200 flex items-center justify-between text-slate-800 transition-colors"
+                            className="p-2 rounded-lg bg-slate-50 hover:bg-emerald-50/60 border border-slate-200 flex items-center justify-between text-slate-800 transition-colors text-sm"
                           >
                             <span className="font-bold text-slate-900">{w.name} (Ward {w.ward_number})</span>
-                            <span className="text-slate-500 font-mono text-[10px]">{w.tree_count.toLocaleString()} trees</span>
+                            <span className="text-slate-500 font-mono text-xs">{w.tree_count.toLocaleString()} trees</span>
                           </Link>
                         ))}
                       </div>
@@ -293,17 +293,17 @@ export default function Navbar() {
 
                   {searchResults.diseases.length > 0 && (
                     <div>
-                      <div className="text-[10px] uppercase font-bold text-slate-400 mb-1 font-sans">Pathologies</div>
+                      <div className="text-xs uppercase font-bold text-slate-500 mb-1 font-sans">Pathologies</div>
                       <div className="space-y-1">
                         {searchResults.diseases.map((d) => (
                           <Link
                             key={d.disease_id}
                             href="/similarity"
                             onClick={() => setIsSearchOpen(false)}
-                            className="p-2 rounded-lg bg-slate-50 hover:bg-emerald-50/60 border border-slate-200 flex items-center justify-between text-slate-800 transition-colors"
+                            className="p-2 rounded-lg bg-slate-50 hover:bg-emerald-50/60 border border-slate-200 flex items-center justify-between text-slate-800 transition-colors text-sm"
                           >
                             <span className="font-bold text-slate-900">{d.common_name}</span>
-                            <span className="text-emerald-800 font-semibold">{d.typical_cure_rate}% Cure</span>
+                            <span className="text-emerald-800 font-semibold text-xs">{d.typical_cure_rate}% Cure</span>
                           </Link>
                         ))}
                       </div>
@@ -311,7 +311,7 @@ export default function Navbar() {
                   )}
 
                   {searchResults.trees.length === 0 && searchResults.wards.length === 0 && searchResults.diseases.length === 0 && (
-                    <div className="p-4 text-center text-slate-400 font-sans">
+                    <div className="p-4 text-center text-slate-400 font-sans text-xs">
                       No records found matching &ldquo;{searchQuery}&rdquo;.
                     </div>
                   )}
@@ -319,7 +319,7 @@ export default function Navbar() {
               )}
             </div>
 
-            <div className="p-2.5 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
+            <div className="p-2.5 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
               <span>Quick navigation across 142,850 cataloged records</span>
               <span className="font-mono text-emerald-800 font-semibold">GiST Index Active</span>
             </div>

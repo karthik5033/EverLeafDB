@@ -5,10 +5,20 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 
-  --text-xs: 0.8125rem;
-  --text-xs--line-height: 1.25rem;
-  --text-sm: 0.9375rem;
-  --text-sm--line-height: 1.45rem;
+  --text-xs: 0.75rem;
+  --text-xs--line-height: 1rem;
+  --text-sm: 0.875rem;
+  --text-sm--line-height: 1.25rem;
+  --text-base: 1rem;
+  --text-base--line-height: 1.5rem;
+  --text-lg: 1.125rem;
+  --text-lg--line-height: 1.75rem;
+  --text-xl: 1.25rem;
+  --text-xl--line-height: 1.75rem;
+  --text-2xl: 1.5rem;
+  --text-2xl--line-height: 2rem;
+  --text-3xl: 1.875rem;
+  --text-3xl--line-height: 2.25rem;
 
   --color-border: hsl(var(--border));
   --color-input: hsl(var(--input));
@@ -83,18 +93,14 @@ body {
 }
 
 @layer utilities {
-  /* Elevate micro font classes globally so small labels become clear and readable without overflowing cards */
-  .text-\[9px\] {
-    font-size: 11px !important;
-    line-height: 1.35 !important;
+  /* Standard Production Typography Guards (WCAG AA Accessibility) */
+  .text-\[8px\], .text-\[8\.5px\], .text-\[9px\], .text-\[9\.5px\], .text-\[10px\] {
+    font-size: 0.75rem !important; /* Standard 12px production minimum */
+    line-height: 1.125rem !important;
   }
-  .text-\[10px\] {
-    font-size: 12px !important;
-    line-height: 1.4 !important;
-  }
-  .text-\[11px\] {
-    font-size: 13px !important;
-    line-height: 1.4 !important;
+  .text-\[10\.5px\], .text-\[11px\], .text-\[11\.5px\] {
+    font-size: 0.8125rem !important; /* Standard 13px */
+    line-height: 1.25rem !important;
   }
 
   .no-scrollbar::-webkit-scrollbar {

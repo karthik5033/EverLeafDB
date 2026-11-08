@@ -199,7 +199,7 @@ export default function ContagionClustersMap({
                 <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>
               </svg>
             </div>
-            <div class="absolute -top-7 px-2 py-0.5 rounded bg-slate-950/90 text-[10px] font-mono font-bold text-red-300 whitespace-nowrap shadow-md pointer-events-none border border-slate-700">
+            <div class="absolute -top-7 px-2 py-0.5 rounded bg-slate-950/90 text-xs font-mono font-bold text-red-300 whitespace-nowrap shadow-md pointer-events-none border border-slate-700">
               EPICENTER: ${zone.epicenter_tag}
             </div>
           </div>
@@ -219,11 +219,11 @@ export default function ContagionClustersMap({
         <div class="p-1 min-w-[210px] font-sans text-slate-800">
           <div class="flex items-center justify-between pb-1 mb-1 border-b border-slate-200">
             <span class="font-mono text-xs font-bold text-red-700 bg-red-50 px-1.5 py-0.5 rounded">OUTBREAK EPICENTER</span>
-            <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-red-100 text-red-700">CRITICAL</span>
+            <span class="text-xs font-bold px-1.5 py-0.5 rounded bg-red-100 text-red-700">CRITICAL</span>
           </div>
           <div class="font-bold text-sm text-slate-900">${zone.epicenter_tag}</div>
           <div class="text-xs text-red-700 font-semibold mb-2">${zone.detected_disease}</div>
-          <div class="text-[11px] font-mono bg-slate-50 p-2 rounded border border-slate-100">
+          <div class="text-xs font-mono bg-slate-50 p-2 rounded border border-slate-100">
             <div><span class="text-slate-400">Buffer Radius:</span> <b>${zone.radius_meters}m</b></div>
             <div><span class="text-slate-400">Endangered:</span> <b>${zone.endangered_trees_count} trees</b></div>
             <div><span class="text-slate-400">Alert ID:</span> <b>${zone.alert_id}</b></div>
@@ -279,7 +279,7 @@ export default function ContagionClustersMap({
         const midLng = (activeZone.epicenter_lng + lng) / 2;
         const distMarker = L.marker([midLat, midLng], {
           icon: L.divIcon({
-            html: `<div class="px-1.5 py-0.5 rounded bg-slate-950/85 text-[9px] font-mono text-red-300 font-bold whitespace-nowrap border border-slate-700 shadow-sm">${t.distance_to_epicenter_meters}m</div>`,
+            html: `<div class="px-1.5 py-0.5 rounded bg-slate-950/85 text-xs font-mono text-red-300 font-bold whitespace-nowrap border border-slate-700 shadow-sm">${t.distance_to_epicenter_meters}m</div>`,
             className: "custom-tree-pin",
             iconAnchor: [15, 8]
           })
@@ -299,9 +299,9 @@ export default function ContagionClustersMap({
             <div class="relative flex items-center justify-center cursor-pointer group">
               ${isSelected ? '<span class="absolute w-8 h-8 rounded-full border-2 border-red-500 border-dashed animate-spin"></span>' : ""}
               <div class="relative w-6 h-6 rounded-full ${priorityColor} ring-4 ring-opacity-70 flex items-center justify-center text-white shadow-xl transition-transform duration-200 group-hover:scale-125 border-2 border-white">
-                <span class="text-[9px] font-mono font-extrabold">${Math.round(t.similarity_percent)}%</span>
+                <span class="text-xs font-mono font-extrabold">${Math.round(t.similarity_percent)}%</span>
               </div>
-              <div class="absolute -top-7 px-1.5 py-0.5 rounded bg-slate-950/90 text-[10px] font-mono text-white whitespace-nowrap shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
+              <div class="absolute -top-7 px-1.5 py-0.5 rounded bg-slate-950/90 text-xs font-mono text-white whitespace-nowrap shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
                 ${t.endangered_tag} • ${t.quarantine_priority}
               </div>
             </div>
@@ -318,11 +318,11 @@ export default function ContagionClustersMap({
           <div class="p-1 min-w-[210px] font-sans text-slate-800">
             <div class="flex items-center justify-between pb-1 mb-1 border-b border-slate-200">
               <span class="font-mono text-xs font-bold text-slate-900 bg-slate-100 px-1.5 py-0.5 rounded">${t.endangered_tag}</span>
-              <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-red-100 text-red-700">${t.quarantine_priority}</span>
+              <span class="text-xs font-bold px-1.5 py-0.5 rounded bg-red-100 text-red-700">${t.quarantine_priority}</span>
             </div>
             <div class="font-bold text-sm text-slate-900">${t.endangered_species}</div>
             <div class="text-xs text-red-700 font-semibold mb-2">Vector: ${t.pathogen_disease}</div>
-            <div class="text-[11px] font-mono bg-slate-50 p-2 rounded border border-slate-100">
+            <div class="text-xs font-mono bg-slate-50 p-2 rounded border border-slate-100">
               <div><span class="text-slate-400">Distance to Epicenter:</span> <b>${t.distance_to_epicenter_meters}m</b></div>
               <div><span class="text-slate-400">Similarity:</span> <b>${t.similarity_percent.toFixed(1)}%</b></div>
               <div><span class="text-slate-400">Untreated Days:</span> <b>${t.days_since_last_inspection}d</b></div>
@@ -377,7 +377,7 @@ export default function ContagionClustersMap({
                 <button
                   key={key}
                   onClick={() => setBasemap(key)}
-                  className={`flex items-center gap-1 px-2 py-1 rounded text-[11px] font-semibold transition-all ${
+                  className={`flex items-center gap-1 px-2 py-1 rounded text-xs font-semibold transition-all ${
                     isActive
                       ? "bg-slate-900 text-white shadow-xs"
                       : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
@@ -405,7 +405,7 @@ export default function ContagionClustersMap({
       <div ref={mapContainerRef} className="w-full h-full relative z-10 bg-slate-950 cursor-grab active:cursor-grabbing" />
 
       {/* Bottom Status Bar */}
-      <div className="absolute bottom-2 inset-x-2 z-20 pointer-events-none flex items-center justify-between text-[10px] font-mono text-slate-300 bg-slate-950/80 backdrop-blur-md px-3 py-1.5 rounded-lg border border-slate-800">
+      <div className="absolute bottom-2 inset-x-2 z-20 pointer-events-none flex items-center justify-between text-xs font-mono text-slate-300 bg-slate-950/80 backdrop-blur-md px-3 py-1.5 rounded-lg border border-slate-800">
         <div className="flex items-center gap-2">
           <span className="text-red-400 font-bold">PostGIS ST_Buffer (EPSG:4326)</span>
           <span className="text-slate-500">•</span>

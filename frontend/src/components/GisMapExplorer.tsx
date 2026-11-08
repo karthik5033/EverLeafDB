@@ -300,7 +300,7 @@ export default function GisMapExplorer({
       polygon.bindTooltip(
         `<div class="font-mono text-xs">
           <div class="font-bold text-emerald-300 uppercase">${ward.name}</div>
-          <div class="text-[10px] text-slate-300">${ward.canopy_cover_percent}% Canopy • ${ward.tree_count.toLocaleString()} Trees • ${ward.area_sq_km} km²</div>
+          <div class="text-xs text-slate-300">${ward.canopy_cover_percent}% Canopy • ${ward.tree_count.toLocaleString()} Trees • ${ward.area_sq_km} km²</div>
         </div>`,
         { sticky: true, className: "ward-map-tooltip" }
       );
@@ -404,7 +404,7 @@ export default function GisMapExplorer({
               <path d="M12 19h8.3a1 1 0 0 0 .7-1.7L18 14h.3a1 1 0 0 0 .7-1.7L16 9h.2a1 1 0 0 0 .8-1.7l-3.5-4.6a1 1 0 0 0-1.6 0L8.4 7.3a1 1 0 0 0 .8 1.7H9.5"/>
             </svg>
           </div>
-          <div class="absolute -top-7 px-1.5 py-0.5 rounded bg-slate-950/90 text-[10px] font-mono text-white whitespace-nowrap shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
+          <div class="absolute -top-7 px-1.5 py-0.5 rounded bg-slate-950/90 text-xs font-mono text-white whitespace-nowrap shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
             ${tree.tag_number}
           </div>
         </div>
@@ -422,7 +422,7 @@ export default function GisMapExplorer({
       <div class="p-1 min-w-[210px] font-sans text-slate-800">
         <div class="flex items-center justify-between pb-1.5 mb-1.5 border-b border-slate-200">
           <span class="font-mono text-xs font-bold text-slate-900 bg-slate-100 px-1.5 py-0.5 rounded">${tree.tag_number}</span>
-          <span class="text-[10px] font-bold px-1.5 py-0.5 rounded ${
+          <span class="text-xs font-bold px-1.5 py-0.5 rounded ${
             isCritical
               ? "bg-red-100 text-red-700"
               : isMonitor
@@ -431,8 +431,8 @@ export default function GisMapExplorer({
           }">${tree.health_status}</span>
         </div>
         <div class="font-bold text-sm text-slate-900 leading-tight">${tree.species_common}</div>
-        <div class="text-[11px] text-slate-500 italic mb-2">${tree.species_scientific}</div>
-        <div class="grid grid-cols-2 gap-1.5 text-[11px] font-mono bg-slate-50 p-2 rounded-lg border border-slate-100 mb-2.5">
+        <div class="text-xs text-slate-500 italic mb-2">${tree.species_scientific}</div>
+        <div class="grid grid-cols-2 gap-1.5 text-xs font-mono bg-slate-50 p-2 rounded-lg border border-slate-100 mb-2.5">
           <div><span class="text-slate-400">Height:</span> <b>${tree.height_m}m</b></div>
           <div><span class="text-slate-400">DBH:</span> <b>${tree.dbh_cm}cm</b></div>
           <div><span class="text-slate-400">Condition:</span> <b>${tree.condition_score}/5</b></div>
@@ -600,7 +600,7 @@ export default function GisMapExplorer({
               title="Toggle ST_DWithin Proximity Circle"
             >
               <Crosshair className="w-3.5 h-3.5" />
-              <span className="text-[11px]">ST_DWithin</span>
+              <span className="text-xs">ST_DWithin</span>
             </button>
 
             {showRadius && (
@@ -609,7 +609,7 @@ export default function GisMapExplorer({
                   <button
                     key={r}
                     onClick={() => setRadiusMeters(r)}
-                    className={`px-2 py-0.5 rounded font-mono text-[11px] font-bold transition-all ${
+                    className={`px-2 py-0.5 rounded font-mono text-xs font-bold transition-all ${
                       radiusMeters === r
                         ? "bg-emerald-700 text-white shadow-xs"
                         : "bg-slate-100 text-slate-700 hover:bg-slate-200"
@@ -648,7 +648,7 @@ export default function GisMapExplorer({
               <button
                 key={filter}
                 onClick={() => setHealthFilter(filter)}
-                className={`px-2.5 py-1 rounded-lg font-mono text-[11px] font-bold transition-all ${
+                className={`px-2.5 py-1 rounded-lg font-mono text-xs font-bold transition-all ${
                   healthFilter === filter
                     ? filter === "CRITICAL"
                       ? "bg-red-600 text-white"
@@ -701,12 +701,12 @@ export default function GisMapExplorer({
             <Crosshair className="w-4 h-4" />
           </div>
           <div>
-            <div className="text-[11px] font-mono text-slate-300 flex items-center gap-2">
+            <div className="text-xs font-mono text-slate-300 flex items-center gap-2">
               <span>PostGIS ST_DWithin Buffer ({spatialBufferStats.radiusMeters}m)</span>
               {probePoint ? (
-                <span className="text-[10px] text-amber-400 font-bold">• Custom Probe Point</span>
+                <span className="text-xs text-amber-400 font-bold">• Custom Probe Point</span>
               ) : (
-                <span className="text-[10px] text-emerald-400 font-bold">• Specimen Center</span>
+                <span className="text-xs text-emerald-400 font-bold">• Specimen Center</span>
               )}
             </div>
             <div className="text-xs font-bold text-white mt-0.5 flex items-center gap-3">
@@ -740,29 +740,29 @@ export default function GisMapExplorer({
             <span className="text-xs font-bold text-emerald-400 uppercase tracking-wide">
               {hoveredWard.name}
             </span>
-            <Badge variant="outline" className="text-[10px] font-mono text-slate-300 border-slate-700">
+            <Badge variant="outline" className="text-xs font-mono text-slate-300 border-slate-700">
               {hoveredWard.zone} Zone
             </Badge>
           </div>
           <div className="grid grid-cols-2 gap-2 text-xs font-mono mb-2">
             <div>
-              <span className="text-slate-400 block text-[10px]">Canopy Cover:</span>
+              <span className="text-slate-400 block text-xs">Canopy Cover:</span>
               <span className="font-bold text-emerald-300">{hoveredWard.canopy_cover_percent}%</span>
             </div>
             <div>
-              <span className="text-slate-400 block text-[10px]">Tree Population:</span>
+              <span className="text-slate-400 block text-xs">Tree Population:</span>
               <span className="font-bold text-white">{hoveredWard.tree_count.toLocaleString()}</span>
             </div>
             <div>
-              <span className="text-slate-400 block text-[10px]">Area Surface:</span>
+              <span className="text-slate-400 block text-xs">Area Surface:</span>
               <span className="text-slate-200">{hoveredWard.area_sq_km} km²</span>
             </div>
             <div>
-              <span className="text-slate-400 block text-[10px]">Lead Inspector:</span>
+              <span className="text-slate-400 block text-xs">Lead Inspector:</span>
               <span className="text-slate-200">{hoveredWard.assigned_inspector}</span>
             </div>
           </div>
-          <div className="text-[10px] text-slate-400 italic">Click ward polygon to lock boundaries and zoom</div>
+          <div className="text-xs text-slate-400 italic">Click ward polygon to lock boundaries and zoom</div>
         </div>
       )}
 
@@ -865,7 +865,7 @@ export default function GisMapExplorer({
                     {activeTree.latitude.toFixed(6)}, {activeTree.longitude.toFixed(6)}
                   </span>
                 </div>
-                <div className="flex items-center justify-between text-[11px] pt-1 border-t border-emerald-200">
+                <div className="flex items-center justify-between text-xs pt-1 border-t border-emerald-200">
                   <span className="text-slate-500">PostGIS Containment:</span>
                   <span className="text-emerald-800 font-bold flex items-center gap-1">
                     <CheckCircle2 className="w-3.5 h-3.5" /> ST_Contains = TRUE
@@ -875,18 +875,18 @@ export default function GisMapExplorer({
 
               {/* Botanical Taxon Attributes */}
               <div className="space-y-2 text-xs">
-                <div className="text-[10px] font-mono uppercase text-slate-500 font-bold">Botanical Taxon Profile:</div>
+                <div className="text-xs font-mono uppercase text-slate-500 font-bold">Botanical Taxon Profile:</div>
                 <div className="grid grid-cols-2 gap-2 font-mono">
                   <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
-                    <div className="text-[10px] text-slate-500">Growth Rate</div>
+                    <div className="text-xs text-slate-500">Growth Rate</div>
                     <div className="font-bold text-slate-900">{activeSpecies.growth_rate}</div>
                   </div>
                   <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
-                    <div className="text-[10px] text-slate-500">Typical Lifespan</div>
+                    <div className="text-xs text-slate-500">Typical Lifespan</div>
                     <div className="font-bold text-slate-900">{activeSpecies.typical_lifespan_years} yrs</div>
                   </div>
                   <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200 col-span-2">
-                    <div className="text-[10px] text-slate-500">Foliage Phenology</div>
+                    <div className="text-xs text-slate-500">Foliage Phenology</div>
                     <div className="font-bold text-slate-900">{activeSpecies.foliage_type}</div>
                   </div>
                 </div>

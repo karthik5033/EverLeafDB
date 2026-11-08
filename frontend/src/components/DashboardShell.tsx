@@ -189,13 +189,13 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
                   </div>
                   <div>
                     <div className="font-bold text-sm tracking-tight text-slate-900">EverLeafDB</div>
-                    <div className="text-[10px] text-slate-500 font-mono">PostGIS + pgvector</div>
+                    <div className="text-xs text-slate-500 font-mono">PostGIS + pgvector</div>
                   </div>
                 </div>
                 <div className="p-3 space-y-4 overflow-y-auto max-h-[calc(100vh-4rem)]">
                   {NAV_SECTIONS.map((section) => (
                     <div key={section.title} className="space-y-1">
-                      <div className="px-3 text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-1">
+                      <div className="px-3 text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">
                         {section.title}
                       </div>
                       {section.items.map((item) => {
@@ -205,7 +205,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
                           <Link
                             key={item.href}
                             href={item.href}
-                            className={`flex items-center justify-between px-3 py-2 rounded-lg text-[13px] font-medium transition-colors ${
+                            className={`flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                               isActive
                                 ? "bg-slate-900 text-white font-semibold shadow-xs"
                                 : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
@@ -218,7 +218,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
                             {item.badge && (
                               <Badge
                                 variant={item.badgeVariant || "secondary"}
-                                className="text-[11px] px-1.5 py-0.5 shrink-0 whitespace-nowrap"
+                                className="text-xs px-2 py-0.5 shrink-0 whitespace-nowrap font-mono"
                               >
                                 {item.badge}
                               </Badge>
@@ -253,7 +253,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
               </Link>
             </div>
 
-            <span className="hidden sm:inline-flex text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 font-semibold">
+            <span className="hidden sm:inline-flex text-xs font-mono px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 font-semibold">
               PostgreSQL 16 3NF
             </span>
           </div>
@@ -289,7 +289,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
             >
               {!isCollapsed ? (
                 <>
-                  <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-slate-400">
+                  <span className="text-xs font-mono font-bold uppercase tracking-wider text-slate-400">
                     Navigation
                   </span>
                   <button
@@ -328,7 +328,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
               {NAV_SECTIONS.map((section) => (
                 <div key={section.title} className="space-y-1">
                   {!isCollapsed && (
-                    <div className="px-3 text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-1">
+                    <div className="px-3 text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">
                       {section.title}
                     </div>
                   )}
@@ -363,7 +363,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
                       <Link
                         key={item.href}
                         href={item.href}
-                        className={`flex items-center justify-between px-3 py-2 rounded-lg text-[13px] transition-colors group ${
+                        className={`flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-colors group ${
                           isActive
                             ? "bg-slate-900 text-white font-semibold shadow-xs"
                             : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 font-medium"
@@ -380,7 +380,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
                         {item.badge && (
                           <Badge
                             variant={isActive ? "secondary" : item.badgeVariant || "secondary"}
-                            className="text-[11px] px-1.5 py-0.5 shrink-0 whitespace-nowrap font-mono"
+                            className="text-xs px-2 py-0.5 shrink-0 whitespace-nowrap font-mono"
                           >
                             {item.badge}
                           </Badge>
@@ -395,7 +395,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
             {/* Sidebar User Tenant Footer */}
             {!isCollapsed && (
               <div className="p-3.5 border-t border-slate-200 bg-slate-50/90 text-xs font-mono shrink-0">
-                <div className="flex items-center justify-between text-[11px] text-slate-500 uppercase font-bold tracking-wider mb-1">
+                <div className="flex items-center justify-between text-xs text-slate-500 uppercase font-bold tracking-wider mb-1">
                   <span>Tenant Boundary</span>
                   <span className="flex items-center gap-1 text-emerald-700 font-semibold lowercase">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>

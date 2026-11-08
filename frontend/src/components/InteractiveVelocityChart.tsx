@@ -225,10 +225,10 @@ export function InteractiveVelocityChart() {
           <div>
             <div className="flex items-center gap-2">
               <h3 className="font-bold text-lg text-gray-950">Canopy Health &amp; Inspection Velocity</h3>
-              <span className="text-[11px] font-mono bg-emerald-50 text-emerald-800 px-2 py-0.5 rounded border border-emerald-200 font-semibold transition-all">
+              <span className="text-xs font-mono bg-emerald-50 text-emerald-800 px-2.5 py-0.5 rounded border border-emerald-200 font-bold transition-all">
                 p95: {data.p95Latency}
               </span>
-              <span className="hidden md:inline-flex items-center gap-1.5 text-[10px] font-medium bg-emerald-50/70 text-emerald-900 px-2 py-0.5 rounded-full border border-emerald-200/60 font-mono">
+              <span className="hidden md:inline-flex items-center gap-1.5 text-xs font-semibold bg-emerald-50/70 text-emerald-900 px-2.5 py-0.5 rounded-full border border-emerald-200/60 font-mono">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
                 <span>Live Feed</span>
               </span>
@@ -236,7 +236,7 @@ export function InteractiveVelocityChart() {
             <p className="text-xs text-gray-500 mt-1 flex items-center gap-2">
               <span>Weekly commit volume and query latency across municipal wards</span>
               {!isHovered && peakPt && (
-                <span className="hidden sm:inline-flex text-[11px] font-mono text-emerald-800 bg-emerald-50/80 px-2 py-0.5 rounded border border-emerald-200/70">
+                <span className="hidden sm:inline-flex text-xs font-mono text-emerald-800 bg-emerald-50/80 px-2 py-0.5 rounded border border-emerald-200/70 font-semibold">
                   Peak: {peakPt.commits.toLocaleString()} ({peakPt.shortLabel})
                 </span>
               )}
@@ -284,7 +284,7 @@ export function InteractiveVelocityChart() {
         {/* Interactive Smooth SVG Chart Area */}
         <div className="relative h-64 w-full select-none">
           {/* Y Axis Numeric Labels */}
-          <div className="absolute left-0 top-0 bottom-6 w-9 flex flex-col justify-between text-[11px] font-mono text-gray-400 pointer-events-none">
+          <div className="absolute left-0 top-0 bottom-6 w-9 flex flex-col justify-between text-xs font-mono text-slate-500 pointer-events-none">
             {data.yLabels.map((lbl, idx) => (
               <span key={idx}>{lbl}</span>
             ))}
@@ -434,62 +434,62 @@ export function InteractiveVelocityChart() {
             {/* Smart Floating Tooltip - Displays ONLY when hovered and stays safely spaced from cursor */}
             {isHovered && activePt && (
               <div
-                className="absolute top-2 pointer-events-none bg-white/95 backdrop-blur-md text-gray-900 rounded-xl p-3 shadow-xl border border-emerald-200/90 text-[11px] leading-tight z-30 transition-all duration-100 ease-out"
+                className="absolute top-2 pointer-events-none bg-white/95 backdrop-blur-md text-gray-900 rounded-xl p-3.5 shadow-xl border border-emerald-200/90 text-xs leading-normal z-30 transition-all duration-100 ease-out"
                 style={{
                   left: `${xPercent}%`,
                   transform: xPercent > 55 ? "translateX(calc(-100% - 16px))" : "translateX(16px)",
                   boxShadow: "0 10px 25px -5px rgba(5, 150, 105, 0.15), 0 8px 10px -6px rgba(5, 150, 105, 0.08)",
-                  minWidth: "200px",
+                  minWidth: "210px",
                 }}
               >
                 {/* Header: Date + Peak Badge */}
-                <div className="flex items-center justify-between gap-3 pb-1.5 mb-1.5 border-b border-gray-100">
-                  <span className="text-gray-950 font-bold flex items-center gap-1.5">
-                    <Calendar className="w-3 h-3 text-emerald-600" />
+                <div className="flex items-center justify-between gap-3 pb-2 mb-2 border-b border-gray-100">
+                  <span className="text-gray-950 font-bold flex items-center gap-1.5 text-xs">
+                    <Calendar className="w-3.5 h-3.5 text-emerald-600" />
                     {activePt.shortLabel}
                   </span>
                   {activePt.isPeak ? (
-                    <span className="text-[10px] font-mono font-bold bg-emerald-50 text-emerald-800 border border-emerald-200 px-1.5 py-0.2 rounded-full">
+                    <span className="text-xs font-mono font-bold bg-emerald-50 text-emerald-800 border border-emerald-200 px-2 py-0.5 rounded-full">
                       Peak Day
                     </span>
                   ) : (
-                    <span className="text-[10px] font-mono text-gray-400">
+                    <span className="text-xs font-mono text-gray-500 font-medium">
                       Telemetry Point
                     </span>
                   )}
                 </div>
 
                 {/* Primary Metric */}
-                <div className="flex items-baseline justify-between mb-2">
-                  <span className="text-base font-extrabold font-mono text-emerald-950 tracking-tight">
+                <div className="flex items-baseline justify-between mb-2.5">
+                  <span className="text-lg font-extrabold font-mono text-emerald-950 tracking-tight">
                     {activePt.commits.toLocaleString()}
                   </span>
-                  <span className="text-[10px] font-medium text-emerald-700 bg-emerald-50/80 px-1.5 py-0.5 rounded">
+                  <span className="text-xs font-semibold text-emerald-700 bg-emerald-50/80 px-2 py-0.5 rounded">
                     commits / day
                   </span>
                 </div>
 
                 {/* Submetrics Grid */}
-                <div className="space-y-1 text-[10px]">
+                <div className="space-y-1.5 text-xs">
                   <div className="flex items-center justify-between text-gray-600">
-                    <span className="flex items-center gap-1">
-                      <Zap className="w-2.5 h-2.5 text-slate-400" /> Hybrid Latency
+                    <span className="flex items-center gap-1.5">
+                      <Zap className="w-3 h-3 text-slate-400" /> Hybrid Latency
                     </span>
                     <span className="font-mono font-bold text-slate-900">
                       {activePt.latencyMs.toFixed(1)}ms (p95)
                     </span>
                   </div>
                   <div className="flex items-center justify-between text-gray-600">
-                    <span className="flex items-center gap-1">
-                      <CheckCircle2 className="w-2.5 h-2.5 text-emerald-600" /> Spatial GiST Hit
+                    <span className="flex items-center gap-1.5">
+                      <CheckCircle2 className="w-3 h-3 text-emerald-600" /> Spatial GiST Hit
                     </span>
                     <span className="font-mono font-bold text-emerald-700">
                       {activePt.cacheHitPercent.toFixed(1)}%
                     </span>
                   </div>
                   <div className="flex items-center justify-between text-gray-600">
-                    <span className="flex items-center gap-1">
-                      <Sparkles className="w-2.5 h-2.5 text-emerald-600" /> pgvector Recall
+                    <span className="flex items-center gap-1.5">
+                      <Sparkles className="w-3 h-3 text-emerald-600" /> pgvector Recall
                     </span>
                     <span className="font-mono font-bold text-emerald-700">
                       {activePt.recallPercent.toFixed(1)}%
@@ -501,7 +501,7 @@ export function InteractiveVelocityChart() {
           </div>
 
           {/* X Axis Labels */}
-          <div className="absolute left-10 right-0 bottom-0 h-5 flex justify-between text-[11px] font-mono text-gray-500">
+          <div className="absolute left-10 right-0 bottom-0 h-5 flex justify-between text-xs font-mono text-slate-600 font-medium">
             {data.ticks.map((tick) => (
               <span
                 key={tick.idx}
@@ -523,22 +523,22 @@ export function InteractiveVelocityChart() {
       {/* Bottom Telemetry Strip - Dynamic across timeframes */}
       <div className="mt-5 pt-3.5 border-t border-gray-100 grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
         <div>
-          <span className="text-gray-400 block text-[10px] uppercase font-semibold">
+          <span className="text-slate-500 block text-xs uppercase font-bold tracking-wider">
             {data.volumeLabel}
           </span>
-          <span className="font-bold font-mono text-gray-900">{data.volumeValue}</span>
+          <span className="font-bold font-mono text-sm sm:text-base text-gray-950">{data.volumeValue}</span>
         </div>
         <div>
-          <span className="text-gray-400 block text-[10px] uppercase font-semibold">Avg Exec Time</span>
-          <span className="font-bold font-mono text-gray-900">{data.avgExecTime}</span>
+          <span className="text-slate-500 block text-xs uppercase font-bold tracking-wider">Avg Exec Time</span>
+          <span className="font-bold font-mono text-sm sm:text-base text-gray-950">{data.avgExecTime}</span>
         </div>
         <div>
-          <span className="text-gray-400 block text-[10px] uppercase font-semibold">GiST Index Hit</span>
-          <span className="font-bold font-mono text-emerald-800">{data.gistHit}</span>
+          <span className="text-slate-500 block text-xs uppercase font-bold tracking-wider">GiST Index Hit</span>
+          <span className="font-bold font-mono text-sm sm:text-base text-emerald-800">{data.gistHit}</span>
         </div>
         <div>
-          <span className="text-gray-400 block text-[10px] uppercase font-semibold">pgvector Recall</span>
-          <span className="font-bold font-mono text-emerald-800">{data.pgvectorRecall}</span>
+          <span className="text-slate-500 block text-xs uppercase font-bold tracking-wider">pgvector Recall</span>
+          <span className="font-bold font-mono text-sm sm:text-base text-emerald-800">{data.pgvectorRecall}</span>
         </div>
       </div>
     </div>

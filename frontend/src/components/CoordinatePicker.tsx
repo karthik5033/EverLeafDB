@@ -134,21 +134,21 @@ export default function CoordinatePicker({
               <div className="w-1.5 h-1.5 rounded-full bg-white" />
             </div>
           </div>
-          <span className="text-[9px] font-mono font-bold bg-black/90 text-white px-1.5 py-0.5 rounded shadow mt-1 whitespace-nowrap">
+          <span className="text-xs font-mono font-bold bg-black/90 text-white px-1.5 py-0.5 rounded shadow mt-1 whitespace-nowrap">
             ST_Point({lng.toFixed(4)}, {lat.toFixed(4)})
           </span>
         </div>
 
         {/* Top-Right HUD Badge */}
         <div className="absolute top-2.5 right-2.5 z-10 flex items-center gap-2">
-          <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-black/80 text-emerald-400 border border-emerald-500/40 backdrop-blur-xs flex items-center gap-1.5">
+          <span className="text-xs font-mono px-2 py-0.5 rounded-full bg-black/80 text-emerald-400 border border-emerald-500/40 backdrop-blur-xs flex items-center gap-1.5">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
             CRS: EPSG:4326
           </span>
         </div>
 
         {/* Bottom Helper Bar */}
-        <div className="absolute bottom-2 inset-x-2 flex items-center justify-between text-[11px] text-gray-300 bg-black/75 backdrop-blur-md px-3 py-1.5 rounded-lg border border-white/10 pointer-events-none font-mono">
+        <div className="absolute bottom-2 inset-x-2 flex items-center justify-between text-xs text-gray-300 bg-black/75 backdrop-blur-md px-3 py-1.5 rounded-lg border border-white/10 pointer-events-none font-mono">
           <span>Click anywhere to drop coordinates</span>
           <span className="text-emerald-300 font-bold">PostGIS GiST Active</span>
         </div>
@@ -157,7 +157,7 @@ export default function CoordinatePicker({
       {/* Coordinate & Ward Status Telemetry Row */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         <div className="p-3 bg-gray-50 border border-gray-200 rounded-lg">
-          <div className="text-[10px] font-mono text-gray-500 uppercase">Latitude</div>
+          <div className="text-xs font-mono text-gray-500 uppercase">Latitude</div>
           <input
             type="number"
             step="0.0001"
@@ -168,7 +168,7 @@ export default function CoordinatePicker({
         </div>
 
         <div className="p-3 bg-gray-50 border border-gray-200 rounded-lg">
-          <div className="text-[10px] font-mono text-gray-500 uppercase">Longitude</div>
+          <div className="text-xs font-mono text-gray-500 uppercase">Longitude</div>
           <input
             type="number"
             step="0.0001"
@@ -181,7 +181,7 @@ export default function CoordinatePicker({
         <div className={`p-3 rounded-lg border flex flex-col justify-center ${
           isContained ? "bg-emerald-50/70 border-emerald-200 text-emerald-950" : "bg-amber-50 border-amber-200 text-amber-950"
         }`}>
-          <div className="text-[10px] font-mono uppercase flex items-center gap-1">
+          <div className="text-xs font-mono uppercase flex items-center gap-1">
             {isContained ? (
               <>
                 <CheckCircle2 className="w-3 h-3 text-emerald-700" />

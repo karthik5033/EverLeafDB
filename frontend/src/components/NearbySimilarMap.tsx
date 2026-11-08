@@ -208,7 +208,7 @@ export default function NearbySimilarMap({
               <line x1="12" y1="22" x2="12" y2="18"/>
             </svg>
           </div>
-          <div class="absolute -top-7 px-2 py-0.5 rounded bg-slate-950/90 text-[10px] font-mono font-bold text-amber-300 whitespace-nowrap shadow-md pointer-events-none border border-slate-700">
+          <div class="absolute -top-7 px-2 py-0.5 rounded bg-slate-950/90 text-xs font-mono font-bold text-amber-300 whitespace-nowrap shadow-md pointer-events-none border border-slate-700">
             TARGET: ${targetTree.tag_number}
           </div>
         </div>
@@ -228,11 +228,11 @@ export default function NearbySimilarMap({
       <div class="p-1 min-w-[210px] font-sans text-slate-800">
         <div class="flex items-center justify-between pb-1 mb-1 border-b border-slate-200">
           <span class="font-mono text-xs font-bold text-red-700 bg-red-50 px-1.5 py-0.5 rounded">FOCAL SPECIMEN</span>
-          <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-100 text-slate-700">${targetTree.health_status}</span>
+          <span class="text-xs font-bold px-1.5 py-0.5 rounded bg-slate-100 text-slate-700">${targetTree.health_status}</span>
         </div>
         <div class="font-bold text-sm text-slate-900">${targetTree.species_common}</div>
-        <div class="text-[11px] text-slate-500 italic mb-2">${targetTree.species_scientific}</div>
-        <div class="text-[11px] font-mono bg-slate-50 p-2 rounded border border-slate-100">
+        <div class="text-xs text-slate-500 italic mb-2">${targetTree.species_scientific}</div>
+        <div class="text-xs font-mono bg-slate-50 p-2 rounded border border-slate-100">
           <div><span class="text-slate-400">Tag:</span> <b>${targetTree.tag_number}</b></div>
           <div><span class="text-slate-400">Coords:</span> <b>${targetTree.latitude.toFixed(5)}, ${targetTree.longitude.toFixed(5)}</b></div>
           <div><span class="text-slate-400">Ward:</span> <b>${targetTree.ward_name}</b></div>
@@ -296,7 +296,7 @@ export default function NearbySimilarMap({
       const midLng = (targetTree.longitude + res.longitude) / 2;
       const distBadge = L.marker([midLat, midLng], {
         icon: L.divIcon({
-          html: `<div class="px-1.5 py-0.5 rounded bg-slate-950/85 text-[9px] font-mono text-white font-bold whitespace-nowrap border border-slate-700 shadow-sm">${res.distance_meters}m</div>`,
+          html: `<div class="px-1.5 py-0.5 rounded bg-slate-950/85 text-xs font-mono text-white font-bold whitespace-nowrap border border-slate-700 shadow-sm">${res.distance_meters}m</div>`,
           className: "custom-tree-pin",
           iconAnchor: [15, 8]
         })
@@ -311,9 +311,9 @@ export default function NearbySimilarMap({
             <div class="relative w-6 h-6 rounded-full ${
               isCritical ? "bg-red-600 ring-red-400" : "bg-emerald-600 ring-emerald-400"
             } ring-4 ring-opacity-70 flex items-center justify-center text-white shadow-xl transition-transform duration-200 group-hover:scale-125 border-2 border-white">
-              <span class="text-[9px] font-mono font-extrabold">${Math.round(res.similarity_percent)}%</span>
+              <span class="text-xs font-mono font-extrabold">${Math.round(res.similarity_percent)}%</span>
             </div>
-            <div class="absolute -top-7 px-1.5 py-0.5 rounded bg-slate-950/90 text-[10px] font-mono text-white whitespace-nowrap shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
+            <div class="absolute -top-7 px-1.5 py-0.5 rounded bg-slate-950/90 text-xs font-mono text-white whitespace-nowrap shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
               ${res.tag_number} • ${res.distance_meters}m
             </div>
           </div>
@@ -330,13 +330,13 @@ export default function NearbySimilarMap({
         <div class="p-1 min-w-[210px] font-sans text-slate-800">
           <div class="flex items-center justify-between pb-1 mb-1 border-b border-slate-200">
             <span class="font-mono text-xs font-bold text-slate-900 bg-slate-100 px-1.5 py-0.5 rounded">${res.tag_number}</span>
-            <span class="text-[10px] font-bold px-1.5 py-0.5 rounded ${
+            <span class="text-xs font-bold px-1.5 py-0.5 rounded ${
               isCritical ? "bg-red-100 text-red-700" : "bg-emerald-100 text-emerald-700"
             }">${res.similarity_percent.toFixed(1)}% Match</span>
           </div>
           <div class="font-bold text-sm text-slate-900">${res.species_common}</div>
           <div class="text-xs text-red-700 font-semibold mb-2">${res.disease_name}</div>
-          <div class="text-[11px] font-mono bg-slate-50 p-2 rounded border border-slate-100 mb-2">
+          <div class="text-xs font-mono bg-slate-50 p-2 rounded border border-slate-100 mb-2">
             <div><span class="text-slate-400">Distance:</span> <b>${res.distance_meters}m</b></div>
             <div><span class="text-slate-400">Cosine Dist:</span> <b>${res.cosine_distance}</b></div>
           </div>
@@ -399,7 +399,7 @@ export default function NearbySimilarMap({
                 <button
                   key={key}
                   onClick={() => setBasemap(key)}
-                  className={`flex items-center gap-1 px-2 py-1 rounded text-[11px] font-semibold transition-all ${
+                  className={`flex items-center gap-1 px-2 py-1 rounded text-xs font-semibold transition-all ${
                     isActive
                       ? "bg-slate-900 text-white shadow-xs"
                       : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
@@ -427,7 +427,7 @@ export default function NearbySimilarMap({
       <div ref={mapContainerRef} className="w-full h-full relative z-10 bg-slate-950 cursor-grab active:cursor-grabbing" />
 
       {/* Bottom Status Bar */}
-      <div className="absolute bottom-2 inset-x-2 z-20 pointer-events-none flex items-center justify-between text-[10px] font-mono text-slate-300 bg-slate-950/80 backdrop-blur-md px-3 py-1.5 rounded-lg border border-slate-800">
+      <div className="absolute bottom-2 inset-x-2 z-20 pointer-events-none flex items-center justify-between text-xs font-mono text-slate-300 bg-slate-950/80 backdrop-blur-md px-3 py-1.5 rounded-lg border border-slate-800">
         <div className="flex items-center gap-2">
           <span className="text-emerald-400 font-bold">PostGIS GiST SRID 4326</span>
           <span className="text-slate-500">•</span>

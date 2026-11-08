@@ -92,7 +92,7 @@ export default function WardSelector({
               <span className="font-bold text-sm text-gray-950 truncate">
                 {selectedWard.name}
               </span>
-              <Badge variant="outline" className="text-[10px] px-1.5 py-0 h-4 font-mono bg-emerald-50 text-emerald-800 border-emerald-200">
+              <Badge variant="outline" className="text-xs px-1.5 py-0 h-4 font-mono bg-emerald-50 text-emerald-800 border-emerald-200">
                 WARD-{String(selectedWard.ward_number).padStart(2, "0")}
               </Badge>
             </div>
@@ -121,7 +121,7 @@ export default function WardSelector({
       {/* Dropdown Card */}
       {isOpen && (
         <Card className="absolute top-full left-0 right-0 z-50 mt-1.5 p-2 bg-white/95 backdrop-blur-md border border-gray-200 shadow-xl rounded-xl max-h-80 overflow-y-auto">
-          <div className="px-2 py-1 text-[10px] font-mono uppercase tracking-wider text-gray-400 border-b border-gray-100 mb-1 flex items-center justify-between">
+          <div className="px-2 py-1 text-xs font-mono uppercase tracking-wider text-gray-400 border-b border-gray-100 mb-1 flex items-center justify-between">
             <span>PostGIS Geofenced Wards (SRID 4326)</span>
             <span>{WARDS.length} Registered</span>
           </div>
@@ -144,11 +144,11 @@ export default function WardSelector({
                     <div className="min-w-0">
                       <div className="flex items-center gap-2">
                         <span className="text-xs font-bold truncate">{ward.name}</span>
-                        <span className="text-[9px] font-mono px-1 py-0.5 rounded bg-gray-100 text-gray-600">
+                        <span className="text-xs font-mono px-1 py-0.5 rounded bg-gray-100 text-gray-600">
                           #{ward.ward_number}
                         </span>
                       </div>
-                      <div className="text-[11px] text-gray-500 flex items-center gap-2 mt-0.5">
+                      <div className="text-xs text-gray-500 flex items-center gap-2 mt-0.5">
                         <span>{ward.zone} Zone</span>
                         <span>•</span>
                         <span>{ward.area_sq_km} km²</span>
