@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -16,6 +16,9 @@ import {
   Menu,
   ChevronLeft,
   ChevronRight,
+  PanelLeft,
+  PanelLeftClose,
+  PanelLeftOpen,
   Search,
   Sparkles,
   User,
@@ -155,6 +158,17 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [isCollapsed, setIsCollapsed] = useState(false);
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "b") {
+        e.preventDefault();
+        setIsCollapsed((prev) => !prev);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
   return (
     <TooltipProvider delayDuration={0}>
       <div className="h-screen bg-slate-50 flex flex-col font-sans text-slate-900 overflow-hidden">
@@ -218,13 +232,26 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
               </SheetContent>
             </Sheet>
 
-            {/* Brand Logo */}
-            <Link href="/" className="flex items-center gap-2.5 group">
-              <div className="w-8 h-8 rounded-lg overflow-hidden flex items-center justify-center transition-transform group-hover:scale-105 shadow-xs border border-emerald-500/30">
-                <img src="/icon.svg" alt="EverLeafDB" className="w-full h-full object-cover" />
-              </div>
-              <span className="font-bold text-base tracking-tight text-slate-950">EverLeafDB</span>
-            </Link>
+            {/* Brand Logo & Desktop Sidebar Toggle */}
+            <div className="flex items-center gap-2">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setIsCollapsed(!isCollapsed)}
+                className="hidden md:flex h-8 w-8 text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded-lg border border-slate-200/60 shadow-2xs"
+                title={isCollapsed ? "Expand Sidebar (Ctrl+B)" : "Collapse Sidebar (Ctrl+B)"}
+                aria-label={isCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
+              >
+                {isCollapsed ? <PanelLeftOpen className="w-4 h-4" /> : <PanelLeftClose className="w-4 h-4" />}
+              </Button>
+
+              <Link href="/" className="flex items-center gap-2.5 group">
+                <div className="w-8 h-8 rounded-lg overflow-hidden flex items-center justify-center transition-transform group-hover:scale-105 shadow-xs border border-emerald-500/30">
+                  <img src="/icon.svg" alt="EverLeafDB" className="w-full h-full object-cover" />
+                </div>
+                <span className="font-bold text-base tracking-tight text-slate-950">EverLeafDB</span>
+              </Link>
+            </div>
 
             <span className="hidden sm:inline-flex text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 font-semibold">
               PostgreSQL 16 3NF
@@ -254,11 +281,44 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
               isCollapsed ? "w-16" : "w-72"
             }`}
           >
-            {/* Collapse / Expand Toggle Button */}
+            {/* Sidebar Internal Header with Minimize / Expand Control */}
+            <div
+              className={`h-10 px-3 border-b border-slate-100 flex items-center shrink-0 bg-slate-50/70 ${
+                isCollapsed ? "justify-center" : "justify-between"
+              }`}
+            >
+              {!isCollapsed ? (
+                <>
+                  <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-slate-400">
+                    Navigation
+                  </span>
+                  <button
+                    onClick={() => setIsCollapsed(true)}
+                    className="h-6 w-6 rounded-md flex items-center justify-center text-slate-400 hover:text-slate-900 hover:bg-white hover:border hover:border-slate-200 transition-all shadow-2xs"
+                    title="Collapse Sidebar (Ctrl+B)"
+                    aria-label="Collapse Sidebar"
+                  >
+                    <ChevronLeft className="w-3.5 h-3.5" />
+                  </button>
+                </>
+              ) : (
+                <button
+                  onClick={() => setIsCollapsed(false)}
+                  className="w-8 h-6 rounded-md flex items-center justify-center text-slate-500 hover:text-slate-900 hover:bg-white hover:border hover:border-slate-200 transition-all shadow-2xs"
+                  title="Expand Sidebar (Ctrl+B)"
+                  aria-label="Expand Sidebar"
+                >
+                  <ChevronRight className="w-3.5 h-3.5" />
+                </button>
+              )}
+            </div>
+
+            {/* Floating Divider Edge Toggle Button (Placed at top-12 away from scrollbar arrow) */}
             <button
               onClick={() => setIsCollapsed(!isCollapsed)}
-              className="absolute -right-3 top-4 z-30 w-6 h-6 rounded-full bg-white border border-slate-200 shadow-sm flex items-center justify-center text-slate-500 hover:text-slate-900 transition-transform hover:scale-110"
-              title={isCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
+              className="absolute -right-3.5 top-12 z-40 w-7 h-7 rounded-full bg-white border border-slate-200 shadow-md flex items-center justify-center text-slate-500 hover:text-slate-900 hover:bg-slate-50 hover:border-slate-300 transition-all hover:scale-110 cursor-pointer"
+              title={isCollapsed ? "Expand Sidebar (Ctrl+B)" : "Collapse Sidebar (Ctrl+B)"}
+              aria-label={isCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
             >
               {isCollapsed ? <ChevronRight className="w-3.5 h-3.5" /> : <ChevronLeft className="w-3.5 h-3.5" />}
             </button>
