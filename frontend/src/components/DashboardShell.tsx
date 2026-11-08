@@ -181,7 +181,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
                 <div className="p-3 space-y-4 overflow-y-auto max-h-[calc(100vh-4rem)]">
                   {NAV_SECTIONS.map((section) => (
                     <div key={section.title} className="space-y-1">
-                      <div className="px-3 text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">
+                      <div className="px-3 text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-1">
                         {section.title}
                       </div>
                       {section.items.map((item) => {
@@ -191,7 +191,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
                           <Link
                             key={item.href}
                             href={item.href}
-                            className={`flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
+                            className={`flex items-center justify-between px-3 py-2 rounded-lg text-[13px] font-medium transition-colors ${
                               isActive
                                 ? "bg-slate-900 text-white font-semibold shadow-xs"
                                 : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
@@ -204,7 +204,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
                             {item.badge && (
                               <Badge
                                 variant={item.badgeVariant || "secondary"}
-                                className="text-[10px] px-1.5 py-0 shrink-0 whitespace-nowrap"
+                                className="text-[11px] px-1.5 py-0.5 shrink-0 whitespace-nowrap"
                               >
                                 {item.badge}
                               </Badge>
@@ -268,7 +268,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
               {NAV_SECTIONS.map((section) => (
                 <div key={section.title} className="space-y-1">
                   {!isCollapsed && (
-                    <div className="px-3 text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">
+                    <div className="px-3 text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-1">
                       {section.title}
                     </div>
                   )}
@@ -303,7 +303,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
                       <Link
                         key={item.href}
                         href={item.href}
-                        className={`flex items-center justify-between px-3 py-2 rounded-lg text-xs transition-colors group ${
+                        className={`flex items-center justify-between px-3 py-2 rounded-lg text-[13px] transition-colors group ${
                           isActive
                             ? "bg-slate-900 text-white font-semibold shadow-xs"
                             : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 font-medium"
@@ -320,7 +320,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
                         {item.badge && (
                           <Badge
                             variant={isActive ? "secondary" : item.badgeVariant || "secondary"}
-                            className="text-[10px] px-1.5 py-0 shrink-0 whitespace-nowrap font-mono"
+                            className="text-[11px] px-1.5 py-0.5 shrink-0 whitespace-nowrap font-mono"
                           >
                             {item.badge}
                           </Badge>
@@ -335,11 +335,11 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
             {/* Sidebar User Tenant Footer */}
             {!isCollapsed && (
               <div className="p-3 border-t border-slate-200 bg-slate-50/80 text-xs font-mono shrink-0">
-                <div className="text-[10px] text-slate-400 uppercase font-bold tracking-wider mb-0.5">
+                <div className="text-[11px] text-slate-400 uppercase font-bold tracking-wider mb-0.5">
                   Tenant Boundary
                 </div>
-                <div className="font-semibold text-slate-900 truncate">Ward 03 Cubbon Heritage</div>
-                <div className="text-[10px] text-slate-500 truncate">inspector_04 • Active</div>
+                <div className="font-semibold text-slate-900 truncate text-[13px]">Ward 03 Cubbon Heritage</div>
+                <div className="text-[11px] text-slate-500 truncate">inspector_04 • Active</div>
               </div>
             )}
           </aside>

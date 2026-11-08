@@ -91,7 +91,7 @@ export default function Navbar() {
             </div>
             <span className="font-bold text-base tracking-tight text-slate-950">EverLeafDB</span>
           </Link>
-          <span className="hidden sm:inline-flex text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 font-semibold shrink-0 whitespace-nowrap">
+          <span className="hidden sm:inline-flex text-xs font-mono px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 font-semibold shrink-0 whitespace-nowrap">
             PostgreSQL 16
           </span>
         </div>
@@ -104,7 +104,7 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors shrink-0 whitespace-nowrap ${
+                className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors shrink-0 whitespace-nowrap ${
                   isActive
                     ? "bg-slate-900 text-white font-semibold shadow-xs"
                     : "text-slate-600 hover:text-slate-950 hover:bg-slate-100"
@@ -121,12 +121,12 @@ export default function Navbar() {
           {/* Search Trigger */}
           <button
             onClick={() => setIsSearchOpen(true)}
-            className="hidden md:flex items-center gap-2 h-8 px-2.5 text-xs text-slate-500 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-lg transition-colors shrink-0 whitespace-nowrap"
+            className="hidden md:flex items-center gap-2 h-8 px-2.5 text-xs sm:text-sm text-slate-500 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-lg transition-colors shrink-0 whitespace-nowrap"
             title="Quick Search (⌘K)"
           >
             <Search className="w-3.5 h-3.5 text-slate-400" />
             <span>Search DB...</span>
-            <kbd className="text-[10px] bg-white border border-slate-200 px-1.5 py-0.2 rounded text-slate-500 font-mono shadow-2xs">
+            <kbd className="text-xs bg-white border border-slate-200 px-1.5 py-0.2 rounded text-slate-500 font-mono shadow-2xs">
               ⌘K
             </kbd>
           </button>

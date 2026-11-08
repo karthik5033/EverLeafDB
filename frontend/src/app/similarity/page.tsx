@@ -95,14 +95,14 @@ export default function SimilarityPage() {
             <div className="bg-white p-5 rounded-2xl border border-gray-200/90 shadow-xs space-y-4">
               <div className="flex items-center justify-between pb-3 border-b border-gray-100">
                 <span className="font-bold text-xs uppercase tracking-wider text-gray-500">Incoming Field Specimen</span>
-                <span className="text-[10px] font-mono text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded font-semibold border border-emerald-200">
+                <span className="text-xs font-mono text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded font-semibold border border-emerald-200">
                   Target: Tree #1084
                 </span>
               </div>
 
               {/* Photo Selector */}
               <div>
-                <label className="text-xs font-semibold text-gray-700 block mb-2">Select Pathology Capture:</label>
+                <label className="text-sm font-semibold text-gray-700 block mb-2">Select Pathology Capture:</label>
                 <div className="grid grid-cols-2 gap-3">
                   <div
                     onClick={() => {
@@ -116,9 +116,9 @@ export default function SimilarityPage() {
                     }`}
                   >
                     <img src="/specimen_leaf.jpg" alt="Leaf necrosis" className="w-full h-28 object-cover" />
-                    <div className="p-2 bg-white text-[11px] font-medium text-gray-900 flex justify-between items-center">
+                    <div className="p-2.5 bg-white text-xs sm:text-sm font-semibold text-gray-900 flex justify-between items-center">
                       <span>Necrotic Foliage</span>
-                      <span className="text-[9px] font-mono text-emerald-800">Organ: Leaf</span>
+                      <span className="text-xs font-mono text-emerald-800">Organ: Leaf</span>
                     </div>
                   </div>
 
@@ -134,9 +134,9 @@ export default function SimilarityPage() {
                     }`}
                   >
                     <img src="/specimen_trunk.jpg" alt="Trunk bark rot" className="w-full h-28 object-cover" />
-                    <div className="p-2 bg-white text-[11px] font-medium text-gray-900 flex justify-between items-center">
+                    <div className="p-2.5 bg-white text-xs sm:text-sm font-semibold text-gray-900 flex justify-between items-center">
                       <span>Basidiocarp Conk</span>
-                      <span className="text-[9px] font-mono text-emerald-800">Organ: Bark</span>
+                      <span className="text-xs font-mono text-emerald-800">Organ: Bark</span>
                     </div>
                   </div>
                 </div>
@@ -144,26 +144,26 @@ export default function SimilarityPage() {
 
               {/* Vector Embedding Preview Box */}
               <div className="p-3.5 bg-gray-50 border border-gray-200/90 rounded-xl font-mono text-xs space-y-2">
-                <div className="flex items-center justify-between text-gray-500 text-[10px]">
+                <div className="flex items-center justify-between text-gray-600 text-xs font-medium">
                   <span>CLIP ViT-B/32 Vector Embedding</span>
                   <span className="text-emerald-800 font-bold">512-dim Float32</span>
                 </div>
-                <div className="bg-white p-2.5 rounded border border-gray-200 text-[10px] text-gray-800 leading-relaxed overflow-x-auto">
+                <div className="bg-white p-2.5 rounded border border-gray-200 text-xs text-gray-800 leading-relaxed overflow-x-auto">
                   [ 0.04218, -0.19821, 0.08912, 0.31204, -0.05412, 0.18742, -0.24150, 0.00941, ... +504 dims ]
                 </div>
-                <div className="flex justify-between items-center text-[10px] text-gray-400">
+                <div className="flex justify-between items-center text-xs text-gray-500">
                   <span>Unit Normalized: ||v|| = 1.0</span>
                   <span className="text-emerald-800 font-bold">L2 Metric Ready</span>
                 </div>
               </div>
 
               {/* Autonomous Escalation Status */}
-              <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center justify-between text-xs font-medium text-emerald-950">
+              <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center justify-between text-xs sm:text-sm font-semibold text-emerald-950">
                 <div className="flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span>
                   <span>Database Outbreak Trigger Active</span>
                 </div>
-                <span className="font-mono text-[11px] text-emerald-800 font-bold">&tau;=0.82</span>
+                <span className="font-mono text-xs text-emerald-800 font-bold">&tau;=0.82</span>
               </div>
             </div>
           </div>

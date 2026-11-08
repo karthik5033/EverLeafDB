@@ -41,7 +41,7 @@ export function PrecedentMatchCard({
             variant={isHighMatch ? "emerald" : "secondary"}
             className="font-mono text-xs font-bold"
           >
-            <Sparkles className="w-3 h-3 mr-1 inline" />
+            <Sparkles className="w-3.5 h-3.5 mr-1 inline" />
             {precedent.similarity_percent.toFixed(1)}% Visual Match
           </Badge>
           <span className="text-xs text-muted-foreground font-mono">
@@ -58,19 +58,19 @@ export function PrecedentMatchCard({
                 ? "warning"
                 : "secondary"
             }
-            className="text-[10px] uppercase font-bold"
+            className="text-xs uppercase font-bold px-2 py-0.5"
           >
             {precedent.severity_level}
           </Badge>
 
           <Badge
             variant={precedent.outcome_status === "SUCCESSFUL" ? "emerald" : "destructive"}
-            className="text-[10px] font-bold"
+            className="text-xs font-bold px-2 py-0.5"
           >
             {precedent.outcome_status === "SUCCESSFUL" ? (
-              <CheckCircle2 className="w-3 h-3 mr-1 inline" />
+              <CheckCircle2 className="w-3.5 h-3.5 mr-1 inline" />
             ) : (
-              <XCircle className="w-3 h-3 mr-1 inline" />
+              <XCircle className="w-3.5 h-3.5 mr-1 inline" />
             )}
             Outcome: {precedent.outcome_status}
           </Badge>
@@ -82,7 +82,7 @@ export function PrecedentMatchCard({
         <div className="grid grid-cols-2 gap-3 bg-muted/20 p-2.5 rounded-lg border border-border/50">
           {/* Query Image */}
           <div className="space-y-1.5 text-center">
-            <span className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider block">
+            <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
               Inquiry Specimen
             </span>
             <div className="relative aspect-4/3 rounded-md overflow-hidden border border-border bg-black/5 flex items-center justify-center">
@@ -96,7 +96,7 @@ export function PrecedentMatchCard({
 
           {/* Historical Precedent Image */}
           <div className="space-y-1.5 text-center">
-            <span className="text-[11px] font-semibold text-emerald-800 uppercase tracking-wider block">
+            <span className="text-xs font-semibold text-emerald-800 uppercase tracking-wider block">
               Historical Cured Case
             </span>
             <div className="relative aspect-4/3 rounded-md overflow-hidden border border-emerald-300 bg-emerald-50/20 flex items-center justify-center">
@@ -105,7 +105,7 @@ export function PrecedentMatchCard({
                 alt={precedent.disease_name}
                 className="w-full h-full object-cover"
               />
-              <div className="absolute bottom-1 right-1 bg-black/75 text-white text-[9px] font-mono px-1.5 py-0.5 rounded">
+              <div className="absolute bottom-1 right-1 bg-black/75 text-white text-xs font-mono px-2 py-0.5 rounded">
                 {precedent.tree_tag}
               </div>
             </div>
@@ -115,16 +115,16 @@ export function PrecedentMatchCard({
         {/* Clinical Diagnostics Information */}
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <h4 className="text-sm font-extrabold text-foreground flex items-center gap-1.5">
+            <h4 className="text-base font-extrabold text-foreground flex items-center gap-1.5">
               <Stethoscope className="w-4 h-4 text-emerald-800" />
               {precedent.disease_name}
             </h4>
             <span className="text-xs font-mono text-muted-foreground">{precedent.species_name}</span>
           </div>
 
-          <div className="p-2.5 rounded-md bg-muted/30 border border-border/40 text-xs text-muted-foreground leading-relaxed">
-            <div className="text-[10px] font-bold text-foreground uppercase tracking-wider mb-1 flex items-center gap-1">
-              <Info className="w-3 h-3 text-emerald-800" />
+          <div className="p-3 rounded-md bg-muted/30 border border-border/40 text-sm text-slate-700 leading-relaxed">
+            <div className="text-xs font-bold text-foreground uppercase tracking-wider mb-1 flex items-center gap-1">
+              <Info className="w-3.5 h-3.5 text-emerald-800" />
               Inspector Clinical Observations & Evidence
             </div>
             {precedent.inspector_notes}
@@ -132,25 +132,25 @@ export function PrecedentMatchCard({
         </div>
 
         {/* Treatment Recommendation Card */}
-        <div className="p-3 rounded-lg border border-emerald-200 bg-emerald-50/40 space-y-2">
-          <div className="flex items-center justify-between text-xs font-semibold text-emerald-950">
+        <div className="p-3.5 rounded-lg border border-emerald-200 bg-emerald-50/40 space-y-2">
+          <div className="flex items-center justify-between text-xs sm:text-sm font-semibold text-emerald-950">
             <span>Prescribed Treatment Protocol</span>
-            <span className="font-mono text-[11px] text-emerald-800 font-bold uppercase">
+            <span className="font-mono text-xs text-emerald-800 font-bold uppercase bg-emerald-100/60 px-2 py-0.5 rounded">
               {precedent.treatment_type}
             </span>
           </div>
 
-          <div className="text-xs font-bold text-emerald-900">
+          <div className="text-sm font-bold text-emerald-950">
             {precedent.treatment_name}
           </div>
 
-          <div className="grid grid-cols-2 gap-2 pt-1 border-t border-emerald-200/60 text-xs text-emerald-800">
+          <div className="grid grid-cols-2 gap-2 pt-1.5 border-t border-emerald-200/60 text-xs sm:text-sm text-emerald-900 font-medium">
             <div className="flex items-center gap-1.5">
-              <Clock className="w-3.5 h-3.5 text-emerald-700" />
+              <Clock className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
               <span>Cure Window: <strong>{precedent.cure_duration_days} days</strong></span>
             </div>
-            <div className="flex items-center gap-1.5">
-              <DollarSign className="w-3.5 h-3.5 text-emerald-700" />
+            <div className="flex items-center gap-1.5 justify-end">
+              <DollarSign className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
               <span>Est. Cost: <strong>${precedent.typical_cost.toFixed(2)}</strong></span>
             </div>
           </div>
@@ -161,7 +161,7 @@ export function PrecedentMatchCard({
         <CardFooter className="p-4 pt-0">
           <Button
             onClick={() => onApplyTreatment(precedent)}
-            className="w-full bg-emerald-800 hover:bg-emerald-700 text-white font-bold h-9 text-xs"
+            className="w-full bg-emerald-800 hover:bg-emerald-700 text-white font-bold h-9 text-xs sm:text-sm"
           >
             Apply Treatment Plan from Precedent
             <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
